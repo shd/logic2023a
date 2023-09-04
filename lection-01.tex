@@ -1,0 +1,568 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+\usepackage{xcolor}
+\usepackage{proof}
+\setbeamertemplate{navigation symbols}{}
+%\usetheme{Warsaw}
+\begin{document}
+
+\newtheorem{axiom}{Аксиома}
+\newtheorem{exmprus}{Пример}
+\newtheorem{defrus}{Определение}
+\newtheorem{lemmarus}{Лемма}
+\newtheorem{thmrus}{Лемма}
+
+\begin{frame}{}
+\begin{center}{\Large Математическая логика}\\\itshape{КТ ИТМО, осень 2023 года}\end{center}
+\end{frame}
+
+\begin{frame}{Что такое <<правильное рассуждение>>?}
+\end{frame}
+
+\begin{frame}{Логика. Аристотель: 384-322 гг. до н.э.}
+\end{frame}
+
+\begin{frame}{Математический анализ}
+%Джордж Беркли. Аналитик, или Рассуждение, адресованное неверующему математику. Опыт новой теории зрения.
+\end{frame}
+
+\begin{frame}{Формализация матанализа}
+\begin{itemize}
+\item Ньютон, Лейбниц --- неформальная идея
+\vspace{1cm}
+\item Коши --- последовательности вместо бесконечно-малых, пределы
+\vspace{1cm}
+\item Вейерштрасс --- вещественные числа
+\vspace{1cm}
+\item Кантор --- теория множеств
+\end{itemize}
+\end{frame}
+
+%\begin{frame}{}
+%\item Формализация матанализа --- бесконечно-малые, последовательности, вещественные числа...\pause
+%\item Теория множеств:
+%
+%$$0 := \varnothing; \quad 1 := \{ \varnothing \}; \quad n+1 := n \cup \{ n \} $$
+%\end{itemize}
+\begin{frame}{Наивная теория множеств}
+%$$0 := \varnothing; \quad 1 := \{ \varnothing \}; \quad n+1 := n \cup \{ n \} $$
+\end{frame}
+
+\begin{frame}{Парадокс брадобрея (Рассела)}
+
+\begin{itemize}
+\item На некотором острове живёт брадобрей, который бреет всех, кто не бреется
+сам. Бреется ли сам брадобрей? \pause
+\item Если
+$$X = \{ x \ |\ x \notin x\}$$ \pause
+то что можно сказать про
+$$X \in X$$ \pause
+
+\item \begin{itemize}
+\item Пусть $X \in X$. Тогда $X : X \notin X$\pause
+\item Пусть $X \notin X$. Тогда $X$ должен принадлежать $X$\pause
+\end{itemize}
+
+\item Не совсем парадокс: откуда мы знаем, что $X$ существует? \pause
+А откуда мы знаем, что вещественные числа существуют?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Программа Гильберта}
+%\begin{itemize}
+%\item Программа Гильберта: полностью формализовать математику, доказать непротиворечивость.
+%\item Теоремы Гёделя о неполноте формальной арифметики (1930).
+%\end{itemize}
+\end{frame}
+
+\begin{frame}{Высказывание}
+Высказывание --- это строка, сформированная по следующим правилам.\pause
+
+\begin{itemize}
+\item Атомарное высказывание --- пропозициональная переменная: $A, B', C_{1234}$ \pause
+
+\item Составное высказывание: если $\alpha$ и $\beta$ --- высказывания, то высказываниями являются:
+\begin{itemize}
+\item Отрицание: $(\neg\alpha)$ \pause
+\item Конъюнкция: $(\alpha\with\beta)\ \ \textit{или}\ \ (\alpha\wedge\beta)$ \pause
+\item Дизъюнкция: $(\alpha\vee\beta)$ \pause
+\item Импликация: $(\alpha\rightarrow\beta)\ \ \textit{или}\ \ (\alpha\supset\beta)$ \pause
+\end{itemize}
+\end{itemize}
+Пример:
+$$(((A\rightarrow B)\vee (B\rightarrow C)) \vee (C \rightarrow A))$$
+\end{frame}
+
+\begin{frame}{Соглашения о записи (метаязык)}
+\begin{itemize}
+\item Метапеременные:
+$$\alpha, \beta, \gamma, \dots$$\pause
+
+Если $\alpha$ --- высказывание, то $(\neg\alpha)$ --- высказывание\pause\vspace{0.3cm}
+
+\item Метапеременные для пропозициональных переменных:
+$$X, Y_{n}, Z'$$\pause
+
+Пусть дана пропозициональная переменная $X$, тогда $(X\with(\neg X))$ --- высказывание
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Способы упростить запись}
+\begin{itemize}
+\item Приоритет связок: отрицание, конъюнкция, дизъюнкция, импликация \pause
+\item Ассоциативность: левая для конъюнкции и дизъюнкции, правая для импликации \pause
+\end{itemize}
+Пример:
+%((((A→B)&Q)∨(((¬B)→B)→C))∨(C→(C→A))) 
+$$((((A\rightarrow B)\with Q)\vee(((\neg B)\rightarrow B) \rightarrow C)) \vee (C \rightarrow (C\rightarrow A)))$$
+можем записать так:
+$$(A\rightarrow B)\with Q\vee((\neg B\rightarrow B) \rightarrow C) \vee (C \rightarrow C\rightarrow A)$$
+\end{frame}
+
+\begin{frame}{Теория моделей}
+
+Оценка высказываний: как их понимать?
+
+
+\end{frame}
+
+\iffalse
+\begin{frame}{Пример: $((A \rightarrow B) \with (B \rightarrow C)) \rightarrow (A \rightarrow C)$}
+
+%{Пример}
+%<<Если это --- кот, {\color{blue}то} это --- млекопитающее {\color{red}и} 
+%если это --- млекопитающее, {\color{blue}то} у него есть селезёнка,
+%{\color{red}значит,} если это --- кот, {\color{blue}то} у этого есть селезёнка>>\pause
+
+Как перевести $((A \rightarrow B) \with (B \rightarrow C)) \rightarrow (A \rightarrow C)$ на человеческий язык. \pause\vspace{0.3cm}
+
+Пусть:
+
+\begin{itemize}
+\item A означает <<это --- кот>>;\pause
+\item B означает <<это --- млекопитающее>>;\pause
+\item C означает <<у этого есть селезёнка>>
+\end{itemize}\pause\vspace{0.3cm}
+
+Тогда:
+\begin{center}
+<<если это --- кот, {\color{blue}то} это --- млекопитающее>>\\\pause
+{\color{red} и}\\\pause
+<<если это --- млекопитающее, {\color{blue}то} у этого есть селезёнка>>\\\pause
+{\color{red} значит}\\\pause
+<<если это --- кот, {\color{blue}то} у этого есть селезёнка>>
+\end{center}
+
+\end{frame}
+\fi
+
+\begin{frame}{Неформальный пример: $(A \rightarrow B) \rightarrow (B \rightarrow A)$}
+
+Давайте попробуем оценить высказывание $(A \rightarrow B) \rightarrow (B \rightarrow A)$.\pause
+
+\vspace{0.5cm}
+
+Если из $A$ следует $B$, то из $B$ следует $A$.\pause
+
+\vspace{0.5cm}
+
+Наверное, в общем случае это неверно. Например, пусть:
+
+\begin{enumerate}
+\item $A$ означает <<у меня есть кот>>;\pause
+\item $B$ означает <<у меня есть животное>>.
+\end{enumerate}\pause
+
+\vspace{0.5cm}
+Тогда:
+\begin{enumerate}
+\item $A \rightarrow B$ выполнена всегда;\pause
+\item $B \rightarrow A$ может не выполняться: скажем, у меня есть собака, но нет кота.
+%высказывание $A$ будет ложно, но высказывание $B$ по-прежнему истинно.
+\end{enumerate}
+
+\end{frame}
+
+
+\begin{frame}{Оценка высказываний}
+
+Высказывание $(A\rightarrow B)\rightarrow (B\rightarrow A)$ ложно, если, например:
+\begin{itemize}
+\item $A$ --- <<у меня есть кот>>;
+\item $B$ --- <<у меня есть животное>>;
+\item у меня есть собака, но нет кота.
+\end{itemize}
+\vspace{0.3cm}\pause
+Иначе: $A$ ложно, $B$ истинно, тогда высказывание ложно.\pause\vspace{0.5cm}
+
+Чтобы задать оценку высказываний:
+\begin{itemize}
+\item Зафиксируем множество истинностных значений $V = \{\textit{И},\textit{Л}\,\}$\pause
+%\item Множество пропозициональных переменных $P$
+
+\item Определим функцию оценки переменных (\emph{интерпретацию}) $f: P \rightarrow V$\\
+(P --- множество пропозициональных переменных).
+\end{itemize} \pause\vspace{0.3cm}
+
+Если $\llbracket A \rrbracket = \textit{Л}$ и $\llbracket B \rrbracket = \textit{И}$,
+то $\llbracket (A\rightarrow B)\rightarrow (B\rightarrow A) \rrbracket = \textit{Л}$
+
+%\vspace{0.3cm}
+%
+%Оценка высказывания сопоставляет формуле истинностное значение:
+%$$\llbracket A\rightarrow A \rrbracket = \textit{И}$$
+
+\end{frame}
+
+\begin{frame}{Указание функции оценки (метаязык)}
+
+\begin{itemize}
+\item Синтаксис для указания функции оценки переменных
+$$\llbracket \alpha \rrbracket^{X_1 := v_1,\ \dots,\ X_n := v_n}$$
+\item Это всё метаязык --- потому полагаемся на здравый смысл
+$$\llbracket A \with B \with (C \rightarrow C) \rrbracket^{A := \textit{И},\ B := \llbracket \neg A \rrbracket}$$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Оценим высказывания рекурсивно}
+\begin{itemize}
+\item Переменные $$\llbracket X \rrbracket = f(X)\quad\quad\quad \llbracket X \rrbracket^{X := a} = a$$ \pause\vspace{-0.3cm}
+\item Отрицание $$\llbracket \neg \alpha \rrbracket = 
+  \left\{\begin{array}{ll}\textit{Л},&\textit{если }\llbracket\alpha\rrbracket=\textit{И}\\
+                        \textit{И},&\textit{иначе}\end{array}\right.$$ \pause\vspace{-0.1cm}
+\item Конъюнкция $$\llbracket \alpha \with \beta \rrbracket = 
+  \left\{\begin{array}{ll}\textit{И},&\textit{если }\llbracket\alpha\rrbracket=\llbracket\beta\rrbracket=\textit{И}\\ 
+                        \textit{Л},&\textit{иначе}\end{array}\right.$$ \pause\vspace{-0.1cm}
+\item Дизъюнкция $$\llbracket \alpha \vee \beta \rrbracket = 
+  \left\{\begin{array}{ll}\textit{Л},&\textit{если }\llbracket\alpha\rrbracket=\llbracket\beta\rrbracket=\textit{Л}\\
+                        \textit{И},&\textit{иначе}\end{array}\right.$$ \pause\vspace{-0.1cm}
+\item Импликация $$\llbracket \alpha \rightarrow \beta \rrbracket = 
+  \left\{\begin{array}{ll}\textit{Л},&\textit{если }\llbracket\alpha\rrbracket=\textit{И},\ \llbracket\beta\rrbracket=\textit{Л}\\
+                        \textit{И},&\textit{иначе}\end{array}\right.$$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Тавтологии}
+
+Если $\alpha$ истинна при любой оценке переменных, то она \emph{общезначима} (является \emph{тавтологией}):
+$$\models \alpha$$\pause
+
+
+Выражение $A\rightarrow A$ --- тавтология. 
+Переберём все возможные значения единственной переменной $A$:
+
+$$
+\begin{array}{l} \llbracket A\rightarrow A \rrbracket ^ {A := \textit{И}} = \textit{И} \\
+ \llbracket A\rightarrow A \rrbracket ^ {A := \textit{Л}} = \textit{И} \end{array}
+$$\pause
+
+Выражение $A\rightarrow\neg A$ тавтологией не является:
+
+$$\llbracket A\rightarrow\neg A \rrbracket ^ {A := \textit{И}} = \textit{Л}$$
+
+\end{frame}
+
+\begin{frame}{Ещё определения}
+\begin{itemize}
+\item Если $\alpha$ истинна при любой оценке переменных, при которой истинны 
+высказывания $\gamma_1, \dots, \gamma_n$, будем говорить, что $\alpha$ --- \emph{следствие} этих высказываний:
+$$\gamma_1, \dots, \gamma_n \models \alpha$$\pause
+\item Истинна при какой-нибудь оценке --- \emph{выполнима}.\pause
+\item Не истинна ни при какой оценке --- \emph{невыполнима}.\pause
+\item Не истинна при какой-нибудь оценке --- \emph{опровержима}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Теория доказательств}
+
+\begin{itemize}
+\item Из чего состоит доказательство (неформально):
+\begin{enumerate}
+\item Аксиомы --- утверждения, от которых отталкиваемся.
+\item Правила вывода --- способы делать умозаключения, переходить от одних утверждений к другим.
+\end{enumerate}\pause
+
+\item Давайте определим формально, что такое аксиомы и правила вывода, и затем дадим формальное 
+определение доказательству как таковому.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Схемы высказываний: определение}
+
+\begin{defrus}[схема высказывания] Строка, строящаяся по правилам для построения высказываний, с одним отличием ---
+вместо пропозициональных переменных можно указывать маленькие греческие буквы.\end{defrus}\pause
+
+\emph{По-простому: схемы высказываний --- высказывания с метапеременными}\pause
+
+\begin{exmprus}
+\begin{itemize}
+\item $(A \rightarrow \alpha) \vee (\beta \rightarrow B)$\pause
+\item $(\alpha\rightarrow\beta)\rightarrow(\neg\beta\rightarrow\neg\alpha)$\pause
+\item $A\vee B \with A$
+\end{itemize}
+\end{exmprus}
+
+\end{frame}
+
+\begin{frame}{Схемы высказываний: определение}
+
+\begin{defrus}Будем говорить, что высказывание $\sigma$ строится (иначе: задаётся) по схеме $\textit{Ш}$, 
+если существует такая замена метапеременных $\textit{ч}_1$, $\textit{ч}_2$, ..., $\textit{ч}_n$ 
+в высказывании на какие-либо выражения $\varphi_1$, $\varphi_2$, ..., $\varphi_n$, 
+что после её проведения получается высказывание $\sigma$:
+
+$$\sigma = \textit{Ш}[\textit{ч}_1 := \varphi_1][\textit{ч}_2 := \varphi_2]...[\textit{ч}_n := \varphi_n]$$
+
+Заметьте, здесь $\textit{ч}_i$ --- мета-метапеременные для метапеременных, а $\textit{Ш}$ --- мета-метапеременная для схем.
+\end{defrus}
+\end{frame}
+
+\begin{frame}{Схемы высказываний: примеры}
+%\begin{exmprus}[Схема высказывания]
+Схема $$A \rightarrow \alpha \vee B \vee \alpha$$ задаёт, к примеру, следующие высказывания:
+\begin{itemize}
+\item $A \rightarrow X \vee B \vee X$, при $\alpha := X$.
+\item $A \rightarrow (M\rightarrow N) \vee B \vee (M \rightarrow N)$, при $\alpha := M\rightarrow N$.
+\end{itemize}
+
+\vspace{0.5cm}\pause
+
+и {\color{red} НЕ} задаёт следующие высказывания:
+\begin{itemize}
+\item {\color{red} $A \rightarrow {\color{red}X} \vee B \vee {\color{red}Y}$} --- все вхождения $\alpha$ должны заменяться одинаково во всём выражении.
+\item { ${\color{red}\textbf{(}}{\color{gray}A \rightarrow (M \rightarrow N) \vee B \vee M}{\color{red}\textbf{)}} \color{gray}\rightarrow N$} --- структура скобок должна сохраняться.
+\end{itemize}
+%\end{exmprus}
+
+\end{frame}
+
+%Аксиомы --- некоторые выделенные высказывания\pause
+%
+%\vspace{0.3cm}
+%
+%Схема аксиом --- высказывание с метапеременными.\pause
+%
+%\vspace{0.3cm}
+%
+%Пример:
+%$$\alpha\rightarrow\beta\rightarrow\alpha$$
+%
+%Заменим $\alpha$ и $\beta$ на выражения --- 
+%получим аксиому.\pause
+%
+%$$\begin{array}{l}
+%  \alpha := A\rightarrow B\\
+%  \beta := A\with B\\
+%  (A\rightarrow B)\rightarrow (A\with B)\rightarrow(A\rightarrow B)
+%\end{array}$$
+
+\begin{frame}{Аксиомы исчисления высказываний}
+
+\begin{defrus}Назовём следующие схемы высказываний схемами аксиом исчисления высказываний:
+
+\begin{tabular}{ll}
+(1) & $\alpha \rightarrow \beta \rightarrow \alpha$ \\
+(2) & $(\alpha \rightarrow \beta) \rightarrow (\alpha \rightarrow \beta \rightarrow \gamma) \rightarrow (\alpha \rightarrow \gamma)$ \\
+(3) & $\alpha \rightarrow \beta \rightarrow \alpha \& \beta$\\
+(4) & $\alpha \& \beta \rightarrow \alpha$\\
+(5) & $\alpha \& \beta \rightarrow \beta$\\
+(6) & $\alpha \rightarrow \alpha \vee \beta$\\
+(7) & $\beta \rightarrow \alpha \vee \beta$\\
+(8) & $(\alpha \rightarrow \gamma) \rightarrow (\beta \rightarrow \gamma) \rightarrow (\alpha \vee \beta \rightarrow \gamma)$\\
+(9) & $(\alpha \rightarrow \beta) \rightarrow (\alpha \rightarrow \neg \beta) \rightarrow \neg \alpha$\\
+(10) & $\neg \neg \alpha \rightarrow \alpha$
+\end{tabular}
+
+Все высказывания, которые задаются схемами аксиом, назовём аксиомами исчисления высказываний.
+\end{defrus}
+\end{frame}
+
+\begin{frame}{Правило вывода Modus Ponens}
+Первый, упомянувший правило --- Теофраст (древнегреческий философ, IV-III век до н.э.).\pause
+
+\vspace{1cm}
+
+Переход по следствию: <<сейчас сентябрь; если сейчас сентябрь, то сейчас осень; следовательно, сейчас осень>>.\pause
+
+\vspace{1cm}
+
+Если имеет место $\alpha$ и $\alpha\rightarrow\beta$, то имеет место $\beta$.
+
+$$\infer{\beta}{\alpha & \alpha\rightarrow\beta}$$
+\end{frame}
+
+\begin{frame}{Доказательство}
+\begin{defrus}[доказательство в исчислении высказываний]
+Доказательством (выводом) назовём конечную последовательность высказываний $\delta_1, \delta_2, \dots, \delta_n$, \pause
+причём каждое $\delta_i$ либо:
+\begin{itemize}
+\item является аксиомой --- существует замена метапеременных для какой-либо схемы аксиом, позволяющая получить
+формулу $\delta_i$, либо\pause
+\item получается из $\delta_1,\dots,\delta_{i-1}$ по правилу Modus Ponens --- существуют такие индексы $j < i$ и $k < i$,
+что $\delta_k \equiv \delta_j\rightarrow\delta_i$.
+\end{itemize}\end{defrus}\pause
+
+Пример:\vspace{0.3cm}
+
+$A \rightarrow (A \rightarrow A)$,
+
+$(A \rightarrow (A \rightarrow A)) \rightarrow 
+  (A \rightarrow ((A \rightarrow A) \rightarrow A)) \rightarrow
+  (A \rightarrow A)$,
+
+$(A \rightarrow ((A \rightarrow A) \rightarrow A)) \rightarrow
+  (A \rightarrow A)$,
+
+$A \rightarrow ((A \rightarrow A) \rightarrow A)$,
+
+$A \rightarrow A$\end{frame}
+
+\begin{frame}{Доказательство подробнее}
+Почему это доказательство? То же подробнее:\pause\vspace{0.2cm}
+
+\begin{tabular}{lll}
+(1) & $A \rightarrow (A \rightarrow A)$&Сх. акс. 1\\
+    & {\color{cyan}$\alpha \rightarrow \beta \rightarrow \alpha\ [\alpha, \beta := A]$}
+
+\vspace{0.2cm}\\\pause
+
+(2) & $(A \rightarrow (A \rightarrow A)) \rightarrow 
+  (A \rightarrow ((A \rightarrow A) \rightarrow A)) \rightarrow
+  (A \rightarrow A)$&Сх. акс. 2\\
+    & {\color{cyan}$(\alpha \rightarrow \beta) \rightarrow (\alpha \rightarrow \beta \rightarrow \gamma) 
+       \rightarrow (\alpha \rightarrow \gamma)\ [\alpha, \gamma := A; \beta := A\rightarrow A]$}
+
+\vspace{0.2cm}\\\pause
+
+(3) & $(A \rightarrow ((A \rightarrow A) \rightarrow A)) \rightarrow
+  (A \rightarrow A)$&M.P. 1,2\\
+    \multicolumn{3}{c}{\color{cyan} $\infer{(A \rightarrow ((A \rightarrow A) \rightarrow A)) \rightarrow
+  (A \rightarrow A)}{A \rightarrow (A \rightarrow A) & (A \rightarrow (A \rightarrow A)) \rightarrow 
+  (A \rightarrow ((A \rightarrow A) \rightarrow A)) \rightarrow
+  (A \rightarrow A)}$}
+
+\vspace{0.2cm}\\\pause
+
+(4) & $A \rightarrow ((A \rightarrow A) \rightarrow A)$ & Сх. акс. 1\\
+    & {\color{cyan}$\alpha \rightarrow \beta \rightarrow \alpha\ [\alpha := A, \beta := A\rightarrow A]$}
+
+\vspace{0.2cm}\\\pause
+
+(5) & $A \rightarrow A$ & M.P. 4,3\\
+    & {\color{cyan} $\infer{A \rightarrow A}{A \rightarrow ((A \rightarrow A) \rightarrow A) & 
+       (A \rightarrow ((A \rightarrow A) \rightarrow A)) \rightarrow (A \rightarrow A)}$}
+
+\vspace{0.2cm}
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Дополнительные определения}
+
+\begin{defrus}[доказательство формулы $\alpha$] 
+--- такое доказательство (вывод) $\delta_1, \delta_2, \dots, \delta_n$,
+что $\alpha\equiv\delta_n$.
+
+Формула $\alpha$ доказуема (выводима), если существует её доказательство. Обозначение:
+$$\vdash \alpha$$\end{defrus}\pause
+
+\begin{defrus}[вывод формулы $\alpha$ из гипотез $\gamma_1,\dots,\gamma_k$]
+--- такая последовательность
+$\delta_1,\dots,\delta_n$, причём каждое $\delta_i$ либо:
+\begin{itemize}
+\item является аксиомой;
+\item либо получается по правилу Modus Ponens из предыдущих;
+\item либо является одной из гипотез: существует $t: \delta_i \equiv \gamma_t$.
+\end{itemize}
+
+Формула $\alpha$ выводима из гипотез $\gamma_1,\dots,\gamma_k$, если существует её вывод. Обозначение:
+$$\gamma_1,\dots,\gamma_k\vdash\alpha$$\end{defrus}
+
+\end{frame}
+
+\begin{frame}{Корректность и полнота}
+\begin{defrus}[корректность теории]
+Теория корректна, если любое доказуемое в ней утверждение общезначимо.
+То есть, $\vdash\alpha$ влечёт $\models\alpha$.
+\end{defrus}
+
+\begin{defrus}[полнота теории]
+Теория полна, если любое общезначимое в ней утверждение доказуемо.
+То есть, $\models\alpha$ влечёт $\vdash\alpha$.
+\end{defrus}
+\end{frame}
+
+\begin{frame}{Корректность исчисления высказываний}
+\begin{thmrus}[корректность]
+Если $\vdash\alpha$, то $\models\alpha$
+\end{thmrus}
+
+\begin{proof}
+Индукция по длине вывода $n$.
+Для каждого высказывания $\delta_n$ из вывода разбор случаев:
+\begin{enumerate}
+\item Аксиома --- убедиться, что все аксиомы общезначимы.
+\item Modus Ponens $j$, $k$ --- убедиться, что если $\models\delta_j$ и 
+$\models\delta_j\rightarrow\delta_n$, то $\models\delta_n$.
+\end{enumerate}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Общезначимость схемы аксиом №9}
+Общезначимость схемы аксиом --- истинность каждой аксиомы, задаваемой данной схемой, при любой оценке:
+$$\llbracket(\alpha\rightarrow\beta)\rightarrow(\alpha\rightarrow\neg\beta)\rightarrow\neg\alpha\rrbracket
+   = \textnormal{И}$$
+
+Построим таблицу истинности формулы в зависимости от оценки $\alpha$ и $\beta$:
+\vspace{0.3cm}
+
+{\footnotesize
+\begin{tabular}{cc|ccccc}
+$\llbracket\alpha\rrbracket$ & $\llbracket\beta\rrbracket$ & $\llbracket\neg\alpha\rrbracket$ & 
+    $\llbracket\alpha\rightarrow\beta\rrbracket$ & $\llbracket\alpha\rightarrow\neg\beta\rrbracket$ 
+  & $\llbracket(\alpha\rightarrow\neg\beta)\rightarrow\neg\alpha\rrbracket$ & 
+    $\llbracket(\alpha\rightarrow\beta)\rightarrow(\alpha\rightarrow\neg\beta)\rightarrow\neg\alpha\rrbracket$\\
+\hline
+  Л & Л & И & И & И & И & И\\
+  Л & И & И & И & И & И & И\\
+  И & Л & Л & Л & И & Л & И\\
+  И & И & Л & И & Л & И & И
+\end{tabular}}
+
+\end{frame}
+
+\begin{frame}{Общезначимость заключения правила Modus Ponens}
+Пусть в выводе есть формулы $\delta_j$, $\delta_k = \delta_j\rightarrow\delta_n$, $\delta_n$ (причём
+$j < n$ и $k < n$).\vspace{0.3cm}\pause
+
+
+Фиксируем какую-нибудь оценку. 
+По индукционному предположению, $\delta_j$ и $\delta_j\rightarrow\delta_n$ общезначимы.
+Поэтому при данной оценке $\llbracket\delta_j\rrbracket = \textnormal{И}$ и
+$\llbracket\delta_j\rightarrow\delta_n\rrbracket = \textnormal{И}$.\vspace{0.3cm}\pause
+
+Построим таблицу истинности для импликации:
+
+\begin{center}\begin{tabular}{ccc}
+$\llbracket\delta_j\rrbracket$ &$\llbracket\delta_n\rrbracket$ & $\llbracket\delta_j\rightarrow\delta_n\rrbracket$\\
+\hline
+Л & Л & И \\
+Л & И & И \\
+И & Л & Л \\
+И & И & И
+\end{tabular}\end{center}\pause
+
+Из таблицы видно, что $\llbracket\delta_n\rrbracket = \textnormal{Л}$ только если 
+$\llbracket\delta_j\rightarrow\delta_n\rrbracket = \textnormal{Л}$ или 
+$\llbracket\delta_j\rrbracket = \textnormal{Л}$. Значит, это невозможно, и
+$\llbracket\delta_n\rrbracket = \textnormal{И}$
+
+\end{frame}
+
+\end{document}

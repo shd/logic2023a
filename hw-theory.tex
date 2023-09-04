@@ -1,0 +1,132 @@
+\documentclass[10pt,a4paper,oneside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+\usepackage{mathrsfs}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\usepackage{proof}
+\usepackage{tikz}
+\usepackage{multicol}
+\usepackage{mathabx}
+\usepackage{comment}
+\usepackage{hyperref}
+\usepackage[normalem]{ulem}
+
+\makeatletter
+\newcommand{\dotminus}{\mathbin{\text{\@dotminus}}}
+
+\newcommand{\@dotminus}{%
+  \ooalign{\hidewidth\raise1ex\hbox{.}\hidewidth\cr$\m@th-$\cr}%
+}
+\makeatother
+
+\usetikzlibrary{arrows,backgrounds,patterns,matrix,shapes,fit,calc,shadows,plotmarks}
+
+\newtheorem{definition}{Определение}
+\newtheorem{theorem}{Теорема}
+\begin{document}
+
+\begin{center}{\Large\textsc{\textbf{Теоретические домашние задания}}}\\
+             \it Математическая логика, ИТМО, М3232-М3239, осень 2023 года\end{center}
+
+\section*{Задание №1. Знакомство с исчислением высказываний.}
+
+Справочное изложение теории, частично разобранной на лекции.
+
+\begin{definition}
+Аксиомой является любая формула исчисления высказываний, которая может быть получена из следующих схем аксиом:
+
+\begin{tabular}{ll}
+(1) & $\alpha \rightarrow \beta \rightarrow \alpha$ \\
+(2) & $(\alpha \rightarrow \beta) \rightarrow (\alpha \rightarrow \beta \rightarrow \gamma) \rightarrow (\alpha \rightarrow \gamma)$ \\
+(3) & $\alpha \rightarrow \beta \rightarrow \alpha \& \beta$\\
+(4) & $\alpha \& \beta \rightarrow \alpha$\\
+(5) & $\alpha \& \beta \rightarrow \beta$\\
+(6) & $\alpha \rightarrow \alpha \vee \beta$\\
+(7) & $\beta \rightarrow \alpha \vee \beta$\\
+(8) & $(\alpha \rightarrow \gamma) \rightarrow (\beta \rightarrow \gamma) \rightarrow (\alpha \vee \beta \rightarrow \gamma)$\\
+(9) & $(\alpha \rightarrow \beta) \rightarrow (\alpha \rightarrow \neg \beta) \rightarrow \neg \alpha$\\
+(10) & $\neg \neg \alpha \rightarrow \alpha$
+\end{tabular}
+\end{definition}
+
+\begin{definition}
+Выводом из гипотез $\gamma_1,\dots,\gamma_n$ назовём конечную непустую последовательность высказываний, для каждого из которых
+выполнено хотя бы что-то из списка:
+\begin{enumerate}
+\item высказывание является аксиомой;
+\item высказывание получается из предыдущих по правилу Modus Ponens (то есть, для высказывания $\delta_i$ найдутся
+такие $\delta_j$ и $\delta_k$, что $j,k < i$ и $\delta_k \equiv \delta_j \rightarrow \delta_i$);
+\item высказывание является гипотезой (то есть, является одной из формул $\gamma_1,\dots,\gamma_n$).
+\end{enumerate}
+\end{definition}
+
+\begin{definition}
+Будем говорить, что формула $\alpha$ выводится (доказывается) из гипотез $\gamma_1,\dots,\gamma_n$ 
+(и записывать это как $\gamma_1,\dots,\gamma_n\vdash\alpha$), если существует такой вывод
+из гипотез $\gamma_1,\dots,\gamma_n$, что последней формулой которого является формула $\alpha$.
+\end{definition}
+
+Заметим, что доказательство формулы $\alpha$ --- это вывод формулы $\alpha$ из
+пустого множества гипотез.
+
+При решении заданий вам может потребоваться теорема о дедукции (будет доказана на второй лекции): 
+\begin{theorem}
+$\gamma_1,\dots,\gamma_n, \alpha \vdash \beta$ 
+тогда и только тогда, когда $\gamma_1,\dots,\gamma_n \vdash \alpha\rightarrow\beta$. 
+\end{theorem}
+
+Пример использования: пусть необходимо доказать $\vdash A \rightarrow A$ --- то есть
+доказать существование вывода формулы $A \rightarrow A$ (заметьте, так поставленное
+условие не требует этот вывод предъявлять, только доказать его существование).
+Тогда заметим, что последовательность из одной формулы $A$ доказывает $A \vdash A$. 
+Далее, по теореме о дедукции, отсюда следует и $\vdash A \rightarrow A$ 
+(то есть, вывода формулы $A \rightarrow A$, не использующего гипотезы).
+
+\begin{enumerate}
+\item Докажите:
+\begin{enumerate}
+\item $\vdash (A \rightarrow A \rightarrow B) \rightarrow (A \rightarrow B)$
+\item $\vdash \neg (A \with \neg A)$
+\item $\vdash A \with B \rightarrow B \with A$
+\item $\vdash A \vee B \rightarrow B \vee A$
+\item $A \with \neg A \vdash B$
+\end{enumerate}
+
+\item Докажите:
+\begin{enumerate}
+\item $\vdash A \rightarrow \neg \neg A$
+\item $\neg A, B \vdash \neg(A\& B)$
+\item $\neg A,\neg B \vdash \neg( A\vee B)$
+\item $ A,\neg B \vdash \neg( A\rightarrow B)$
+\item $\neg A, B \vdash  A\rightarrow B$
+\end{enumerate}
+
+\item Докажите:
+\begin{enumerate}
+\item $\vdash (A \rightarrow B) \rightarrow (B \rightarrow C) \rightarrow (C \rightarrow A)$ 
+\item $\vdash (A \rightarrow B) \rightarrow (\neg B \rightarrow \neg A)$ \emph{(правило контрапозиции)}
+\item $\vdash \neg (\neg A \with \neg B) \rightarrow (A \vee B)$ \emph{(вариант I закона де Моргана)}
+\item $\vdash (\neg A \vee \neg B) \rightarrow \neg (A \with B)$ \emph{(II закон де Моргана)}
+\item $\vdash (A \rightarrow B) \rightarrow (\neg A \vee B)$
+\item $\vdash A \with B \rightarrow A \vee B$
+\item $\vdash ((A \rightarrow B) \rightarrow A)\rightarrow A$ \emph{(закон Пирса)}
+\item $\vdash A \vee \neg A$
+\item $\vdash (A \with B \rightarrow C) \rightarrow (A \rightarrow B \rightarrow C)$
+\item $\vdash (A \rightarrow B \rightarrow C) \rightarrow (A \with B \rightarrow C)$
+\end{enumerate}
+
+\item Даны высказывания $\alpha$ и $\beta$, причём $\vdash \alpha\rightarrow\beta$ и $\not\vdash\beta\rightarrow\alpha$. 
+Укажите способ построения высказывания $\gamma$, такого, что
+$\vdash\alpha\rightarrow\gamma$ и $\vdash\gamma\rightarrow\beta$, причём $\not\vdash\gamma\rightarrow\alpha$ и
+$\not\vdash\beta\rightarrow\gamma$.
+
+\item Покажите, что если $\alpha \vdash \beta$ и $\neg\alpha\vdash\beta$, то $\vdash\beta$.
+\end{enumerate}
+
+\end{document}
