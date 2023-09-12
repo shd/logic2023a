@@ -229,7 +229,7 @@ char(*c)() = remove_bot<char(*)()> (...);
 \item $((A \rightarrow B) \rightarrow C) \rightarrow (A \rightarrow (B \rightarrow C))$
 \item $(A \rightarrow B) \with (A \rightarrow \neg B) \rightarrow \neg A$
 \item $(A \rightarrow B \rightarrow C) \rightarrow ((A \with B) \rightarrow C)$
-\item $A \vee B \rightarrow \neg (\neg A \with \neg B)$
+\item $\neg (A \vee B) \rightarrow (\neg A \with \neg B)$ и $(\neg A \with \neg B) \rightarrow \neg (A \vee B)$
 \item Одно из двух утверждений: $(A \rightarrow B) \rightarrow \neg A \vee B$ или
 $\neg A \vee B \rightarrow (A \rightarrow B)$. Сразу заметим, что оставшееся утверждение доказать
 без использования противоречивости языка не получится.
