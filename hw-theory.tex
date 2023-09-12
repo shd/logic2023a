@@ -193,7 +193,8 @@ Bot (*contraposition (A a)) (A a, B b, Bot (*neg_b) (B));
 \end{verbatim}
 
 В самом деле, $(A \rightarrow B) \rightarrow ((B \rightarrow \bot) \rightarrow (A \rightarrow \bot))$ есть частный
-случай $(A \rightarrow B) \rightarrow ((B \rightarrow \alpha) \rightarrow (A \rightarrow \alpha))$, который тоже можно доказать.
+случай высказывания $(A \rightarrow B) \rightarrow ((B \rightarrow \alpha) \rightarrow (A \rightarrow \alpha))$, 
+которое тоже можно доказать при всех $\alpha$.
 
 В некоторых случаях можно воспользоваться конструкцией, не возвращающей управления, которая \emph{понятна компилятору}. Например, 
 можно так задать правило удаления лжи ($\bot\rightarrow A$):
@@ -207,7 +208,7 @@ char* b = remove_bot<char*> (...);
 char(*c)() = remove_bot<char(*)()> (...);
 \end{verbatim}
 
-В заверешние теоретической части заметим, что 
+В завершение теоретической части заметим, что 
 \begin{itemize}
 \item логика, которая получится, если мы будем играть в эту игру честно --- это уже будет не классическая логика; для неё не будут справедливы все
 схемы аксиом, 10 схема будет нарушаться;
