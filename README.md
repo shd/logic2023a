@@ -47,3 +47,16 @@ https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf
 http://logic.math.msu.ru/wp-content/uploads/plisko/intlog.pdf
 + Morten Heine B. Sørensen, Pawel Urzyczyn: Lections on the Curry-Howard Isomorphism
 https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf
+
+## Лекция 4
+### Теоремы об интуиционистском исчислении высказываний
++ Алгебра Линденбаума
++ Теорема о полноте ИИВ в алгебрах Гейтинга
++ Теорема о нетабличности ИИВ
++ Теорема о дизъюнктивности ИИВ
++ Теорема о разрешимости ИИВ
+### Где почитать
++ В.Е.Плиско, В.Х.Хаханян, Интуиционистская логика, Мех-Мат МГУ 2009
+http://logic.math.msu.ru/wp-content/uploads/plisko/intlog.pdf
++ Morten Heine B. Sørensen, Pawel Urzyczyn: Lections on the Curry-Howard Isomorphism
+https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf

@@ -1,0 +1,367 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+\usepackage{xcolor}
+\usepackage{proof}
+\usepackage{comment}
+\setbeamertemplate{navigation symbols}{}
+\usepackage{tikz}
+\usetikzlibrary{hobby,fit,backgrounds,calc,shapes.geometric,patterns}
+\begin{document}
+
+\newtheorem{axiom}{Аксиома}
+\newtheorem{exmprus}{Пример}
+\newtheorem{defrus}{Определение}
+\newtheorem{lemmarus}{Лемма}
+\newtheorem{thmrus}{Теорема}
+
+\begin{frame}{}
+\begin{center}\Large Теоремы об интуиционистском исчислении высказываний\end{center}
+\end{frame}
+
+\begin{frame}{Общие результаты об исчислениях высказываний}
+\begin{tabular}{llll}
+      & К.И.В. & И.И.В. + алгебры Гейтинга\\\hline
+корректность & да (лекция 1) & да (ДЗ III.10) \\
+непротиворечивость & да (очев.) & да (из непр. КИВ) \\
+полнота & да (лекция 2) & да  \\
+разрешимость & да (лекция 2) & да
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Алгебра Линденбаума}
+\begin{defrus}Определим предпорядок на высказываниях: $\alpha \preceq \beta := \alpha \vdash \beta$ в интуиционистском исчислении высказываний.
+Также $\alpha\approx\beta$, если $\alpha\preceq\beta$ и $\beta\preceq\alpha$.\end{defrus}
+\begin{defrus}Пусть $L$ --- множество всех высказываний. Тогда алгебра Линденбаума $\mathcal{L} = L/_\approx$.\end{defrus}
+\begin{thmrus}$\mathcal{L}$ --- псевдобулева алгебра.\end{thmrus}
+\begin{proof}[Схема доказательства] Надо показать, что $(\preceq)$ есть отношение порядка на $\mathcal{L}$, что
+$[\alpha\vee\beta]_\mathcal{L} = [\alpha]_\mathcal{L}+[\beta]_\mathcal{L}$, 
+$[\alpha\with\beta]_\mathcal{L} = [\alpha]_\mathcal{L}\cdot[\beta]_\mathcal{L}$, импликация есть псевдодополнение,
+$[A\with\neg A]_\mathcal{L} = 0$, $[\alpha]_\mathcal{L}\rightarrow 0 = [\neg\alpha]_\mathcal{L}$.\end{proof}
+\end{frame}
+
+\begin{frame}{Полнота псевдобулевых алгебр}
+\begin{thmrus}Пусть $\llbracket\alpha\rrbracket = [\alpha]_\mathcal{L}$.
+Такая оценка интуиционистского исчисления высказываний алгеброй Линденбаума является согласованной.
+\end{thmrus}
+
+\begin{thmrus}Интуиционистское исчисление высказываний полно в псевдобулевых алгебрах:
+если $\models\alpha$ во всех псевдобулевых алгебрах, то $\vdash\alpha$. \end{thmrus}
+\begin{proof}Возьмём в качестве модели исчисления алгебру Линденбаума: 
+$\llbracket \alpha \rrbracket = [\alpha]_\mathcal{L}$. 
+
+Пусть $\models\alpha$. Тогда $\llbracket\alpha\rrbracket = 1$ во всех псевдобулевых алгебрах, в том числе
+и $\llbracket\alpha\rrbracket = 1_\mathcal{L}$. То есть $[\alpha]_\mathcal{L} = [A\rightarrow A]_\mathcal{L}$.
+То есть $A \rightarrow A \approx \alpha$. Значит, в частности, $A \rightarrow A \vdash \alpha$. 
+Значит, $\vdash\alpha$.\end{proof}
+\end{frame}
+
+
+\begin{frame}{Модели Крипке}
+\begin{defrus}Модель Крипке $\langle \mathcal{W}, \preceq, (\Vdash)\rangle$:
+\begin{itemize}
+\item $\mathcal{W}$ --- множество миров, $(\preceq)$ --- нестрогий частичный порядок на $\mathcal{W}$;
+\item $(\Vdash)\subseteq \mathcal{W}\times P$ --- отношение вынуждения
+между мирами и переменными, причём, если $W_i \preceq W_j$ и $W_i \Vdash X$, то $W_j \Vdash X$.
+\end{itemize}
+\end{defrus}
+
+Доопределим вынужденность:
+\begin{itemize}
+\item $W \Vdash \alpha\with\beta$, если $W \Vdash \alpha$ и $W \Vdash \beta$;
+\item $W \Vdash \alpha\vee\beta$, если $W \Vdash \alpha$ или $W \Vdash \beta$;
+\item $W \Vdash \alpha\rightarrow\beta$, если всегда при $W \preceq W_1$ и $W_1 \Vdash \alpha$ выполнено $W_1 \Vdash \beta$
+\item $W \Vdash \neg\alpha$, если всегда при $W \preceq W_1$ выполнено $W_1 \not\Vdash \alpha$.
+\end{itemize}
+
+Будем говорить, что $\Vdash\alpha$, если $W\Vdash\alpha$ при всех $W \in \mathcal{W}$.
+Будем говорить, что $\models_\kappa\alpha$, если $\Vdash\alpha$ во всех моделях Крипке.
+\end{frame}
+
+\begin{frame}{Исключённое третье}
+\begin{exmprus}
+Покажем, что $\not\models_\kappa A \vee \neg A$. 
+\begin{center}\tikz{
+\node at (0,0)   (A) {$W_1$};
+\node at (2,1) (B) {$W_2\ (\Vdash A)$};
+\node at (2,-1) (C) {$W_3$};
+\draw[->] (A) to (B); 
+\draw[->] (A) to (C); 
+}\end{center}
+
+Тогда, $W_3 \Vdash \neg A$, но $W_1 \not\Vdash A$ (по определению) и $W_1 \not\Vdash \neg A$ (так как
+$W_1 \preceq W_2$ и $W_2 \Vdash A$). Значит, $W_1 \not\Vdash A \vee \neg A$.
+\end{exmprus}
+\end{frame}
+
+\begin{frame}{Корректность моделей Крипке}
+\begin{lemmarus}Если $W_1 \Vdash \alpha$ и $W_1 \preceq W_2$, то $W_2 \Vdash \alpha$\end{lemmarus}
+\begin{thmrus}Пусть $\langle \mathcal{W}, (\preceq), (\Vdash)\rangle$ ---
+некоторая модель Крипке.
+Тогда она есть корректная модель интуиционистского исчисления высказываний.
+\end{thmrus}
+\begin{proof}
+Доказательство для древовидного $(\preceq)$, обобщение на произвольный порядок легко построить.
+
+Заметим, что $V(\alpha) := \{ w \in \mathcal{W}\ |\ w\Vdash\alpha\}$ открыто в топологии для деревьев.
+Значит, положив $V = \{\ S\ |\ S \subseteq \mathcal{W}\ \with\ S \text{ --- открыто }\}$ и
+$\llbracket \alpha \rrbracket = V(\alpha)$, получим алгебру Гейтинга.
+\end{proof}
+\end{frame}
+
+\begin{frame}{Табличные модели}
+\begin{defrus}
+Пусть задано $V$, значение $T \in V$ (<<истина>>), функция $f_P: P \rightarrow V$, 
+функции $f_\with, f_\vee, f_\rightarrow : V \times V \rightarrow V$,
+функция $f_\neg: V \rightarrow V$.
+
+Тогда оценка $\llbracket X \rrbracket = f_P(X)$, 
+$\llbracket \alpha\star\beta \rrbracket = f_\star(\llbracket \alpha \rrbracket, \llbracket \beta \rrbracket)$,
+$\llbracket \neg\alpha \rrbracket = f_\neg(\llbracket\alpha\rrbracket)$ --- табличная.
+
+Если $\vdash \alpha$ влечёт $\llbracket\alpha\rrbracket = T$ при всех оценках пропозициональных переменных $f_P$, 
+то $\mathcal{M} := \langle V, T, f_\with, f_\vee, f_\rightarrow, f_\neg\rangle$ --- табличная модель.
+\end{defrus}
+
+\begin{defrus}Табличная модель конечна, если $V$ конечно.\end{defrus}
+%\begin{defrus}$\models_\mathcal{M} \alpha$, если $\llbracket \alpha \rrbracket = Т$ при всех оценках пропозициональных переменных $f_P$.\end{defrus}
+
+\begin{thmrus}Не существует полной конечной табличной модели для интуиционистского исчисления высказываний\end{thmrus}
+\end{frame}
+
+\begin{frame}{Доказательство нетабличности: $\alpha_n$}
+Пусть существует полная конечная табличная модель $\mathcal{M}$, $V = \{v_1, v_2, \dots, v_n\}$.
+То есть, если $\models_\mathcal{M}\alpha$, то $\vdash\alpha$.
+
+Рассмотрим $$\alpha_n = 
+            \bigvee_{1 \le p < q \le n+1} A_p \rightarrow A_q
+           $$
+Рассмотрим оценку $f_P: \{A_1 \dots A_{n+1}\} \rightarrow \{v_1 \dots v_n\}$.
+По принципу Дирихле существуют $p \ne q$, что $\llbracket A_p \rrbracket = \llbracket A_q \rrbracket$.
+Значит, $$\llbracket A_p \rightarrow A_q \rrbracket = f_\rightarrow (\llbracket A_p \rrbracket, \llbracket A_q \rrbracket) = f_\rightarrow(v,v)$$
+С другой стороны, $\vdash X \rightarrow X$ --- поэтому $f_\rightarrow(\llbracket X \rrbracket, \llbracket X \rrbracket) = T$,
+значит, $$\llbracket A_p \rightarrow A_q \rrbracket = f_\rightarrow(v,v) = f_\rightarrow(\llbracket X \rrbracket, \llbracket X \rrbracket) = T$$
+
+Аналогично, $\vdash \sigma \vee (X \rightarrow X) \vee \tau$, отсюда $\llbracket \alpha_n \rrbracket = \llbracket \sigma \vee (X \rightarrow X) \vee \tau \rrbracket = T$.
+\end{frame}
+
+\begin{frame}{Доказательство нетабличности: противоречие}
+Однако, в такой модели $\not\Vdash \alpha_n$:
+
+\begin{center}\tikz{
+\node at (0,0)   (R) {$W_R$};
+\node at (3,1.5) (A1) {$W_1$}; \node[right] at (3.5,1.5) (A11) {\color{black!50!red} $\Vdash A_1$};
+  \draw[red,fill=red,opacity=0.2](A1.south west) 
+     to[closed,curve through={($(A1.south west)!0.5!(A1.south east)$) .. (A1.north east)}] (A1.north west);
+
+\node at (3,0.5) (A2) {$W_2$}; \node[right] at (3.5,0.5) (A21) {\color{black!50!magenta} $\Vdash A_2$};
+\draw[red,fill=magenta,opacity=0.2](A2.north west) 
+     to[closed,curve through={(A2.south west) .. (A2.south east)}] (A2.north east);
+\node at (3,-0.2) (A3) {$\dots$};
+\node at (3,-0.9) (A4) {$W_n$}; \node[right] at (3.5,-0.9) (A41) {\color{teal} $\Vdash A_n$};
+\draw[red,fill=teal,opacity=0.2](A4.north west) 
+     to[closed,curve through={($(A4.north west)!0.5!(A4.north east)$) .. (A4.south east)}] (A4.south west);
+
+\draw[->] (R) to (A1); 
+\draw[->] (R) to (A2); 
+\draw[->] (R) to (A4); 
+
+\node[right] at (6,1.5) {Если $q > 1$, то}; \node[right] at (8.6, 1.5) {$W_1 \not\Vdash A_q$ и $W_1 \not\Vdash A_1 \rightarrow A_q$};
+\node[right] at (6,0.5) {Если $q > 2$, то}; \node[right] at (8.6, 0.5) { $W_2 \not\Vdash A_q$ и $W_2 \not\Vdash A_2 \rightarrow A_q$};
+\node[right] at (8.6,-0.5) {$W_n \not\Vdash A_{n+1}$; $W_n \not\Vdash A_n \rightarrow A_{n+1}$};
+\node[right] at (6,-1.5) {Если $p < q$, то}; \node[right] at (8.6, -1.5) { $W_p \not\Vdash A_q$ и $W_p \not\Vdash A_p \rightarrow A_q$};
+}
+\end{center}
+
+Если $p < q$, то $W_p \not\Vdash A_p \rightarrow A_q$, то есть $W_R \not\Vdash A_p \rightarrow A_q$.
+
+Отсюда: $W_R \not\Vdash \bigvee_{p < q} A_p \rightarrow A_q$, $W_R \not\Vdash \alpha_n$,
+ потому $\not\models \alpha_n$ и $\not\vdash \alpha_n$.
+\end{frame}
+
+\begin{frame}{Дизъюнктивность ИИВ}
+\begin{defrus}Исчисление дизъюнктивно, если при любых $\alpha$ и $\beta$ из $\vdash\alpha\vee\beta$ следует $\vdash\alpha$ или $\vdash\beta$.\end{defrus}
+\begin{defrus}Решётка гёделева, если $a + b = 1$ влечёт $a = 1$ или $b = 1$.\end{defrus}
+\begin{thmrus}Интуиционистское исчисление высказываний дизъюнктивно\end{thmrus}
+\end{frame}
+
+\begin{frame}{<<Гёделевизация>> (операция $\Gamma(\mathcal{A})$)}
+\begin{defrus}Для алгебры Гейтинга $\mathcal{A} = \langle A, (\preceq) \rangle$ определим операцию <<гёделевизации>>: 
+$\Gamma(\mathcal{A}) = \langle A\cup\{\omega\}, (\preceq_{\Gamma(\mathcal{A})}) \rangle$, где
+отношение $(\preceq_{\Gamma(\mathcal{A})})$ --- минимальное отношение порядка,
+удовлетворяющее условиям:
+
+\vspace{-0.5cm}
+\begin{center}\begin{tabular}{cc}
+\begin{minipage}{9cm}
+\begin{itemize}
+\item $a \preceq_{\Gamma(\mathcal{A})} b$, если $a \preceq_\mathcal{A} b$ и $a,b \notin \{\omega,1\}$;
+\item $a \preceq_{\Gamma(\mathcal{A})} \omega$, если $a \ne 1$;
+\item $\omega \preceq_{\Gamma(\mathcal{A})} 1$
+\end{itemize}
+\end{minipage}
+&
+\begin{minipage}{4cm}\begin{center}
+\tikz{
+    \filldraw[pattern=north west lines,pattern color=gray] (1,-1) circle (1cm);
+    \node[right] at (2.2,-1) (A) {$A \setminus \{1\}$};
+    \node[circle,fill,inner sep=2pt, outer sep=0pt,label=right:$1$] at (1,1) (Max) {};
+    \node[circle,fill,inner sep=2pt, outer sep=0pt,label=above right:$\omega$] at (1,0) (Omega) {}; 
+    \draw[-stealth,line width=1] (Max) to (Omega);
+}\end{center}
+\end{minipage}
+\end{tabular}\end{center}
+\end{defrus}
+\vspace{-1.2cm}
+\begin{thmrus}$\Gamma(\mathcal{A})$ --- гёделева алгебра.\end{thmrus}
+\begin{proof}
+Проверка определения алгебры Гейтинга и наблюдение: если $a \preceq \omega$ и $b \preceq \omega$, то $a + b \preceq \omega$.\end{proof}
+\end{frame}
+
+\begin{frame}{Оценка $\Gamma(\mathcal{L})$}
+\begin{thmrus}Рассмотрим оценку $\llbracket \alpha \rrbracket_{\Gamma(\mathcal{L})} = \llbracket \alpha \rrbracket_\mathcal{L}$.
+Тогда она является согласованной с ИИВ.
+\end{thmrus}
+Индукция по структуре формулы и перебор операций. Рассмотрим $(\with)$. Неформально: почти везде 
+  $\llbracket \alpha \rrbracket_{\Gamma(\mathcal{L})}\cdot\llbracket \beta \rrbracket_{\Gamma(\mathcal{L})} = 
+   \llbracket \alpha \rrbracket_\mathcal{L}\cdot \llbracket \beta \rrbracket_{\mathcal{L}}$,
+поскольку $\llbracket \sigma \rrbracket_{\Gamma(\mathcal{L})} \ne \omega$,
+
+\vspace{0.2cm}
+\begin{tabular}{ll}
+\begin{minipage}{7cm}
+  ... но нет ли случаев, когда\\
+  $\omega = \text{наиб}\{ x \ |\ x \preceq \llbracket\alpha\rrbracket_{\Gamma(\mathcal{L})} \with x \preceq \llbracket\beta\rrbracket_{\Gamma(\mathcal{L})}\}$?
+\end{minipage} &
+\begin{minipage}{6cm}\begin{center}\tikz{
+    \node at (2,0) (AB) {$\llbracket \alpha \with \beta \rrbracket$};
+    \node at (0,1.5) (A) {$\llbracket \alpha \rrbracket$};
+    \node at (3,1.5) (B) {$\llbracket \beta \rrbracket$};
+    \node[black!50!red] at (1.5,1) (Omega) {$\omega$};
+    \draw[-stealth,line width=1pt] (A) to (AB);
+    \draw[-stealth,line width=1pt] (B) to (AB);
+    \draw[-stealth,line width=1pt,black!30!red] (A) to (Omega);
+    \draw[-stealth,line width=1pt,black!30!red] (B) to (Omega);
+    \draw[-stealth,line width=1pt,black!30!red] (Omega) to (AB);
+}\end{center}\end{minipage}
+\end{tabular}\vspace{0.3cm}
+
+Чтобы убедиться, что всегда $\llbracket \alpha \with \beta \rrbracket
+_{\Gamma(\mathcal{L})} = \llbracket \alpha \rrbracket_{\Gamma(\mathcal{L})}
+    \cdot \llbracket \beta \rrbracket_{\Gamma(\mathcal{L})}$, надо показать:
+\begin{itemize}
+\item $[\alpha\with\beta]$ --- из множества нижних граней: $\alpha\with\beta\vdash\alpha$ и $\alpha\with\beta\vdash\beta$;
+\item $[\alpha\with\beta]$ --- наибольшая нижняя грань: $x \preceq [\alpha]$ и $x \preceq [\beta]$ влечёт $x \preceq [\alpha\with\beta]$\\
+    Разбор случаев ($x \in \mathcal{L}$, $x = \omega$). $\omega \preceq [\alpha]$ и $\omega \preceq [\beta]$ влечёт $[\alpha]=[\beta]=1$, отсюда $[\alpha\with\beta] = [\alpha]\cdot[\beta] = 1$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Гомоморфизм алгебр}
+\begin{defrus}Пусть $\mathcal{A}, \mathcal{B}$ --- алгебры Гейтинга. Тогда $g: \mathcal{A} \rightarrow \mathcal{B}$ --- гомоморфизм,
+если $g(a \star b) = g(a) \star g(b)$, $g(0_\mathcal{A}) = 0_\mathcal{B}$ и $g(1_\mathcal{A}) = 1_\mathcal{B}$.\end{defrus}
+\begin{defrus}Будем говорить, что оценка $\llbracket\cdot\rrbracket_\mathcal{A}$ согласована
+с $\llbracket\cdot\rrbracket_\mathcal{B}$ и гомоморфизмом $g$, если $g(\mathcal{A}) = \mathcal{B}$ и
+$g(\llbracket\alpha\rrbracket_\mathcal{A}) = \llbracket\alpha\rrbracket_\mathcal{B}$.
+\end{defrus}
+%\begin{lemmarus}Если $\llbracket\cdot\rrbracket_\mathcal{A}$ согласована
+%с $\llbracket\cdot\rrbracket_\mathcal{B}$ и гомоморфизмом $g$, то из 
+%$\llbracket\alpha\rrbracket_\mathcal{A} = 1_\mathcal{A}$ следует $\llbracket\alpha\rrbracket_\mathcal{B} = 1_\mathcal{B}$.
+%\end{lemmarus}
+%\begin{proof}
+%$\llbracket\alpha\rrbracket_\mathcal{A} = 1_\mathcal{A}$, 
+%тогда $g(\llbracket\alpha\rrbracket_\mathcal{A}) = \llbracket\alpha\rrbracket_\mathcal{B} = 1_\mathcal{B}$.
+%\end{proof}
+\end{frame}
+
+\begin{frame}{Доказательство дизъюнктивности ИИВ}
+\begin{defrus}[$\mathcal{G}: \Gamma(\mathcal{L}) \rightarrow \mathcal{L}$]\vspace{-0.5cm}
+$$\mathcal{G}(a) = \left\{\begin{array}{ll} a, & a \ne \omega\\
+                                  1, & a = \omega\end{array}\right.$$\vspace{-0.5cm}
+\end{defrus}
+\begin{lemmarus}$\mathcal{G}$ --- гомоморфизм $\Gamma(\mathcal{L})$ и $\mathcal{L}$, причём 
+оценка $\llbracket\cdot\rrbracket_{\Gamma(\mathcal{L})}$ согласована с $\mathcal{G}$
+и $\llbracket\cdot\rrbracket_\mathcal{L}$.
+\end{lemmarus}
+\begin{thmrus}Если $\vdash \alpha\vee\beta$, то либо $\vdash\alpha$, либо $\vdash\beta$.\end{thmrus}
+\begin{proof}Пусть $\vdash\alpha\vee\beta$. Тогда $\llbracket\alpha\vee\beta\rrbracket_{\Gamma(\mathcal{L})} = 1$
+(так как данная оценка согласована с ИИВ). Тогда $\llbracket\alpha\rrbracket_{\Gamma(\mathcal{L})} = 1$ или
+$\llbracket\beta\rrbracket_{\Gamma(\mathcal{L})} = 1$ (так как $\Gamma(\mathcal{L})$ гёделева). 
+
+Пусть $\llbracket\alpha\rrbracket_{\Gamma(\mathcal{L})} = 1$, 
+тогда $\mathcal{G}(\llbracket\alpha\rrbracket_{\Gamma(\mathcal{L})}) = \llbracket\alpha\rrbracket_\mathcal{L} = 1$, 
+тогда $\vdash\alpha$ (по полноте $\mathcal{L}$).
+\end{proof}
+\end{frame}
+
+\begin{frame}{Построение дистрибутивных подрешёток}
+\begin{defrus}Решётка $\mathcal{L'} = \langle L', \preceq \rangle$ --- подрешётка решётки $\mathcal{L} = \langle L, \preceq \rangle$, 
+если $L' \subseteq L$, $(\preceq') \subseteq (\preceq)$ и 
+при $a,b \in L'$ выполнено $a +_{\mathcal{L'}} b = a +_{\mathcal{L}} b$ и $a \cdot_{\mathcal{L'}} b = a \cdot_{\mathcal{L}} b$.
+\end{defrus}
+\begin{lemmarus}Существует дистрибутивная подрешётка $\mathcal{L'}$, содержащая
+$a_1, \dots, a_n$, что $|L'| \le 2^{2^n}$.
+\end{lemmarus}
+\begin{proof}
+Пусть $\mathcal{L'} = \langle\{ \varphi(a_1,\dots,a_n)\ |\ \varphi \text{ составлено из (+) и }(\cdot)\}, (\preceq)\rangle$.
+Заметим, что если $p,q \in L'$, то $p \star_{\mathcal{L}} q \in L'$ 
+(так как $\varphi_p(\overrightarrow{a})\star\varphi_q(\overrightarrow{a}) = \psi(\overrightarrow{a})$). Также ясно,
+что если $\sup_L\{p,q\} \in L'$ (или $\inf_L\{p,q\} \in L'$), то $p \star_{\mathcal{L}} q = p \star_{\mathcal{L'}} q$.
+Значит, $\mathcal{L'}$ также дистрибутивна. Построим <<ДНФ>>:
+%\vspace{-0.3cm}
+$$\varphi(a_1,\dots,a_n) = \sum_{\text{Кн} \in \text{ДНФ}(\varphi)}\prod_{i \in \text{Кн}}a_i$$
+
+%\vspace{-0.3cm}
+Всего не больше $2^n$ возможных компонент и $2^{2^n}$ возможных формул $\varphi(\overrightarrow{a})$.
+\end{proof}
+\end{frame}
+
+
+\begin{frame}{Разрешимость ИИВ}
+\begin{thmrus}Если $\not\vdash \alpha$ в ИИВ, то существует $\mathcal{G}$,
+что $\mathcal{G} \not\models \alpha$, причём $|\mathcal{G}| \le 2^{2^{|\alpha|+2}}$.
+\end{thmrus}
+\begin{proof}Если $\not\vdash \alpha$, то по 
+полноте найдётся алгебра Гейтинга $\mathcal{H}$, что
+$\mathcal{H} \not\models \alpha$. 
+
+Пусть $\varphi_1, \dots, \varphi_n$ --- подформулы $\alpha$.
+Пусть $\mathcal{G}$ --- дистрибутивная подрешётка $\mathcal{H}$, 
+построенная по $\llbracket \varphi_1 \rrbracket, \dots, \llbracket \varphi_n \rrbracket$, $0$ и $1$. 
+
+Очевидно, что $\mathcal{G}$ --- алгебра Гейтинга, и можно показать, 
+что $\mathcal{G} \not\models \alpha$ (псевдодополнения не обязаны сохраниться).
+Тогда по лемме, $|\mathcal{G}| \le 2^{2^{n+2}}$. 
+\end{proof}
+
+\begin{thmrus}ИИВ разрешимо.
+\end{thmrus}
+\begin{proof}По формуле $\alpha$ построим все возможные алгебры Гейтинга $\mathcal{G}$ размера не больше $2^{2^{|\alpha|+2}}$,
+если $\mathcal{G}\models\alpha$, то $\vdash\alpha$.
+\end{proof}
+\end{frame}
+
+
+\begin{comment}
+\begin{frame}{Интуиционистское И.В. (натуральный, естественный вывод)}
+\begin{itemize}
+\item Формулы языка (секвенции) имеют вид: $\Gamma\vdash\alpha$.
+Правила вывода: 
+\begin{flushright}$\quad\quad\quad\infer[(\text{аннотация})]{\text{заключение}}{\text{посылка 1}\quad\quad\text{посылка 2}\quad\quad\dots}$\end{flushright}
+\vspace{-0.7cm}
+\item Аксиома:\\$\infer[\text{(акс.)}]{\Gamma,\alpha\vdash\alpha}{\vphantom{\Gamma}}$ 
+
+\item Правила введения связок:\\$\infer{\Gamma\vdash\alpha\rightarrow\beta}{\Gamma,\alpha\vdash\beta}\quad\quad\infer{\Gamma\vdash\alpha\vee\beta}{\Gamma\vdash\alpha}$, $\infer{\Gamma\vdash\alpha\vee\beta}{\Gamma\vdash\beta}\quad\quad\infer{\Gamma\vdash\alpha\with\beta}{\Gamma\vdash\alpha\quad\quad\Gamma\vdash\beta}$
+
+\item Правила удаления связок:\\$\infer{\Gamma\vdash\beta}{\Gamma\vdash\alpha\quad\Gamma\vdash\alpha\rightarrow\beta}\quad\quad\infer{\Gamma\vdash\gamma}{\Gamma\vdash\alpha\rightarrow\gamma\quad\Gamma\vdash\beta\rightarrow\gamma\quad\Gamma\vdash\alpha\vee\beta}$
+ $\infer{\Gamma\vdash\alpha}{\Gamma\vdash\alpha\with\beta}\quad\quad\infer{\Gamma\vdash\beta}{\Gamma\vdash\alpha\with\beta}\quad\quad\infer{\Gamma\vdash\alpha}{\Gamma\vdash\bot}$
+\item Пример доказательства:\vspace{-0.3cm}
+$$\infer[(\text{введ}\with)]{A\with B\vdash B \with A}{\infer[(\text{удал}\with)]{A \with B \vdash B}{\infer[(\text{акс.})]{A \with B\vdash A \with B}{}}
+                                           \quad\quad\infer[(\text{удал}\with)]{A \with B \vdash A}{\infer[(\text{акс.})]{A \with B\vdash A \with B}{}}}$$
+\end{itemize}
+\end{frame}
+\end{comment}
+
+\end{document}
