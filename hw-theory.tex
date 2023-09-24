@@ -344,4 +344,142 @@ $X \in \Omega$, если $X=\varnothing$ или $X = \bigcup_i A(a_i,b_i)$.
 
 \end{enumerate}
 
+\section*{Задание №4. Модели для ИИВ}
+
+\begin{enumerate}
+\item Напомним определение: противоречивая теория --- такая, в которой доказуема любая формула. 
+Покажите, что для КИВ (а равно и для ИИВ) определение имеет следующие эквивалентные формулировки:
+(i) $\vdash\alpha\with\neg\alpha$ при некотором $\alpha$;
+(ii) $\vdash A\with\neg A$; (iii) для некоторой формулы $\alpha$ имеет место $\vdash\alpha$ и $\vdash\neg\alpha$. 
+
+Также покажите, что КИВ непротиворечиво (расшифруйте слово <<очевидно>> с первого слайда лекции).
+
+\item Напомним, что ИИВ полно относительно алгебр Гейтинга. То есть, если формула не доказуема в ИИВ, то найдётся
+алгебра Гейтинга и оценка переменных, при которой оценка формулы не равна $1$. Более того, возможно доказать, что ИИВ 
+полно в $\mathbb{R}$. Например, формула $A\vee\neg A$:
+
+$$\llbracket A \vee \neg A \rrbracket^{A := (-\infty,0)} = (-\infty,0) \cup (0,\infty) \ne \mathbb{R}$$
+
+Покажите, что следующие доказуемые в КИВ высказывания не доказуемы в ИИВ: 
+(i) обосновав их в КИВ, (ii) построив некоторое топологическое пространство $X$
+и дав значения переменным, при которых оценка высказывания не равна $1_X$, и (iii) построив опровергающую высказывания модель Крипке:
+\begin{enumerate}
+\item $\neg\neg A \rightarrow A$ \emph{(Закон снятия двойного отрицания)}
+\item $((A \rightarrow B) \rightarrow A) \rightarrow A$ \emph{(Закон Пирса)}
+\item $(A \rightarrow B) \vee (B \rightarrow C)$
+\item $(A \rightarrow B \vee \neg B) \vee (\neg A \rightarrow B \vee \neg B)$
+\item $\bigvee_{i=0,n-1} A_i \rightarrow A_{(i+1) \% n}$
+\end{enumerate}
+
+\item Существуют ли формулы, доказуемые в КИВ, но не в ИИВ, которые бы опровергались:
+\begin{enumerate}
+\item в топологии стрелки;
+\item в топологии Зарисского?
+\end{enumerate}
+
+\item Выполнены ли формулы де Моргана в интуиционистской логике? Докажите или опровергните:
+\begin{enumerate}
+\item $\alpha\vee\beta \vdash \neg(\neg\alpha\with\neg\beta)$ и $\neg(\neg\alpha\with\neg\beta) \vdash \alpha\vee\beta$
+\item $\neg\alpha\with\neg\beta \vdash \neg(\alpha\vee\beta)$ и $\neg(\alpha\vee\beta) \vdash \neg\alpha\with\neg\beta$
+\item $\alpha\rightarrow\beta \vdash \neg\alpha\vee\beta$ и $\neg\alpha\vee\beta \vdash \alpha\rightarrow\beta$
+\end{enumerate}
+
+\item Покажите, что никакие связки не выражаются друг через друга: то есть, нет такой формулы $\varphi(A,B)$ из языка 
+интуиционистской логики, не использующей связку $\star$, что $\vdash A \star B \rightarrow \varphi(A,B)$ и $\vdash\varphi(A,B) \rightarrow A \star B$.
+Покажите это для каждой связки в отдельности:
+\begin{enumerate}
+\item конъюнкция;
+\item дизъюнкция;
+\item импликация;
+\item отрицание.
+\end{enumerate}
+
+\item Покажите, что любая модель Крипке обладает свойством: для любых $W_i, W_j, \alpha$, 
+если $W_i \preceq W_j$ и $W_i \Vdash \alpha$, то $W_j \Vdash \alpha$.
+
+\item Несколько задач на упрощение структуры миров моделей Крипке.
+\begin{enumerate}
+\item Покажите, что формула опровергается моделью Крипке тогда и только тогда, когда она
+опровергается древовидной моделью Крипке.
+
+\item Верно ли, что если формула опровергается некоторой древовидной моделью Крипке (причём
+у каждой вершины не больше двух сыновей), то эту 
+древовидную модель можно достроить до полного бинарного дерева, с сохранением свойства опровержимости?
+
+\item Верно ли, что если некоторая модель Крипке опровергает некоторую формулу,
+то добавление любого мира к модели в качестве потомка к любому из узлов оставит опровержение в силе?
+\end{enumerate}
+
+\item Постройте опровержимую в ИИВ формулу, которая не может быть опровергнута моделью Крипке (ответ требуется доказать):
+\begin{enumerate}
+\item глубины 2 и меньше;
+\item глубины $n \in \mathbb{N}$ и меньше.
+\end{enumerate}
+
+\item Давайте разберёмся во взаимоотношениях различных формулировок закона исключенного третьего и подобных
+законов. Для этого определим \emph{минимальное} исчисление высказываний как ИИВ без 10 схемы аксиом.
+Заметим, что переход от $\vdash\neg\neg\alpha\rightarrow\alpha$ при всех $\alpha$ к
+$\vdash((\alpha\rightarrow\beta)\rightarrow\alpha)\rightarrow\alpha$ уже был ранее доказан 
+(закон Пирса следует из закона снятия двойного отрицания).
+
+Давайте продолжим строить кольцо:
+
+\begin{center}\tikz{
+    \node (D) at (0,0) {$\vdash\neg\neg\alpha\rightarrow\alpha$};
+    \node (P) at (4,1) {$\vdash((\alpha\rightarrow\beta)\rightarrow\alpha)\rightarrow\alpha$};
+    \node (L) at (8,0) {$\vdash\alpha\vee\neg\alpha$};
+    \draw[-stealth] (D) to [bend right=10] (P);
+    \draw[-stealth] (P) to [bend right=10] (L);
+    \draw[-stealth,dashed] (L) to [bend left=20] node[below] {если $\vdash\alpha\rightarrow\neg\alpha\rightarrow\beta$ при всех $\alpha$, $\beta$}  (D);
+}\end{center}
+
+для чего покажите, что в минимальном исчислении:
+\begin{enumerate}
+%\item Если $\vdash\neg\neg\alpha\rightarrow\alpha$ при всех $\alpha$, то
+%$\vdash((\alpha\rightarrow\beta)\rightarrow\alpha)\rightarrow\alpha$ (закон Пирса следует из закона снятия двойного отрицания).
+\item Если $\vdash((\alpha\rightarrow\beta)\rightarrow\alpha)\rightarrow\alpha$ при всех $\alpha$ и $\beta$, то
+$\vdash\alpha\vee\neg\alpha$ (закон исключённого третьего следует из закона Пирса).
+\item Если $\vdash\alpha\rightarrow\neg\alpha\rightarrow\beta$ (<<из лжи следует, что угодно>>, 
+он же \emph{принцип взрыва}) и $\vdash\alpha\vee\neg\alpha$ при всех $\alpha$ и $\beta$, то $\vdash\neg\neg\alpha\rightarrow\alpha$.
+\item Из закона Пирса не следует закон снятия двойного отрицания и из закона исключённого третьего не следует закон Пирса.
+\item Закон Пирса и принцип взрыва независимы (невозможно доказать один из другого).
+\end{enumerate}
+
+\begin{comment}
+\item Покажите аналог теоремы о дедукции для естественного вывода: $\Gamma,\alpha\vdash\beta$ тогда и только тогда, когда
+$\Gamma\vdash\alpha\rightarrow\beta$.
+
+
+\item Определим отображение между языками вывода (гильбертов и естественный вывод): 
+
+\begin{tabular}{ll}
+$|\varphi|_\text{е}=\left\{\begin{array}{ll} |\alpha|_\text{е}\star|\beta|_\text{е}, & \varphi = \alpha\star\beta\\
+                                              |\alpha|_\text{е}\rightarrow\bot, & \varphi = \neg\alpha\\
+                                              X, & \varphi = X\end{array}\right.$
+&
+$|\varphi|_\text{г}=\left\{\begin{array}{ll} |\alpha|_\text{г}\star|\beta|_\text{г}, & \varphi = \alpha\star\beta\\
+                                              A\with\neg A, & \varphi = \bot\\
+                                              X, & \varphi = X\end{array}\right.$
+\end{tabular}
+
+\begin{enumerate}
+\item Покажите, что $\vdash_\text{е}\alpha$ влечёт $\vdash_\text{г}|\alpha|_\text{г}$;
+\item Покажите, что $\vdash_\text{г}\alpha$ влечёт $\vdash_\text{е}|\alpha|_\text{е}$.
+\end{enumerate} 
+
+\item Классическое исчисление высказываний также можно сформулировать в стиле естественного вывода, заменив правило исключения лжи на такое:
+$$\infer[(\text{удал}\neg\neg)]{\Gamma\vdash\varphi}{\Gamma,\varphi\rightarrow\bot\vdash\bot}$$
+
+В этом задании будем обозначать через $\Gamma\vdash_\text{к}\varphi$ тот факт, что формула $\varphi$ выводится из контекста
+$\Gamma$ в классическом И.В. в варианте естественного вывода.
+
+\begin{enumerate}
+\item Покажите, что если $\vdash_\text{к}\varphi$ и $A_1, \dots, A_n$ --- все
+пропозициональные переменные из $\varphi$, то\\$\vdash_\text{е} A_1 \vee \neg A_1 \rightarrow A_2 \vee \neg A_2 \rightarrow \dots \rightarrow A_n \vee \neg A_n \rightarrow \varphi$.
+
+\item Покажите теорему Гливенко: если $\vdash_\text{к} \varphi$, то $\vdash_\text{е} \neg\neg\varphi$.
+\end{enumerate}
+\end{comment}
+\end{enumerate}
+
 \end{document}
