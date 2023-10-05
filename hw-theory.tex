@@ -482,4 +482,101 @@ $\Gamma$ в классическом И.В. в варианте естестве
 \end{comment}
 \end{enumerate}
 
+\section*{Задание №5. Исчисление предикатов}
+
+\begin{enumerate}
+\item Покажите теорему Гливенко: в КИВ/ИИВ, если $\vdash_\text{к} \varphi$, то $\vdash_\text{и} \neg\neg\varphi$. А также покажите
+\emph{Следствие:} ИИВ противоречиво тогда и только тогда, когда противоречиво КИВ.
+\item Докажите (или опровергните) следующие формулы в исчислении предикатов:
+\begin{enumerate}
+\item $(\forall x.\phi)\rightarrow (\forall y.\phi[x := y])$, если есть свобода для подстановки $y$ вместо $x$ в $\phi$ и $y$ не входит свободно в $\phi$.
+\item $(\forall x.\phi)\rightarrow (\exists x.\phi)$ и $(\forall x.\forall x.\phi) \rightarrow (\forall x.\phi)$
+\item $(\forall x.\phi) \rightarrow (\neg \exists x.\neg \phi)$ и $(\exists x.\neg\phi) \rightarrow (\neg \forall x.\phi)$
+\item $(\forall x.\alpha\vee\beta) \rightarrow (\neg \exists x.\neg \alpha) \with (\neg \exists x.\neg\beta)$
+\item $((\forall x.\alpha) \vee (\forall y.\beta)) \rightarrow \forall x.\forall y.\alpha\vee\beta$. Какие условия
+надо наложить на переменные и формулы? Приведите контрпримеры, поясняющие необходимость условий.
+\item $(\alpha\rightarrow\beta) \rightarrow \forall x.(\alpha\rightarrow\beta)$. Возможно, нужно наложить
+какие-то условия на переменные и формулы? Приведите контрпримеры, поясняющие необходимость условий (если 
+условия требуются).
+\item $(\alpha \rightarrow \forall x.\beta) \rightarrow (\forall x.\alpha\rightarrow\beta)$ при условии, что $x$ не входит свободно в $\alpha$.
+\end{enumerate}
+
+\item Опровергните формулы $\phi\rightarrow\forall x.\phi$ и $(\exists x.\phi)\rightarrow (\forall x.\phi)$
+
+\item Докажите или опровергните (каждую формулу в отдельности): $(\forall x.\exists y.\phi) \rightarrow (\exists y.\forall x.\phi)$ и
+$(\exists x.\forall y.\phi) \rightarrow (\forall y.\exists x.\phi)$;
+\item Докажите или опровергните (каждую формулу в отдельности): $(\forall x.\exists y.\phi) \rightarrow (\exists x.\forall y.\phi)$ и
+$(\exists x.\forall y.\phi) \rightarrow (\forall x.\exists y.\phi)$
+
+\item Рассмотрим интуиционистское исчисление предикатов (добавим схемы аксиом и правила вывода с кванторами
+поверх интуиционистского исчисления высказываний).
+\begin{enumerate}
+\item Определим модель для исчисления предикатов. Пусть $\langle X, \Omega\rangle$ --- некоторое топологическое
+пространство. Возможно ли рассмотреть $V = \Omega$ (как и в исчислении высказываний),
+пропозициональные связки определить аналогично топологической интерпретации И.И.В., 
+оценки же кванторов сделать такими:
+$$\llbracket \forall x.\varphi \rrbracket = \left(\bigcap_{v \in D} \llbracket \varphi \rrbracket^{x := v}\right)^\circ,\quad
+  \llbracket \exists x.\varphi \rrbracket = \bigcup_{v \in D} \llbracket \varphi \rrbracket^{x := v}$$
+
+\item Покажите, что в интуиционистском исчислении предикатов теорема Гливенко не имеет места
+(а именно, существует формула $\alpha$, что $\vdash_\text{к}\alpha$, но $\not\vdash_\text{и}\neg\neg\alpha$).
+\item Определим операцию $(\cdot)_\text{Ku}$:
+$$(\varphi\star\psi)_\text{Ku} = \varphi_\text{Ku} \star \psi_\text{Ku}, \quad 
+(\forall x.\varphi)_\text{Ku} = \forall x.\neg\neg\varphi_\text{Ku}, \quad
+(\exists x.\varphi)_\text{Ku} = \exists x.\varphi_\text{Ku}$$
+
+Тогда \emph{преобразованием Куроды} формулы $\varphi$ назовём $\neg\neg(\varphi_\text{Ku})$. 
+Покажите, что $\vdash_\text{к}\alpha$ тогда и только тогда, когда $\vdash_\text{и}\neg\neg(\alpha_\text{Ku})$.
+\end{enumerate}
+
+\item Покажите, что исчисление предикатов не полно в моделях ограниченной конечной мощности. 
+А именно, пусть дана модель $\mathcal{M} = \langle D, F, T, E \rangle$. 
+Назовём мощностью модели мощность её предметного множества: $|\mathcal{M}| = |D|$.
+Покажите, что для любой конечной мощности модели $n\in\mathbb{N}$ найдётся такая формула $\alpha$, что 
+при $|\mathcal{M}|\le n$ выполнено $\llbracket\alpha\rrbracket_\mathcal{M} = \text{И}$, но $\not\vdash\alpha$.
+
+\begin{comment}
+\item До сих пор мы записывали доказательства в так называемом гильбертовском стиле.
+В этом задании вам будет предложено доказывать утверждения с помощью естественного (натурального) вывода.
+Формулы языка ИП (секвенции) имеют вид: $\Gamma\vdash\alpha$ (гипотезы явно включаются в формулу).
+Вывод записывается в виде дерева, узлы в котором (правила вывода) имеют вид: 
+$$\quad\quad\quad\infer[(\text{аннотация})]{\text{заключение}}{\text{посылка 1}\quad\quad\text{посылка 2}\quad\quad\dots}$$
+
+Имеют место следующие правила вывода:
+
+$$\infer[\text{Аксиома}]{\Gamma,\alpha\vdash\alpha}{\vphantom{\Gamma}}$$ 
+
+Правила для импликации:
+
+$$\infer[\text{Введ}\rightarrow]{\Gamma\vdash\alpha\rightarrow\beta}{\Gamma,\alpha\vdash\beta}\quad\quad
+     \infer[\text{Удал}\rightarrow]{\Gamma\vdash\beta}{\Gamma\vdash\alpha\quad\Gamma\vdash\alpha\rightarrow\beta}$$
+
+Правила для конъюнкции:
+
+$$\infer[\text{Введ}\with]{\Gamma\vdash\alpha\with\beta}{\Gamma\vdash\alpha\quad\quad\Gamma\vdash\beta}\quad\quad
+\infer[\text{Удал}\with]{\Gamma\vdash\alpha}{\Gamma\vdash\alpha\with\beta}\quad\quad
+\infer[\text{Удал}\with]{\Gamma\vdash\beta}{\Gamma\vdash\alpha\with\beta}$$
+
+Правила для дизъюнкции:
+
+$$\infer[\text{Введ}\vee]{\Gamma\vdash\alpha\vee\beta}{\Gamma\vdash\alpha}\quad\quad
+\infer[\text{Введ}\vee]{\Gamma\vdash\alpha\vee\beta}{\Gamma\vdash\beta}\quad\quad
+\infer[\text{Удал}\vee]{\Gamma\vdash\gamma}{\Gamma\vdash\alpha\rightarrow\gamma\quad\Gamma\vdash\beta\rightarrow\gamma\quad\Gamma\vdash\alpha\vee\beta}$$
+
+Правило снятия двойного отрицания:
+$$\infer[\text{Удал}\neg\neg]{\Gamma\vdash\alpha}{\Gamma\vdash\neg\neg\alpha}$$
+
+Правила для кванторов:
+$$jiop$$
+
+Пример доказательства:
+$$\infer[(\text{введ}\with)]{A\with B\vdash B \with A}{\infer[(\text{удал}\with)]{A \with B \vdash B}{\infer[(\text{акс.})]{A \with B\vdash A \with B}{}}
+                                           \quad\quad\infer[(\text{удал}\with)]{A \with B \vdash A}{\infer[(\text{акс.})]{A \with B\vdash A \with B}{}}}$$
+
+\begin{enumerate}
+\item $\alpha\rightarrow\beta,\forall x.\beta\rightarrow\gamma \vdash \forall x.\alpha\rightarrow\gamma$
+\end{enumerate}
+\end{comment}
+\end{enumerate}
+
 \end{document}

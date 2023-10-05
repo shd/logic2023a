@@ -60,3 +60,15 @@ https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf
 http://logic.math.msu.ru/wp-content/uploads/plisko/intlog.pdf
 + Morten Heine B. Sørensen, Pawel Urzyczyn: Lections on the Curry-Howard Isomorphism
 https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf
+
+## Лекция 5
+### Подробнее про алгебру Линденбаума
++ Доказательства корректности определения алгебры Линденбаума
+### Исчисление предикатов
++ Язык исчисления предикатов
++ Теория моделей, теория доказательств
++ Теорема о дедукции
++ Теорема о корректности
+### Где почитать
++ Н.К. Верещагин, А. Шень. Лекции по математической логике и теории алгоритмов. Языки и исчисления.
+https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf
