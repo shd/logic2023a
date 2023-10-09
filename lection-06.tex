@@ -1,0 +1,438 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{cancel}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{tikz}
+\usepackage{multicol}
+\usetikzlibrary{patterns}
+\usepackage{chronosys}
+\usepackage{proof}
+\usepackage{multirow}
+\setbeamertemplate{navigation symbols}{}
+%\usetheme{Warsaw}
+
+\newtheorem{thm}{Теорема}[section]
+\newtheorem{dfn}{Определение}[section]
+\newtheorem{lmm}{Лемма}[section]
+\newtheorem{flw}{Следствие}[section]
+
+\begin{document}
+
+\begin{frame}
+
+
+\begin{center}\LARGE Теорема о полноте исчисления предикатов\end{center}
+
+\end{frame}
+
+\begin{frame}{Общая идея доказательства}
+\begin{enumerate}
+\item Надо справиться со слишком большим количеством вариантов.
+      Модель задаётся как $\langle D,F,P,X \rangle$.\pause
+\item Для оценки в модели важно только какие формулы истинны.
+      Модели $\mathcal{M}_1$ и $\mathcal{M}_2$ <<похожи>>, если
+      $\llbracket \varphi \rrbracket_{\mathcal{M}_1} = \llbracket \varphi \rrbracket_{\mathcal{M}_2}$
+      при всех $\varphi$.\pause
+\item Поступим так:
+    \begin{enumerate}
+       \item построим эталонное множество моделей $\mathfrak{M}$, каждая модель соответствует списку истинных формул, \emph{но им не является};\pause
+       \item докажем полноту $\mathfrak{M}$: если каждая $\mathcal{M} \in \mathfrak{M}$ предполагает $\mathcal{M}\models\varphi$,
+             то $\vdash\varphi$;\pause
+       \item заметим, что если $\models\varphi$, то каждая $\mathcal{M} \in \mathfrak{M}$ предполагает $\mathcal{M}\models\varphi$.\pause
+    \end{enumerate}
+\item В ходе доказательства нас ждёт множество технических препятствий.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Непротиворечивое множество формул}
+\begin{dfn}$\Gamma$ --- \emph{непротиворечивое множество формул},
+если $\Gamma\not\vdash\alpha\with\neg\alpha$ для любого $\alpha$
+\end{dfn}\pause
+
+Примеры:
+\begin{itemize}
+\item непротиворечиво: \begin{itemize}
+\item $\Gamma = \{A \rightarrow B \rightarrow A\}$\pause
+\item $\Gamma = \{P(x,y)\rightarrow\neg P(x,y), \forall x.\forall y.\neg P(x,y)\}$;
+\end{itemize}\pause
+\item противоречиво: \begin{itemize}
+\item $\Gamma = \{P\rightarrow\neg P, \neg P \rightarrow P\}$
+
+так как
+$P\rightarrow\neg P, \neg P \rightarrow P \ \vdash\  \neg P \with \neg\neg P$\pause
+\end{itemize}
+\item пусть $D = \mathbb{Z}$ и $P(x) \equiv (x > 0)$, аналогом для этой модели
+будет $\Gamma = \{P(1), P(2), P(3), \dots\}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Полное непротиворечивое множество формул}
+\begin{dfn}$\Gamma$ --- \emph{полное} непротиворечивое множество замкнутых бескванторных формул,
+если:
+\begin{enumerate}\item $\Gamma$ содержит только замкнутые бескванторные формулы;
+\item если $\alpha$ --- некоторая замкнутая бескванторная формула, то $\alpha\in\Gamma$ или $\neg\alpha\in\Gamma$.
+\end{enumerate}
+\end{dfn}\pause
+
+\begin{dfn}$\Gamma$ --- \emph{полное} непротиворечивое множество замкнутых формул, если:
+\begin{enumerate}\item $\Gamma$ содержит только замкнутые формулы;
+\item если $\alpha$ --- некоторая замкнутая формула, то $\alpha \in \Gamma$, или $\neg\alpha \in \Gamma$.
+\end{enumerate}
+\end{dfn}
+\end{frame}
+
+\begin{frame}{Пополнение непротиворечивого множества формул}
+\begin{thm}Пусть $\Gamma$ --- непротиворечивое множество замкнутых (бескванторных) формул. Тогда, какова бы ни была
+замкнутая (бескванторная) формула $\varphi$, хотя бы $\Gamma \cup \{\varphi\}$ или $\Gamma \cup \{\neg\varphi\}$ ---
+непротиворечиво\end{thm}\pause
+
+\begin{proof}
+Пусть это не так и найдутся такие $\Gamma$, $\varphi$ и $\alpha$, что
+ $$\begin{array}{rl}\Gamma,\varphi & \vdash \alpha\with\neg\alpha\\
+                    \Gamma,\neg\varphi & \vdash \alpha \with\neg\alpha\end{array}$$\pause\vspace{-0.3cm}
+
+Тогда по лемме об исключении гипотезы
+$$\Gamma\vdash \alpha\with\neg\alpha$$\pause\vspace{-0.4cm}
+
+То есть $\Gamma$ не является непротиворечивым. Противоречие.
+\end{proof}
+\end{frame}
+
+\begin{frame}{Дополнение непротиворечивого множества формул до полного}
+\begin{thm}Пусть $\Gamma$ --- непротиворечивое множество замкнутых (бескванторных) формул. Тогда
+найдётся полное непротиворечивое множество замкнутых (бескванторных) формул $\Delta$, что
+$\Gamma \subseteq \Delta$
+\end{thm}\pause
+
+\begin{proof}
+\begin{enumerate}
+\item Занумеруем все формулы (их счётное количество): $\varphi_1, \varphi_2, \dots$\pause
+\item Построим семейство множеств $\{\Gamma_i\}$:
+\begin{tabular}{cc}
+$\Gamma_0 = \Gamma$  &
+\begin{minipage}{12cm}
+$$\Gamma_{i+1} = \left\{\begin{array}{ll}\Gamma_i \cup \{\varphi_i\},& \mbox{ если } \Gamma_i \cup \{\varphi_i\} \mbox{ непротиворечиво}\\
+                                               \Gamma_i \cup \{\neg\varphi_i\},& \mbox{ иначе}\end{array}\right.$$
+\end{minipage}\end{tabular}\pause
+\item Итоговое множество $$\Delta = \bigcup_i \Gamma_i$$\pause\vspace{-0.2cm}
+\item Непротиворечивость $\Delta$ не следует из индукции --- индукция гарантирует непротиворечивость
+      только $\Gamma_i$ при натуральном (т.е. \emph{конечном}) $i$, потому\dots
+\end{enumerate}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Дополнение\dots (завершение доказательства)}\vspace{-1cm}
+\begin{block}{}
+\begin{enumerate}\setcounter{enumi}{3}
+  \item $\Delta$ непротиворечиво:
+  \begin{enumerate}
+    \item Пусть $\Delta$ противоречиво, то есть $$\Delta \vdash \alpha\with\neg\alpha$$\pause\vspace{-0.2cm}
+    \item Доказательство конечной длины и использует конечное количество гипотез $\{\delta_1, \delta_2, \dots, \delta_n\} \subset \Delta$,
+          то есть $$\delta_1, \delta_2, \dots, \delta_n \vdash \alpha\with\neg\alpha$$\pause\vspace{-0.2cm}
+    \item Пусть $\delta_i \in \Gamma_{d_i}$, тогда $$\Gamma_{d_1}\cup \Gamma_{d_2}\cup \dots\cup \Gamma_{d_n} \vdash \alpha\with\neg\alpha$$\pause\vspace{-0.2cm}
+    \item Но $\Gamma_{d_1} \cup \Gamma_{d_2} \cup \dots \cup \Gamma_{d_n} = \Gamma_{\max(d_1,d_2,\dots,d_n)}$,
+          которое непротиворечиво, и потому $$\Gamma_{d_1}\cup \Gamma_{d_2}\cup \dots\cup \Gamma_{d_n} \not\vdash \alpha\with\neg\alpha$$
+  \end{enumerate}\pause\vspace{-0.5cm}
+\end{enumerate}
+\qed
+\end{block}
+\end{frame}
+
+\begin{frame}{Модель для множества формул}
+\begin{dfn}Моделью для множества формул $F$ назовём такую модель $\mathcal{M}$, что
+    при всяком $\varphi \in F$ выполнено $\llbracket\varphi\rrbracket_\mathcal{M} = \text{И}$.\pause
+
+Альтернативное обозначение: $\mathcal{M}\models\varphi$.
+\end{dfn}
+\end{frame}
+
+%\begin{frame}{О доказательстве непротиворечивости множества формул}
+%\begin{thm} Если у множества формул $M$ есть модель $\mathcal{M}$, оно непротиворечиво. \end{thm}\pause
+%\begin{proof}Пусть противоречиво: $M\vdash A\with\neg A$, в доказательстве использованы гипотезы
+%$\delta_1, \delta_2,\dots,\delta_n$. \pause Тогда $\vdash \delta_1\to\delta_2\to\dots\to\delta_n\to A\with\neg A$,
+%то есть $\llbracket\delta_1\to\delta_2\to\dots\to\delta_n\to A\with\neg A\rrbracket = \text{И}$ (корректность).
+%\pause Поскольку все $\llbracket \delta_i \rrbracket_\mathcal{M} = \text{И}$, то
+%и $\llbracket A\with\neg A\rrbracket_\mathcal{M} = \text{И}$ (анализ таблицы истинности импликации). \pause
+%Однако $\llbracket A \with\neg A \rrbracket = \text{Л}$. Противоречие.\end{proof}\pause
+%\begin{flw} Исчисление предикатов непротиворечиво \end{flw}\pause
+%\begin{proof} Рассмотрим $M = \varnothing$ и любую классическую модель.\end{proof}\pause
+%Доказательства опираются на непротиворечивость метатеории.
+%\end{frame}
+
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+
+\begin{frame}{Модели для непротиворечивых множеств замкнутых бескванторных формул}
+\begin{thm}
+Любое непротиворечивое множество замкнутых бескванторных формул имеет модель.
+\end{thm}
+
+\end{frame}
+
+\begin{frame}{Конструкция для модели}
+\begin{dfn}
+Пусть $M$ --- полное непротиворечивое множество замкнутых бескванторных формул. Тогда
+модель $\mathcal{M}$ задаётся так:\pause
+\begin{enumerate}
+\item $D$ --- множество всевозможных предметных выражений без предметных переменных и дополнительная строка ``ошибка!''\pause
+\item $\llbracket f(\theta_1,\dots,\theta_n) \rrbracket = \mbox{``f(''} \mdoubleplus \llbracket\theta_1\rrbracket \mdoubleplus \mbox{ ``,'' }
+    \mdoubleplus \dots \mdoubleplus \mbox{ ``,'' } \mdoubleplus \llbracket\theta_n\rrbracket \mdoubleplus \mbox {``)'' } $\pause
+\item $\llbracket P(\theta_1,\dots,\theta_n)\rrbracket = \left\{
+  \begin{array}{ll} \mbox{И}, &\mbox{ если } P(\theta_1,\dots,\theta_n) \in M\\
+                   \mbox{Л}, &\mbox{ иначе}\end{array}\right.$\pause
+\item $\llbracket x \rrbracket = \mbox{``ошибка!''}$, так как формулы замкнуты.
+\end{enumerate}
+\end{dfn}
+\end{frame}
+
+\begin{frame}{Доказательство корректности}
+\begin{lmm}Пусть $\varphi$ --- бескванторная формула, тогда $\mathcal{M}\models\varphi$ тогда и только тогда, когда $\varphi\in M$.
+\end{lmm}\pause
+
+\begin{proof}[Доказательство (индукция по длине формулы $\varphi$)]
+\begin{enumerate}
+\item База. $\varphi$ --- предикат. Требуемое очевидно по определению $\mathcal{M}$.\pause
+\item Переход. Пусть $\varphi = \alpha\star\beta$ (или $\varphi=\neg\alpha$), причём $\mathcal{M}\models\alpha$ ($\mathcal{M}\models\beta$)
+   тогда и только тогда, когда $\alpha\in M$ ($\beta\in M$).\pause
+
+Тогда покажем требуемое для каждой связки в отдельности. А именно, для каждой связки покажем два утверждения:
+\begin{enumerate}
+\item если $\mathcal{M}\models\alpha\star\beta$, то $\alpha\star\beta \in M$.
+
+\item если $\mathcal{M}\not\models\alpha\star\beta$, то $\alpha\star\beta \notin M$.
+\end{enumerate}
+\end{enumerate}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Доказательство утверждений для связок}
+Если $\varphi = \alpha\to\beta$ и для любой формулы $\zeta$, более короткой, чем $\varphi$, выполнено
+$\mathcal{M}\models\zeta$ тогда и только тогда, когда $\zeta\in M$, тогда:
+\begin{enumerate}
+\item если $\mathcal{M}\models\alpha\to\beta$, то $\alpha\to\beta\in M$;
+\item если $\mathcal{M}\not\models\alpha\to\beta$, то $\alpha\to\beta\notin M$.
+\end{enumerate}
+\begin{proof}[Доказательство (разбором случаев)]
+\begin{enumerate}\pause
+\item $\mathcal{M}\models\alpha\to\beta$: $\llbracket\alpha\rrbracket = \text{Л}$. \pause
+Тогда по предположению $\alpha\notin M$, потому по полноте
+$\neg\alpha\in M$. \pause И, поскольку в ИВ $\neg\alpha\vdash\alpha\to\beta$, то $M \vdash \alpha\to\beta$. \pause
+Значит, $\alpha\to\beta \in M$, иначе по полноте $\neg(\alpha\to\beta) \in M$, что делает $M$ противоречивым.\pause
+\item $\mathcal{M}\models\alpha\to\beta$: $\llbracket\alpha\rrbracket = \text{И}$ и $\llbracket\beta\rrbracket = \text{И}$. Рассуждая аналогично,
+используя $\alpha,\beta\vdash\alpha\to\beta$, приходим к $\alpha\to\beta \in M$.\pause
+\item $\mathcal{M}\not\models\alpha\to\beta$. Тогда $\llbracket\alpha\rrbracket=\text{И}$,
+$\llbracket\beta\rrbracket=\text{Л}$, \pause то есть $\alpha\in M$ и $\neg\beta\in M$. \pause
+Также, $\alpha,\neg\beta\vdash\neg(\alpha\to\beta)$, отсюда $M\vdash\neg(\alpha\to\beta)$. \pause
+Предположим, что $\alpha\to\beta\in M$, то $M\vdash\alpha\to\beta$ --- отсюда
+$\alpha\to\beta\notin M$.
+\end{enumerate}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Доказательство теоремы о существовании модели}
+\begin{proof}
+Пусть $M$ --- непротиворечивое множество замкнутых бескванторных формул.\pause
+
+По теореме о пополнении существует $M'$ --- полное непротиворечивое множество замкнутых бескванторных формул,
+что $M \subseteq M'$.\pause
+
+По лемме $M'$ имеет модель, эта модель подойдёт для $M$.
+\end{proof}
+\end{frame}
+
+\begin{frame}{Формулировка и схема доказательства теоремы Гёделя о полноте}
+
+\begin{thm}[Гёделя о полноте исчисления предикатов]
+Если $M$ --- непротиворечивое множество замкнутых формул, то оно имеет модель.
+\end{thm}
+\begin{proof}[Схема доказательства]
+\tikz{
+	\node (M) at (0,3) {$M$};
+	\node (M1) at (1,0) {$M^\text{Б}$};
+        \node (Md1) at (6,0) {$\mathcal{M}$};
+	\node (Md) at (7,3) {$\mathcal{M}$};
+        \draw[->] (M) -- node[pos=0.2,right]{\hspace{0.2cm}\begin{minipage}{4cm}сохраняет\\непротиворечивость\end{minipage}} (M1);
+	\draw[->] (M1) -- node[below]{\begin{minipage}{4cm}теорема о\\существовании модели\end{minipage}} (Md1);
+	\draw[->] (Md1) -- node[pos=0.8,right]{тоже модель} (Md);
+	\draw[dashed] (-2,1) -- (9,1);
+	\node[above] (Q) at (-2,1) {\it Формулы с кванторами};
+	\node[below] (Qf) at (-2,1) {\it Бескванторные};
+}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Поверхностные кванторы (предварённая форма)}
+\begin{dfn}
+Формула $\varphi$ имеет поверхностные кванторы (находится в предварённой форме), если
+соответствует грамматике
+$$\varphi ::= \forall x.\varphi\ |\ \exists x.\varphi\ |\ \tau$$
+где $\tau$ --- формула без кванторов
+\end{dfn}\pause
+\begin{thm}
+Для любой замкнутой формулы $\psi$ найдётся такая формула $\varphi$ с поверхностными кванторами,
+что $\vdash \psi\to\varphi$ и $\vdash\varphi\to\psi$
+\end{thm}
+\begin{proof}Индукция по структуре, применение теорем о перемещении кванторов.
+\end{proof}
+\end{frame}
+
+\begin{frame}{Построение $M^*$}
+\begin{itemize}
+\item Пусть $M$ --- полное непротиворечивое множество замкнутых формул с поверхностными кванторами (очевидно, счётное). \pause
+ Построим семейство непротиворечивых множеств замкнутых формул $M_k$.\pause
+\item Пусть $d^k_i$ --- семейство \emph{свежих} констант, в $M$ не встречающихся.\pause
+\item Индуктивно построим $M_k$:
+\begin{itemize}
+\item База: $M_0 = M$\pause
+\item Переход: положим $M_{k+1} = M_k \cup S$, где множество $S$ получается перебором всех формул $\varphi_i \in M_k$.\pause
+\begin{enumerate}
+\item $\varphi_i$ --- формула без кванторов, пропустим;\pause
+\item $\varphi_i = \forall x.\psi$ --- добавим к $S$ все формулы вида $\psi [x := \theta]$, где
+$\theta$ --- всевозможные замкнутые термы, использующие символы из $M_k$;\pause
+\item $\varphi_i = \exists x.\psi$ --- добавим к $S$ формулу $\psi [x := d^{k+1}_i]$, где $d^{k+1}_i$ --- некоторая
+свежая, ранее не использовавшаяся в $M_k$, константа.\pause
+\end{enumerate}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Непротиворечивость $M_k$}
+\begin{lmm}Если $M$ непротиворечиво, то каждое множество из $M_k$ --- непротиворечиво\end{lmm}
+\begin{proof}Доказательство по индукции, база очевидна ($M_0 = M$). \pause
+Переход: \begin{itemize}
+\item пусть $M_k$ непротиворечиво, но $M_{k+1}$ --- противоречиво: $M_k, M_{k+1}\setminus M_k \vdash A\with\neg A$. \pause
+\item Тогда (т.к. доказательство конечной длины):
+$M_k, \gamma_1, \gamma_2, \dots,\gamma_n\vdash A\with\neg A$
+, где $\gamma_i \in M_{k+1}\setminus M_k$. \pause
+\item По теореме о дедукции: $M_k\vdash \gamma_1\to\gamma_2\to\dots\to\gamma_n\to A\with\neg A$. \pause
+\item Научимся выкидывать первую посылку: $M_k\vdash \gamma_2\to\dots\to\gamma_n\to A\with\neg A$. \pause
+\item И по индукции придём к противоречию: $M_k \vdash A\with\neg A$.
+\end{itemize}
+
+\end{proof}
+\end{frame}
+
+\begin{frame}{Устранение посылки}
+\begin{lmm}
+Если $M_k\vdash\gamma\to W$ и $\gamma\in M_{k+1}\setminus M_k$, то $M_k\vdash W$.
+\end{lmm}
+\begin{proof}
+Покажем, как дополнить доказательство до $M_k\vdash W$, в зависимости от происхождения $\gamma$:
+\pause
+
+\begin{itemize}
+\item Случай $\forall x.\varphi$: $\gamma = \varphi[x:=\theta]$.
+\pause
+Допишем в конец доказательства:
+
+\begin{tabular}{ll}
+$\forall x.\varphi$ & (гипотеза)\\\pause
+$(\forall x.\varphi)\to(\varphi[x:=\theta])$ & (сх. акс. 11)\\\pause
+$\gamma$  & (M.P.) \\\pause
+$W$ & (M.P.)
+\end{tabular}
+\end{itemize}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Случай $\exists x.\varphi$}
+\begin{itemize}\item $\gamma = \varphi[x := d^{k+1}_i]$\pause
+
+
+\item Перестроим доказательство $M_k\vdash \gamma\to W$:
+заменим во всём доказательстве $d^{k+1}_i$ на $y$.
+Коллизий нет: под квантором $d^{k+1}_i$ не стоит, переменной не является. \pause
+\item Получим доказательство $M_k\vdash \gamma[d^{k+1}_i := y]\to W$ и дополним его:
+
+\begin{tabular}{ll}
+$\varphi[x := y]\to W$ & $\varphi[x := d^{k+1}_i][d^{k+1}_i := y]$\\\pause
+$(\exists y.\varphi[x:=y])\to W$ & $y$ не входит в $W$ \\\pause
+$(\exists x.\varphi)\to(\exists y.\varphi[x:=y])$ & доказуемо (упражнение)\\\pause
+ \dots \\
+$(\exists x.\varphi)\to W$ & доказуемо как $(\alpha\to\beta)\to(\beta\to\gamma)\vdash\alpha\to\gamma$ \\\pause
+$\exists x.\varphi$ & гипотеза\\\pause
+$W$
+\end{tabular}
+\end{itemize}
+\qed
+\end{frame}
+
+\begin{frame}{Построение $M^\text{Б}$}
+\begin{dfn} $M^* = \bigcup_k M_k$\end{dfn}\pause
+\begin{thm} $M^*$ непротиворечиво.\end{thm}\pause
+\begin{proof} От противного: доказательство противоречия конечной длины, гипотезы лежат в максимальном $M_k$, тогда $M_k$ противоречив.\pause
+\end{proof}
+\begin{dfn}$M^\text{Б}$ --- множество всех бескванторных формул из $M^*$.\pause\end{dfn}\pause
+По непротиворечивому множеству $M$ можем построить $M^\text{Б}$ и для него построить модель $\mathcal{M}$.
+Покажем, что эта модель годится для $M^*$ (и для $M$, так как $M \subset M^*$).
+\end{frame}
+
+\begin{frame}{Модель для $M^*$}
+\begin{lmm}$\mathcal{M}$ есть модель для $M^*$.\end{lmm}\pause
+\begin{proof}
+Покажем, что при $\varphi\in M^*$ выполнено $\mathcal{M}\models\varphi$. Докажем индукцией по количеству кванторов в $\varphi$.\pause
+\begin{itemize}
+\item База: $\varphi$ без кванторов. Тогда $\varphi\in M^\text{Б}$, отсюда $\mathcal{M}\models\varphi$ по построению $\mathcal{M}$.\pause
+\item Переход: пусть утверждение выполнено для всех формул с $n$ кванторами. Покажем, что это выполнено и для $n+1$ кванторов.\pause
+\begin{itemize}
+\item Рассмотрим $\varphi = \exists x.\psi$, случай квантор всеобщности --- аналогично.\pause
+
+\item Раз $\exists x.\psi \in M^*$, то существует $k$, что $\exists x.\psi \in M_k$.\pause
+\item Значит, $\psi[x := d^{k+1}_i] \in M_{k+1}$. \pause
+\item По индукционному предположению, $\mathcal{M}\models\psi[x := d^{k+1}_i]$ --- в формуле $n$ кванторов.\pause
+\item Но тогда $\llbracket \psi \rrbracket^{x := \llbracket d^{k+1}_i\rrbracket} = \text{И}$.\pause
+\item Отсюда $\mathcal{M}\models\exists x.\psi$.
+\end{itemize}
+\end{itemize}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Теорема Гёделя о полноте исчисления предикатов}
+\begin{thm}[Гёделя о полноте исчисления предикатов]
+Если $M$ --- замкнутое непротиворечивое множество формул, то оно имеет модель.\pause
+\end{thm}
+\begin{proof}
+\begin{itemize}
+\item Построим по $M$ множество формул с поверхностными кванторами $M'$.\pause
+\item По $M'$ построим непротиворечивое множество замкнутых бескванторных формул $M^\text{Б}$ ($M^\text{Б}\subseteq M^*$, теорема о непротиворечивости $M^*$).\pause
+\item Дополним его до полного, построим для него модель $\mathcal{M}$ (теорема о существовании модели).\pause
+\item $\mathcal{M}$ будет моделью и для $M'$ ($M'\subseteq M^*$, лемма о модели для $M^*$), и, очевидно, для $M$.
+\end{itemize}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Полнота исчисления предикатов}
+\begin{flw}[из теоремы Гёделя о полноте]
+Исчисление предикатов полно.
+\end{flw}
+\begin{proof}
+\begin{itemize}
+\item Пусть это не так, и существует формула $\varphi$, что $\models\varphi$, но $\not\vdash\varphi$.\pause
+\item Тогда рассмотрим $M = \{\neg\varphi\}$. \pause
+\item $M$ непротиворечиво: если $\neg\varphi \vdash A\with\neg A$, то $\vdash \varphi$ (упражнение).\pause
+\item Значит, у $M$ есть модель $\mathcal{M}$, и $\mathcal{M}\models\neg\varphi$. \pause
+\item Значит, $\llbracket \neg\varphi \rrbracket = \text{И}$, поэтому $\llbracket \varphi \rrbracket = \text{Л}$,
+поэтому $\not\models\varphi$. Противоречие.
+\end{itemize}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Непротиворечивость исчисления предикатов}
+\begin{thm} Если у множества формул $M$ есть модель $\mathcal{M}$, оно непротиворечиво. \end{thm}\pause
+\begin{proof}Пусть противоречиво: $M\vdash A\with\neg A$, в доказательстве использованы гипотезы
+$\delta_1, \delta_2,\dots,\delta_n$. \pause Тогда $\vdash \delta_1\to\delta_2\to\dots\to\delta_n\to A\with\neg A$,
+то есть $\llbracket\delta_1\to\delta_2\to\dots\to\delta_n\to A\with\neg A\rrbracket = \text{И}$ (корректность).
+\pause Поскольку все $\llbracket \delta_i \rrbracket_\mathcal{M} = \text{И}$, то
+и $\llbracket A\with\neg A\rrbracket_\mathcal{M} = \text{И}$ (анализ таблицы истинности импликации). \pause
+Однако $\llbracket A \with\neg A \rrbracket = \text{Л}$. Противоречие.\end{proof}\pause
+\begin{flw} Исчисление предикатов непротиворечиво \end{flw}\pause
+\begin{proof} Рассмотрим $M = \varnothing$ и любую классическую модель.\end{proof}\pause
+Доказательства опираются на непротиворечивость метатеории.
+\end{frame}
+
+\end{document}
