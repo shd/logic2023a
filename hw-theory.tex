@@ -534,9 +534,13 @@ $$(\varphi\star\psi)_\text{Ku} = \varphi_\text{Ku} \star \psi_\text{Ku}, \quad
 Назовём мощностью модели мощность её предметного множества: $|\mathcal{M}| = |D|$.
 Покажите, что для любой конечной мощности модели $n\in\mathbb{N}$ найдётся такая формула $\alpha$, что 
 при $|\mathcal{M}|\le n$ выполнено $\llbracket\alpha\rrbracket_\mathcal{M} = \text{И}$, но $\not\vdash\alpha$.
+\end{enumerate}
 
 \begin{comment}
-\item До сих пор мы записывали доказательства в так называемом гильбертовском стиле.
+\section*{Задание №6. Исчисление предикатов, нормальный вывод}
+
+До сих пор мы записывали доказательства в так называемом гильбертовском стиле (много аксиом, немного правил, 
+доказательство есть последовательность высказываний).
 В этом задании вам будет предложено доказывать утверждения с помощью естественного (натурального) вывода.
 Формулы языка ИП (секвенции) имеют вид: $\Gamma\vdash\alpha$ (гипотезы явно включаются в формулу).
 Вывод записывается в виде дерева, узлы в котором (правила вывода) имеют вид: 
@@ -564,17 +568,148 @@ $$\infer[\text{Введ}\vee]{\Gamma\vdash\alpha\vee\beta}{\Gamma\vdash\alpha}\q
 \infer[\text{Удал}\vee]{\Gamma\vdash\gamma}{\Gamma\vdash\alpha\rightarrow\gamma\quad\Gamma\vdash\beta\rightarrow\gamma\quad\Gamma\vdash\alpha\vee\beta}$$
 
 Правило снятия двойного отрицания:
-$$\infer[\text{Удал}\neg\neg]{\Gamma\vdash\alpha}{\Gamma\vdash\neg\neg\alpha}$$
+$$\infer[\text{Удал}\neg\neg]{\Gamma\vdash\alpha}{\Gamma,\alpha\rightarrow\bot\vdash\bot}$$
 
-Правила для кванторов:
-$$jiop$$
+Правила введения кванторов:
+$$\infer[x\notin FV(\Gamma)]{\Gamma\vdash\forall x.\alpha}{\Gamma\vdash\alpha}\quad\quad
+  \infer[\theta\text{ свободен для подстановки}]{\Gamma\vdash\exists x.\alpha}{\Gamma\vdash\alpha[x := \theta]}
+$$
+
+Правила удаления кванторов:
+$$\infer[\theta\text{ свободен для подстановки}]{\Gamma\vdash\alpha[x := \theta]}{\Gamma\vdash\forall x.\alpha}\quad\quad
+  \infer[x\notin FV(\Gamma,\beta)]{\Gamma\vdash\beta}{\Gamma\vdash\exists x.\alpha\quad\quad\Gamma,\alpha\vdash\beta}
+$$
 
 Пример доказательства:
 $$\infer[(\text{введ}\with)]{A\with B\vdash B \with A}{\infer[(\text{удал}\with)]{A \with B \vdash B}{\infer[(\text{акс.})]{A \with B\vdash A \with B}{}}
                                            \quad\quad\infer[(\text{удал}\with)]{A \with B \vdash A}{\infer[(\text{акс.})]{A \with B\vdash A \with B}{}}}$$
 
+По аналогии с исчислением с ложью, можем естественным образом определить преобразования формул
+из языка исчисления предикатов в гильбертовском стиле (т.е. с отрицанием) в нормальный вывод (т.е. с ложью) --- и обратно. Будем записывать это
+как $|\cdot|_\neg$ и $|\cdot|_\bot$
+
+Докажите следущюие формулы (по умолчанию предполагается выводимость в стиле натурального вывода):
+
 \begin{enumerate}
+\item Докажите, что если $\alpha$ выводимо в гипотезах $\gamma_1, \dots, \gamma_k$ в ИП гильбертовского типа, то
+имеет место $|\gamma_1|_\bot, \dots, |\gamma_n|_\bot \vdash |\alpha|_\bot$.
+\item Докажите, что если $\gamma_1,\dots,\gamma_n\vdash\alpha$, то $|\alpha|_\neg$ выводимо в гипотезах 
+$|\gamma_1|_\bot,\dots,|\gamma_n|_\bot\vdash|\alpha|_\bot$ в ИП гильбертовского типа.
 \item $\alpha\rightarrow\beta,\forall x.\beta\rightarrow\gamma \vdash \forall x.\alpha\rightarrow\gamma$
+%\item $\forall x.\alpha \vdash (\exists x.\alpha\rightarrow\bot)\rightarrow\bot$
+%и наоборот: $(\forall x.\alpha\rightarrow\bot)\rightarrow\bot\vdash\exists x.\alpha$
+%\item (докажите или опровергните) $\forall x.\exists y.\varphi \vdash \exists y.\forall x.\varphi$ 
+%и $\exists y.\forall x.\varphi\vdash\forall x.\exists y.\varphi$
+\end{enumerate}
+
+%\end{comment}
+\end{enumerate}
+\end{comment}
+
+\section*{Задание №6-7. Теоремы об исчислении предикатов, аксиоматика Пеано, формальная арифметика.}
+\begin{enumerate}
+\item Пусть $M$ --- непротиворечивое множество формул и $\mathcal{M}$ --- построенная в соответствии с теоремой о 
+полноте исчисления предикатов оценка для $M$. Мы ожидаем, что $\mathcal{M}$ будет моделью для $M$, для чего было необходимо доказать
+несколько утверждений. Восполните некоторые пробелы в том доказательстве. А именно, если $\varphi$ --- 
+некоторая формула и для любой формулы $\zeta$, более короткой, чем $\varphi$, выполнено
+$\mathcal{M}\models\zeta$ тогда и только тогда, когда $\zeta\in M$, тогда покажите:
+\begin{enumerate}
+\item если $\varphi \equiv \alpha\vee\beta$, $\mathcal{M}\models\alpha\vee\beta$, то $\alpha\vee\beta\in M$; и если $\mathcal{M}\not\models\alpha\vee\beta$, то $\alpha\vee\beta\notin M$;
+\item если $\varphi \equiv \neg\alpha$, $\mathcal{M}\models\neg\alpha$, то $\neg\alpha\in M$; и если $\mathcal{M}\not\models\neg\alpha$, то $\neg\alpha\notin M$.
+\end{enumerate}
+
+\item 
+Напомним, что \emph{машиной Тьюринга} называется упорядоченная шестёрка $$\langle A_\text{внешн}, A_\text{внутр}, T, \varepsilon, s_\text{нач}, s_\text{доп}\rangle$$
+где внешний и внутренний алфавиты конечны и не пересекаются ($A_\text{внешн} \cap A_\text{внутр} = \varnothing$), $\varepsilon \in A_\text{внешн}$, $s_\text{нач}, s_\text{доп} \in A_\text{внутр}$, 
+и $T$ --- это функция переходов: $T : A_\text{внутр} \times A_\text{внешн} \rightarrow A_\text{внутр} \times A_\text{внешн} \times \{ \leftarrow, \rightarrow, \cdot \}$.
+
+Все неиспользованные клетки ленты заполнены $\varepsilon$, головка перед запуском стоит на самой левой заполненной клетке.
+При работе машина последовательно выполняет переходы и двигает ленту (в соответствии с $T$), пока не окажется в 
+допускающем состоянии $s_\text{доп}$ (успешное завершение). Также можно выделить отвергающее состояние $s_\text{отв}$, 
+оказавшись в котором, машина оканчивает работу с ошибкой (неуспешное завершение).
+
+Например, пусть $A_\text{внешн} = \{ 0, 1, \varepsilon \}$, $A_\text{внутр} = \{s_s, s_f\}$, $s_\text{нач} = s_s$, $s_\text{доп} = s_f$,
+отвергающего состояния не задано, и функция переходов указана в таблице ниже:
+
+\begin{center}\begin{tabular}{c|ccc}
+    & $\varepsilon$ & 0 & 1\\\hline
+$s_s$ & $\langle s_f,\varepsilon,\cdot\rangle$ & $\langle s_s,1,\rightarrow\rangle$ & $\langle s_s,0,\rightarrow\rangle$\\
+$s_f$ & $\langle s_f,\varepsilon,\cdot\rangle$ & $\langle s_f,0,\cdot\rangle$ & $\langle s_f,1,\cdot\rangle$
+\end{tabular}\end{center}
+
+Такая машина Тьюринга меняет на ленте все 0 на 1, а все 1 --- на 0. Например, для строки $011$:
+
+$$\underline{0}11 \Rightarrow 1\underline{1}1 \Rightarrow 10\underline{1} \Rightarrow 100\underline{\varepsilon}$$
+
+Заметьте, что на последнем шаге головка сдвинулась вправо, за заполненные клетки --- оказавшись на неиспользованной, заполненной символами $\varepsilon$
+части ленты --- и остановилась благодаря 
+тому, что $T(s_s, \varepsilon) = \langle s_f, \dots \rangle$.
+
+Напишите следующие программы для машины Тьюринга и продемонстрируйте их работу на каком-нибудь эмуляторе:
+\begin{enumerate}
+\item разворачивающую строку в алфавите $\{0,1\}$ в обратном порядке (например, из $01110111$ программа должна сделать $11101110$);
+в этом и в последующих заданиях в алфавит внешних символов при необходимости можно добавить дополнительные символы;
+\item в строке в алфавите $\{0,1,2\}$ сокращающую все <<постоянные>> подстроки до одного символа:
+машина должна превратить $1022220101111$ в $1020101$;
+\item допускающую правильные скобочные записи (например, $(())$ должно допускаться, а $)()($ --- отвергаться);
+\item допускающую строки вида $a^nb^nc^n$ в алфавите $\{a,b,c\}$ (например, строка $aabbcc$ должна допускаться, а $abbbc$ --- отвергаться);
+\item складывающую два числа на ленте, записанные в двоичной системе счисления через разделитель (знак плюса);
+\item допускающую только строки, состоящие из констант и импликаций (алфавит $\{ 0, 1, \rightarrow, (, ) \}$), 
+содержащие истинные логические выражения;
+например, выражение $(((0 \rightarrow 1) \rightarrow 0) \rightarrow 0)$ машина должна допустить, а
+выражение $((1 \rightarrow 1) \rightarrow 0)$ --- отвергнуть. Можно считать, что выражение написано в корректном синтаксисе (все скобки корректно
+расставлены, никаких скобок не пропущено).
+\end{enumerate}
+
+\item Пусть дано число $k \in \mathbb{N}$. Известно, что если $0 \le k < 2^n$, то возможно закодировать $k$ с помощью $n$ цифр 0 и 1.
+А как закодировать число, если мы не знаем верхней границы $n$? Какую лучшую асимптотику длины кодировки относительно $\log_2 k$ вы можете
+предложить? Кодировка должна использовать только символы 0 и 1, также код должен быть префиксным (ни один код не является префиксом другого).
+
+\item Как известно, машина Тьюринга может быть проинтерпретирована другой машиной Тьюринга.
+Предложите способ закодировать машину Тьюринга в виде текста в алфавите $\{0,1\}$.
+Естественно, символы алфавитов при кодировке меняются на их номера, и эти номера надо будет как-то записывать в виде последовательностей цифр 0 и 1.
+
+\item Рассмотрим аксиоматику Пеано. 
+Пусть $$a^b = \left\{\begin{array}{ll}1,& b= 0 \\a^c\cdot a,&b = c'\end{array}\right.$$
+Докажите, что:
+\begin{enumerate}
+\item $a \cdot b = b \cdot a$
+\item $(a + b) \cdot c = a \cdot c + b \cdot c$
+\item $a^{b+c} = a^b \cdot a^c$
+\item $(a^b)^c = a^{b \cdot c}$
+\end{enumerate}
+
+\item Определим отношение <<меньше или равно>> так: $0 \le a$ и $a' \le b'$, если $a \le b$. Докажите, что:
+\begin{enumerate}
+\item $x \le x+y$;
+\item $x \le x \cdot y$ (укажите, когда это так --- в остальных случаях приведите контрпримеры);
+\item Если $a \le b$ и $m \le n$, то $a \cdot m \le b \cdot n$;
+\item $x \le y$ тогда и только тогда, когда существует $n$, что $x + n = y$;
+\item Будем говорить, что $a$ делится на $b$ с остатком, если существуют такие $p$ и $q$, что 
+$a = b \cdot p + q$ и $0 \le q < b$. Покажите, что $p$ и $q$ всегда существуют и единственны,
+если $b > 0$.
+\end{enumerate}
+
+\item Определим <<ограниченное вычитание>>: $$a \dotminus b = \left\{\begin{array}{ll}0, & a = 0\\a, & b = 0\\p \dotminus q, & a = p', b = q'\end{array}\right.$$
+Докажите, что:
+\begin{enumerate}
+\item $a + b \dotminus b = a$;
+\item $(a \dotminus b) \cdot c = a \cdot c \dotminus b \cdot c$;
+\item $a \dotminus b \le a + b$;
+\item $a \dotminus b = 0$ тогда и только тогда, когда $a \le b$.
+\end{enumerate}
+
+\begin{comment}
+\item Обозначим за $\overline{n}$ представление числа $n$ в формальной арифметике: %, по сути это ноль с $n$ штрихами:
+
+$$\overline{n} = \left\{\begin{array}{ll}0, &n = 0\\
+           \left(\overline{k}\right)', & n=k+1\end{array}\right.$$
+
+Например, $\overline{5} = 0'''''$. Докажите в формальной арифметике:
+\begin{enumerate}
+\item $\vdash \overline{2} \cdot \overline{3} = \overline{6}$;
+\item $\vdash \forall p.(\exists q.q' = p) \vee p = 0$ (единственность нуля);
+\item $\vdash p \cdot q = 0 \rightarrow p = 0 \vee q = 0$ (отсутствие делителей нуля);
 \end{enumerate}
 \end{comment}
 \end{enumerate}
