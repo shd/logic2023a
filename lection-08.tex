@@ -1,0 +1,664 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{cancel}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{tikz}
+\usepackage{multicol}
+\usetikzlibrary{patterns}
+\usepackage{chronosys}
+\usepackage{proof}
+\usepackage{comment}
+\usepackage{multirow}
+\setbeamertemplate{navigation symbols}{}
+%\usetheme{Warsaw}
+
+\newtheorem{thm}{Теорема}[section]
+\newtheorem{dfn}{Определение}[section]
+\newtheorem{lmm}{Лемма}[section]
+\newtheorem{exm}{Пример}[section]
+\newtheorem{snote}{Пояснение}[section]
+
+\newcommand{\divisible}%
+{\mathrel{\lower.2ex%
+\vbox{\baselineskip=0.7ex\lineskiplimit=0pt%
+\kern6pt \hbox{.}\hbox{.}\hbox{.}}%
+}}
+
+\begin{document}
+
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+
+\begin{frame}{Уточнение исчисления предикатов}
+\begin{itemize}
+\item Пусть требуется доказывать утверждения про равенство. Введём $E(p,q)$ --- предикат <<равенство>>.\pause
+\item Однако $\not\vdash E(p,q)\to E(q,p)$: если $D = \{0,1\}$ и $E(p,q) ::= (p>q)$,
+то $\not\models E(p,q)\to E(q,p)$.\pause
+\item Конечно, можем указывать $\forall p.\forall q.E(p,q)\to E(q,p) \vdash \varphi$.\pause
+\item Но лучше добавим аксиому $\forall p.\forall q.E(p,q)\to E(q,p)$.\pause
+\item Добавив необходимые аксиомы, получим \emph{теорию первого порядка}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Теория первого порядка}
+\begin{dfn}
+Теорией первого порядка назовём исчисление предикатов с дополнительными (<<нелогическими>>
+или <<математическими>>):
+\begin{itemize}
+\item предикатными и функциональными символами;
+\item аксиомами.
+\end{itemize}
+
+Сущности, взятые из исходного исчисления предикатов, назовём \emph{логическими}
+\end{dfn}
+\end{frame}
+
+\begin{frame}{Порядок логики/теории}
+\begin{tabular}{llll}
+Порядок & Кванторы & Формализует суждения\dots & Пример\\\hline
+нулевой & запрещены & об отдельных значениях & И.В.\\
+первый & по предметным переменным & о множествах & И.П.\\
+%    &   & $S = \{ t\ |\ \psi[x := t] \}$ \\
+    &   \multicolumn{2}{l}{\color{olive}$\{2,3,5,7,\dots\} = \{ t\ |\ \forall p.\forall q.(p \ne 1 \with q \ne 1) \rightarrow (t \ne p\cdot q)\}$}\\
+второй & по предикатным переменным & о множествах множеств & Типы\\
+    &   \multicolumn{2}{l}{\color{olive}$S = \{ \{t\ |\ P(t)\}\ |\ \varphi[p := P] \}$}\\
+ & \dots 
+\end{tabular}
+\pause\vspace{0.3cm}
+
+\begin{exm}[логики 2 порядка]\upshape
+\begin{tabular}{ll}
+$\alpha\rightarrow\beta\rightarrow\alpha$ (сх. акс. 1) & $\forall a.\forall b.a \rightarrow b \rightarrow a$ \vspace{0.1cm}\\
+\texttt{let rec map f l = match l with} & $map: \forall a.\forall b.(a \rightarrow b) \rightarrow a\texttt{ list} \rightarrow b\texttt{ list}$ \\
+\texttt{| [] -> []} \\
+\texttt{| l1::ls -> f l1 :: map f l1}\vspace{0.1cm}\\
+\texttt{map ((+) 1) [1;2;3] = [2;3;4]}
+\end{tabular}
+\end{exm}
+
+\end{frame}
+
+\begin{frame}{Формальная арифметика}
+\begin{dfn}
+Формальная арифметика --- теория первого порядка, со следующими добавленными нелогическими \dots
+\begin{itemize}
+\item двухместными функциональными символами $(+)$, $(\cdot)$; одноместным функциональным символом $(')$, 
+нульместным функциональным символом $0$;\pause
+\item двухместным предикатным символом $(=)$;\pause
+\item восемью нелогическими \emph{аксиомами}:\vspace{0.1cm}
+\begin{tabular}{ll}
+(A1) $a=b \to a=c \to b=c$             &(A5) $a+0 = a$                     \\
+(A2) $a=b \to a'=b'$                   &(A6) $a+b' = (a+b)'$               \\
+(A3) $a'=b' \to a=b$                   &(A7) $a\cdot 0 = 0$                \\
+(A4) $\neg a' = 0$                     &(A8) $a\cdot b' = a \cdot b + a$
+\end{tabular}\pause
+\item нелогической схемой аксиом индукции $\psi[x:=0]\with(\forall x.\psi\to \psi[x:=x'])\to \psi$ с метапеременными $x$ и $\psi$.
+\end{itemize}
+\end{dfn}
+\end{frame}
+
+\begin{frame}{Докажем, что $a=a$}
+\small
+Пусть $\top ::= 0=0\to 0=0 \to 0=0$, тогда:\pause
+
+\begin{tabular}{lll}
+(1) & $a=b\to a=c \to b=c$ & (Акс. А1)\\
+(2) & $(a=b\to a=c \to b=c) \to \top \to (a=b\to a=c \to b=c)$ & (Сх. акс. 1)\\
+(3) & $\top \to (a=b\to a=c \to b=c)$ & (M.P. 1, 2)\\
+(4) & $\top \to (\forall c.a = b\to a = c \to b = c)$ & (Введ. $\forall$)\\\pause
+(5) & $\top \to (\forall b.\forall c.a = b\to a = c \to b = c)$ & (Введ. $\forall$)\\
+(6) & $\top \to (\forall a.\forall b.\forall c.a = b\to a = c \to b = c)$ & (Введ. $\forall$)\\\pause
+(7) & $\top$ & (Сх. акс 1)\\
+(8) & $(\forall a.\forall b.\forall c.a = b\to a = c \to b = c)$ & (M.P. 7, 6)\\\pause
+(9) & $(\forall a.\forall b.\forall c.a = b\to a = c \to b = c) \to $\\
+    & $\to (\forall b.\forall c.a+0 = b\to a+0 = c \to b = c)$ & (Сх. акс. 11)\\\pause
+(10) & $\forall b.\forall c.a+0 = b\to a+0 = c \to b = c$ & (M.P. 8, 9)\\\pause
+(12) & $\forall c.a+0 = a\to a+0 = c \to a = c$ & (M.P. 10, 11)\\\pause
+(14) & $a+0 = a\to a+0 = a \to a = a$ & (M.P. 12, 13)\\\pause
+(15) & $a+0 = a$ & (Акс. А5)\\
+(16) & $a+0 = a \to a = a$ & (M.P. 15, 14)\\
+(17) & $a = a$ & (M.P. 15, 16)
+\end{tabular}
+\end{frame}
+
+\begin{frame}
+\begin{center}\LARGE Арифметизация логики\end{center}
+\end{frame}
+
+\begin{frame}{Общие замечания}
+\begin{itemize}
+\item Рассматриваем функции $\mathbb{N}^n_0\to\mathbb{N}_0$.
+\item Обозначим вектор $\langle x_1, x_2, \dots, x_n\rangle$ как $\overrightarrow{x}$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Примитивно-рекурсивные функции}
+
+\begin{dfn}[Примитивы Z, N, U, S]
+\begin{enumerate}
+\item Примитив <<Ноль>> ($Z$) \vspace{-0.3cm}
+$$Z: \mathbb{N}_0\to\mathbb{N}_0,\ \ \ \ \ Z(x_1) = 0$$\vspace{-0.5cm}\pause
+\item Примитив <<Инкремент>> ($N$) \vspace{-0.3cm}
+$$N: \mathbb{N}_0\to\mathbb{N}_0,\ \ \ \ \ N(x_1) = x_1+1$$\vspace{-0.5cm}\pause
+\item Примитив <<Проекция>> ($U$) — семейство функций; пусть $k,n \in \mathbb{N}_0, k \le n$\vspace{-0.3cm}
+$$U^k_n: \mathbb{N}^n_0 \to \mathbb{N}_0,\ \ \ \ \ U^k_n(\overrightarrow{x}) = x_k$$\vspace{-0.5cm}\pause
+\item Примитив <<Подстановка>> ($S$) --- семейство функций; пусть $g: \mathbb{N}^k_0 \to \mathbb{N}_0,\ \ f_1,\dots,f_k: \mathbb{N}^n_0 \to \mathbb{N}_0$
+ \vspace{-0.3cm}
+$$S\langle g,f_1,f_2,\dots,f_k \rangle (\overrightarrow{x}) = g(f_1(\overrightarrow{x}),\dots,f_k(\overrightarrow{x}))$$
+\end{enumerate}
+\end{dfn}
+\end{frame}
+
+\begin{frame}[fragile]{Примитивная рекурсия}
+\begin{dfn}[примитив <<примитивная рекурсия>>, $R$]
+Пусть $f: \mathbb{N}^n_0\to\mathbb{N}_0$ и $g: \mathbb{N}^{n+2}_0 \to\mathbb{N}_0$.
+Тогда $R\langle f,g\rangle: \mathbb{N}^{n+1}_0\to\mathbb{N}_0$, причём
+
+$$R\langle f,g\rangle(\overrightarrow{x},y)=
+ \left\{\begin{array}{ll} 
+  f(\overrightarrow{x}), &y=0\\
+  g(\overrightarrow{x},y-1,R\langle f,g\rangle (\overrightarrow{x},y-1)), &y > 0
+\end{array}\right.$$
+\end{dfn}\pause
+
+\vspace{-0.3cm}
+\begin{snote}\vspace{-0.5cm}
+\begin{verbatim}
+                    res := f(x1...xn);
+                    for yi = 0 to y-1 do
+                        res := g(x1...xn,yi,res);
+\end{verbatim}
+\end{snote}\pause
+
+\vspace{-0.3cm}
+\begin{exm}\vspace{-0.5cm}
+$$\begin{array}{ll}
+    R\langle f,g\rangle(\overrightarrow{x},3) &= g(\overrightarrow{x},2,R\langle f,g\rangle(\overrightarrow{x},2)) \\\pause
+ &=   g(\overrightarrow{x},2,g(\overrightarrow{x},1,R\langle f,g\rangle(\overrightarrow{x},1))) \\\pause
+ &=   g(\overrightarrow{x},2,g(\overrightarrow{x},1,g(\overrightarrow{x},0,R\langle f,g\rangle(\overrightarrow{x},0)))) \\\pause
+ &=  g(\overrightarrow{x},2,g(\overrightarrow{x},1,g(\overrightarrow{x},0,f(\overrightarrow{x}))))
+\end{array}$$
+\end{exm}
+
+%$$R\langle f,g\rangle(\overrightarrow{x},y) = \texttt{foldl}\ (\lambda r.\lambda t.g(\overrightarrow{x},t,r))\ f(\overrightarrow{x})\ [0..y-1]$$
+
+\end{frame}
+
+\begin{frame}{Примитивно-рекурсивные функции}
+\begin{dfn}Функция $f$ --- примитивно-рекурсивна, если может быть
+выражена как композиция примитивов $Z$, $N$, $U$, $S$ и $R$.
+\end{dfn}\pause
+
+\begin{thm}
+$f(x) = x+2$ примитивно-рекурсивна
+\end{thm}\pause
+
+\begin{proof}
+$f = S \langle N,N \rangle$
+\vspace{0.5cm}\pause
+
+{\color{gray}
+$N(x)=x+1$
+
+$S\langle g,f\rangle (x) = g(f(x))$
+}\pause
+
+\vspace{0.5cm}
+$f,g = N$\pause
+
+$S\langle N,N\rangle (x) = N(N(x)) = (x+1)+1$
+\end{proof}
+\end{frame}
+
+\begin{frame}{Примитивно-рекурсивные функции: $x+y$}
+\begin{lmm}
+$f(a,b) = a+b$ примитивно-рекурсивна
+\end{lmm}
+\begin{proof} $f = R \langle U^1_1, S\langle N, U^3_3\rangle \rangle$:
+\vspace{0.2cm}\pause
+
+{\color{gray}
+$R\langle f,g\rangle(x,y)
+=\left\{\begin{array}{ll} 
+  f(x), &y=0\\
+  g(x,y-1,R\langle f,g\rangle (x,y-1)), &y > 0
+\end{array}\right.$ 
+
+%$U^1_1(x) = x$
+
+%$U^3_3(x,y,r) = r$
+}\vspace{0.2cm}\pause
+
+\begin{itemize}
+\item База. $R\langle U^1_1, S\langle N, U^3_3\rangle \rangle(x,0) = U^1_1(x) = x$\pause
+
+\item Переход. $R\langle U^1_1, S\langle N, U^3_3\rangle \rangle(x,y+1) = $\pause
+
+$... = S\langle N, U^3_3\rangle (x,y,R\langle U^1_1(x), S\langle N, U^3_3\rangle\rangle (x,y) ) =$\pause
+
+$... = S\langle N, U^3_3\rangle (x,y,x + y) = $\pause 
+
+$... = N(x+y) = x+y+1$
+\end{itemize}
+
+\end{proof}
+\end{frame}
+
+\begin{frame}[fragile]{Какие функции примитивно-рекурсивные?}
+\begin{enumerate}
+\item Сложение, вычитание\pause
+\item Умножение, деление\pause
+\item Вычисление простых чисел\pause
+\item Неформально: все функции, вычисляемые конечным числом вложенных циклов \verb!for!:
+
+\begin{verbatim}
+for (int i1 = 0; i1 < g1(x1...xn); i1++) {
+    for (int i2 = 0; i2 < g2(x1...xn,i1); i2++) {
+        ...
+           for (int ik = 0; ik < gk(x1...xn,i1,i2...); ik++) {
+               // выражение без циклов
+           }
+        ...
+    }
+}
+\end{verbatim}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Общерекурсивные функции}
+\begin{dfn}
+Функция --- общерекурсивная, если может быть построена при помощи
+примитивов $Z$, $N$, $U$, $S$, $R$ и примитива минимизации:
+$$M\langle f \rangle (x_1,x_2,\dots,x_n) = \min\{y: f(x_1,x_2,\dots,x_n,y) = 0\}$$
+Если $f(x_1,x_2,\dots,x_n,y) > 0$ при любом $y$, результат не определён.
+\end{dfn}\pause
+
+%Это --- цикл \texttt{while}: 
+
+Пример:
+
+Пусть $f(x,y) = x-y^2$, тогда $\lceil\sqrt{x}\rceil = M\langle f\rangle (x)$
+
+\begin{verbatim}
+int sqrt(int x) {
+    int y = 0;
+    while (x-y*y > 0) y++;
+    return y;
+}
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}{Выразительная сила}
+\begin{dfn}
+Функция Аккермана:
+$$A(m,n) = \left\{\begin{array}{ll}
+  n+1,&m = 0\\
+  A(m-1,1),&m > 0, n = 0\\
+  A(m-1,A(m,n-1)),&m > 0, n > 0
+\end{array}\right.$$
+\end{dfn}
+
+%\begin{thm}
+%Функция Аккермана --- общерекурсивная, но не примитивно-рекурсивная.
+%\end{thm}\pause
+
+\begin{exm}
+\begin{tabular}{cccccccc}
+$n$ & $0$ & $1$ & $2$ & $3$ & $4$ & \dots \\\hline
+$0$ & $1$ & $2$ & $3$ & $5$ & $13$   \\
+$1$ & $2$ & $3$ & $5$ & $13$ & $65533$ \\
+$2$ & $3$ & $4$ & $7$ & $29$ & $2^{65536}-3$ \\
+$n$ & $n+1$ & $n+2$ & $2n+3$ & $2^{n+3}-3$ & $\underbrace{2^{2^{2^{\dots^2}}}}_{n+3}-3$
+\end{tabular}
+\end{exm}
+\end{frame}
+
+\begin{frame}{Лемма о росте функции Аккермана}
+\begin{multicols}{2}
+\begin{dfn}$A^{(p)}(k,x) = \underbrace{A(k,A(k,A(k,\dots,A(k,x)))}_{p\ \text{раз}}$\end{dfn}
+\begin{lmm}
+\begin{enumerate}
+\item $A(p,q) = A^{(q+1)}(p-1,1)$
+\item $A^{(x+2)}(k,x) < A(k+2,x)$
+\end{enumerate}\end{lmm}
+\columnbreak
+
+\color{gray}\footnotesize
+$$A(m,n) = \left\{\begin{array}{ll}
+  n+1,&m = 0\\
+  A(m-1,1),&m > 0, n = 0\\
+  A(m-1,A(m,n-1)),&m > 0, n > 0
+\end{array}\right.$$
+
+$A(0,n) = n+1$ \\
+
+$A(2,n) = 2n + 3$
+
+\end{multicols}
+
+\vspace{-0.5cm}
+\begin{proof}
+\begin{enumerate}
+\item $A(p,q) = A(p-1,A(p,q-1)) = \dots = A(p-1,A(p-1,\dots A(p,0)) = A^{(q)}(p-1,A(p,0)) = A^{(q+1)}(p-1,1)$
+
+\item
+%$\alpha_{m+2}(n) = \alpha_{m+1}^{n+1}(1) = \alpha_{m+1}(\alpha_{m+1}^n(1)) =
+%\alpha_m^{\alpha_{m+1}^n(1)+1}(1) = \alpha_m^{\alpha_{m+2}(n-1)+1}(1)
+%\ge \alpha_m^{\alpha_2(n-1)+1}(1) = \alpha_m^{2(n-1)+3+1}(1) =
+% \alpha_m^{n+n+2}(1) = \alpha_m^{n+2} (\alpha_m^{n}(1))$
+
+$A(k+2,x) = A(k+1,A(k+2,x-1)) = A^{(A(k+2,x-1)+1)}(k,1) \ge A^{(A(2,x-1)+1)}(k,1) = A^{(2(x-1)+3+1)}(k,1)
+= A^{(2x+2)}(k,1) = A^{(x+2)}(k,A^{(x)}(k,1)) \ge A^{(x+2)}(k,A^{(x)}(0,1)) = A^{(x+2)}(k,x+1) > A^{(x+2)}(k,x)$
+
+\end{enumerate}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Функция Аккермана не примитивно-рекурсивна}
+\begin{thm}Пусть $f(\overrightarrow{x})$ --- примитивно-рекурсивная.
+Тогда найдётся $k$, что $f(\overrightarrow{x}) < A(k,\max(\overrightarrow{x}))$\end{thm}
+
+\begin{proof}
+Индукция по структуре $f$.
+\begin{enumerate}
+\item $f = Z$, тогда $k = 0$, т.к. $A(0,x) = x+1 > Z(x) = 0$;
+\item $f = N$, тогда $k = 1$, т.к. $A(1,x) = x + 2 > N(x) = x+1$;
+\item $f = U^n_s$, тогда $k = 0$, т.к. $f(\overrightarrow{x}) \le \max(\overrightarrow{x}) < A(0,\max(\overrightarrow{x}))$;
+\item $f = S\langle g,h_1,\dots,h_n\rangle$, тогда $k = k_g + \max(k_{h_1},\dots,k_{h_n}) + 2$;
+%f(\overrightarrow{x}) < A(k_f,\max(\overrightarrow{x}))$, $h_t(\overrightarrow{x}) < A(k_{h_t},\max(\overrightarrow{x}))$.
+%Пусть $k = \max(k_g,k_{h_1},\dots,k_{h_n})+2$;
+ %$S\langle g,h_1,\dots,h_n\rangle < A(k_g, A(\max (\overrightarrow{k_h}), \max({\overrightarrow{x}))) = A^{(\max)}$
+\item $f = R\langle g,h \rangle$, тогда $k = \max(k_g,k_h)+2$. %$R\langle g,h\rangle(x,v) = g^{[v]}(h(x)) < A(k_g,A(\dots A(k_g,A(k_h,x)))) \le A(x \ $
+% < A(k_g,A(\dots A(k_g,A(k_h,max(\overrightarrow{x},y))))) 
+%\le A^{(y}$
+\end{enumerate}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Доказательство оценки для R}
+\begin{lmm}
+Пусть $f = R\langle g,h \rangle$. Тогда при $k = \max(k_g,k_h)+2$ выполнено $f(\overrightarrow{x},y) \le A^{(y+1)}(k-2,\max(\overrightarrow{x},y))$.
+\end{lmm}
+
+
+\begin{proof}
+
+Индукция по $y$.
+\begin{itemize}
+\item База: $y = 0$. Тогда: $f(\overrightarrow{x},0) = g(\overrightarrow{x}) \le 
+A(k_g,\max(\overrightarrow{x})) \le A^{(1)}(k-2,\max(\overrightarrow{x},0))$.
+
+\item Переход: пусть $f(\overrightarrow{x},y) \le A^{(y+1)}(k-2,\max(\overrightarrow{x},y))$.
+Тогда $f(\overrightarrow{x},y+1) = h(\overrightarrow{x},y,f(\overrightarrow{x},y))
+\le A(k_h,\max(\overrightarrow{x},y,f(\overrightarrow{x},y))) 
+\le A(k_h,\max(\overrightarrow{x},y,A^{(y+1)}(k-2,\max(\overrightarrow{x},y))) = A(k_h,A^{(y+1)}(k-2,\max(\overrightarrow{x},y)))
+\le A^{(y+2)}(k-2,\max(\overrightarrow{x},y+1))$
+
+%\le \alpha^{y+2}_{K-2}(\max(\overrightarrow{x},y)))\le$$
+\end{itemize}
+\vspace{-0.3cm}
+\end{proof}
+
+Заметим, что $A^{(y+1)}(k-2,\max(\overrightarrow{x},y)) \le
+A^{(\max(\overrightarrow{x},y)+1)}(k-2,\max(\overrightarrow{x},y)) \le
+ A^{(\max(\overrightarrow{x},y)+2)}(k-2,\max(\overrightarrow{x},y)) <
+A(k,\max(\overrightarrow{x},y))$
+\end{frame}
+
+\begin{frame}{Тезис Чёрча}
+\begin{dfn}
+Тезис Чёрча для общерекурсивных функций: любая эффективно-вычислимая
+функция $\mathbb{N}^k_0\to\mathbb{N}_0$ является общерекурсивной.
+\end{dfn}
+\end{frame}
+
+\begin{frame}{Новые обозначения}
+\begin{dfn}
+Запись вида $\psi(\theta_1,\dots,\theta_n)$ означает
+$\psi[x_1:=\theta_1,\dots,x_n:=\theta_n]$
+\end{dfn}\pause
+
+\begin{dfn}[Литерал числа]
+$$\overline{a} = \left\{\begin{array}{ll} 0, &\mbox{если } a = 0\\
+                (\overline{b})', &\mbox{если } a = b+1
+\end{array}\right.$$
+\end{dfn}\pause
+
+Пример: пусть $\psi := x_1 = 0$. \pause Тогда $\psi(\overline{3})$ соответствует формуле $0''' = 0$
+
+\end{frame}
+
+\begin{frame}{Выразимость отношений в Ф.А.}
+\begin{dfn}
+Будем говорить, что отношение $R\subseteq \mathbb{N}^n_0$ выразимо в ФА, 
+если существует формула $\rho$, что:
+\begin{enumerate}
+\item если $\langle a_1,\dots,a_n \rangle \in R$, то $\vdash \rho(\overline{a_1},\dots,\overline{a_n})$
+\item если $\langle a_1,\dots,a_n \rangle \notin R$, то $\vdash \neg\rho(\overline{a_1},\dots,\overline{a_n})$
+\end{enumerate}
+\end{dfn}\pause
+
+\begin{thm} отношение <<равно>> выразимо в Ф.А.:
+$R = \{ \langle x,x \rangle\ |\ x \in \mathbb{N}_0 \}$
+\end{thm}\pause
+
+\begin{proof}
+Пусть $\rho := x_1=x_2$. \pause Тогда:
+\begin{itemize}
+\item $\vdash p = p$ при $p := \overline{k}$ при всех $k \in \mathbb{N}_0$: \pause $\vdash 0=0$, $\vdash 0'=0'$, $\vdash 0''=0''$, ... \pause
+\item $\vdash \neg p = q$ при $p := \overline{k}$, $q := \overline{s}$ при всех $k,s \in \mathbb{N}_0$ и $k \ne s$.
+
+\pause $\vdash \neg 0 = 0'$, $\vdash \neg 0 = 0''$, $\vdash \neg 0''' = 0'$, ...
+\end{itemize}
+\end{proof}
+
+\end{frame}
+
+\begin{frame}{Представимость функций в Ф.А.}
+\begin{dfn}
+Будем говорить, что функция $f: \mathbb{N}^n_0\to\mathbb{N}_0$ представима в ФА, 
+если существует формула $\varphi$, что:
+\begin{enumerate}
+\item если $f(a_1,\dots,a_n) = u$, то $\vdash \varphi(\overline{a_1},\dots,\overline{a_n},\overline{u})$
+\item если $f(a_1,\dots,a_n) \ne u$, то $\vdash \neg\varphi(\overline{a_1},\dots,\overline{a_n},\overline{u})$
+\item для всех $a_i \in \mathbb{N}_0$ выполнено $\vdash (\exists x.\varphi(\overline{a_1},\dots,\overline{a_n},x)) \with 
+   (\forall p.\forall q.\varphi(\overline{a_1},\dots,\overline{a_n},p)\with \varphi(\overline{a_1},\dots,\overline{a_n},q)\rightarrow p=q)$
+\end{enumerate}
+\end{dfn}
+\end{frame}
+
+\begin{frame}{Соответствие рекурсивных и представимых функций}
+\begin{thm}Любая рекурсивная функция представима в Ф.А.\end{thm}\pause
+
+\begin{thm}Любая представимая в Ф.А. функция рекурсивна.\end{thm}
+\end{frame}
+
+\begin{frame}{Примитивы Z, N, U представимы в Ф.А.}
+\begin{thm}
+Примитивы $Z$, $N$ и $U^k_n$ представимы в Ф.А.
+\end{thm}\pause
+
+\begin{proof}
+\begin{itemize}
+\item $\zeta(x_1,x_2) := x_2=0$, \pause формальнее: $\zeta(x_1,x_2) := x_1=x_1 \with x_2=0$\pause
+\item $\nu(x_1,x_2) := x_2=x_1'$\pause
+\item $\upsilon(x_1,\dots,x_n,x_{n+1}) := x_k = x_{n+1}$ \pause \vspace{0.1cm}
+
+формальнее: 
+     $\upsilon(x_1,\dots,x_n,x_{n+1}) := (\underset{i\ne k,n+1}{\with} x_i=x_i) \with x_k = x_{n+1}$
+\end{itemize}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Примитив S представим в Ф.А.}
+
+$$S\langle f,g_1,\dots,g_k\rangle(x_1,\dots,x_n) = f(g_1(x_1,\dots,x_n),\dots,g_k(x_1,\dots,x_n))$$\pause
+\begin{thm}
+Пусть функции $f,g_1,\dots,g_k$ представимы в Ф.А. Тогда $S\langle f,g_1,\dots,g_k \rangle$ представима в Ф.А.
+\end{thm}\pause
+
+\begin{proof}
+Пусть $f$, $g_1$, ..., $g_k$ представляются формулами $\varphi$, $\gamma_1$, ..., $\gamma_k$. \pause
+
+Тогда 
+$S\langle f,g_1,\dots,g_k\rangle$ будет представлена формулой
+$$\exists g_1.\dots.\exists g_k.\varphi(g_1,\dots,g_k,x_{n+1})\with\gamma_1(x_1,\dots,x_n,g_1)\with\dots\with\gamma_k(x_1,\dots,x_n,g_k)$$
+\end{proof}
+
+\end{frame}
+
+\begin{frame}{$\beta$-функция Гёделя}
+Задача: закодировать последовательность натуральных чисел произвольной длины.\pause
+\begin{dfn}$\beta$-функция Гёделя: $\mathcal{\beta}(b,c,i) := b \% (1 + (i+1) \cdot c)$\\
+Здесь (\%) --- остаток от деления.
+\end{dfn}\pause
+\begin{thm}$\beta$-функция Гёделя представима в Ф.А. формулой
+$$\hat{\beta}(b,c,i,d) := \exists q.(b = q \cdot (1 + c \cdot (i+1)) + d) \& (d < 1 + c \cdot (i+1))$$
+\end{thm}\pause\vspace{-0.3cm}
+Деление $b$ на $x$ с остатком: найдутся частное $(q)$ и остаток $(d)$, что
+$b = q\cdot x + d$ и $0 \le d < x$.
+\pause
+\begin{thm}Если $a_0, \dots, a_n \in \mathbb{N}_0$, то найдутся такие $b,c \in \mathbb{N}_0$, что
+$a_i = \beta(b,c,i)$
+\end{thm}
+\end{frame}
+
+\begin{frame}{Доказательство свойства $\beta$-функции}
+\begin{thm}Китайская теорема об остатках (вариант формулировки): если $u_0, \dots, u_n$ --- попарно 
+взаимно просты, и $0 \le a_i < u_i$, то существует такой $b$, что $a_i = b \% u_i$.
+\end{thm}\pause
+Положим $c = \max(a_0,\dots,a_n,n)!$ и $u_i = 1+c\cdot(i+1)$.\pause
+\begin{itemize}
+\item $\text{НОД}(u_i,u_j) = 1$, если $i \ne j$.\pause
+
+Пусть $p$ --- простое, $u_i\divisible p$ и $u_j\divisible p$ ($i < j$). \pause
+Заметим, что $u_j-u_i = c \cdot (j-i)$. Значит, $c\divisible p$ или $(j-i)\divisible p$. \pause
+Так как $j-i \le n$, то $c \divisible (j-i)$, потому если и $(j-i)\divisible p$, всё равно $c \divisible p$. \pause
+Но и $(1+c\cdot(i+1))\divisible p$, отсюда $1 \divisible p$ --- что невозможно. \pause
+\item $0 \le a_i < u_i$.\pause
+\end{itemize}
+Условия китайской теоремы об остатках выполнены и найдётся $b$, что \vspace{-0.2cm}
+$$a_i = b \% (1 + c\cdot(i+1)) = \beta(b,c,i)$$
+\qed
+\end{frame}
+
+\begin{frame}{Примитив <<примитивная рекурсия>> представим в Ф.А.}
+
+Пусть $f: \mathbb{N}^n_0\to\mathbb{N}_0$ и $g:\mathbb{N}^{n+2}_0\to\mathbb{N}_0$ представлены формулами $\varphi$ и $\gamma$. 
+
+Зафиксируем $x_1, \dots, x_n, y \in \mathbb{N}_0$.\pause\vspace{0.3cm}
+
+\begin{tabular}{lll}
+Шаг вычисления & Об. & Утверждение в Ф.А.\\
+$R\langle f,g\rangle (x_1,\dots,x_n,0) = f(x_1,\dots,x_n)$ & $a_0$ & $\vdash \varphi(\overline{x_1},\dots,\overline{x_n},\overline{a_0})$\\ \pause
+$R\langle f,g\rangle (x_1,\dots,x_n,1) = g(x_1,\dots,x_n,0,a_0)$ & $a_1$ & $\vdash \gamma(\overline{x_1},\dots,\overline{x_n},0,\overline{a_1})$\\ \pause
+$\dots$\\
+$R\langle f,g\rangle (x_1,\dots,x_n,y) = g(x_1,\dots,x_n,y-1,a_{y-1})$ & $a_y$ & $\vdash \gamma(\overline{x_1},\dots,\overline{x_n},\overline{y-1},\overline{a_y})$
+\end{tabular}\pause\vspace{0.3cm}
+
+По свойству $\beta$-функции, найдутся $b$ и $c$, что
+$\beta (b,c,i) = a_i$ для $0 \le i \le y$.\pause
+
+\begin{thm}Примитив $R\langle f,g\rangle$ представим в Ф.А. формулой $\rho(x_1,\dots,x_n,y,a)$:\vspace{-0.1cm}
+$$\begin{array}{l}\exists b. \exists c. (\exists a_0. \hat{\beta} (b,c,0,a_0) \& \varphi (x_1,...x_n, a_0)) \\
+       \&\;\;\;\;\forall k.k < y \rightarrow \exists d . \exists e . \hat{\beta} (b,c,k,d) \& \hat{\beta} (b,c,k',e) \& \gamma (x_1,..x_n,k,d,e) \\
+       \&\;\;\;\;\hat{\beta} (b,c,y,a) 
+\end{array}$$
+\end{thm}
+\end{frame}
+
+\begin{frame}{Представимость рекурсивных функций в Ф.А.}
+\begin{thm}Пусть функция $f:\mathbb{N}^{n+1}_0 \to \mathbb{N}_0$ представима в Ф.А.
+формулой $\varphi(x_1,\dots,x_{n},y,r)$. Тогда примитив $M\langle f\rangle$ представим в Ф.А. 
+формулой $$\mu(x_1,\dots,x_n,y) := \varphi(x_1,\dots,x_n,y,0) \with \forall u.u < y \to \neg\varphi(x_1,\dots,x_n,u,0)$$
+\end{thm}\pause
+
+\begin{thm}Если $f$ --- рекурсивная функция, то она представима
+в Ф.А.
+\end{thm}
+\begin{proof}Индукция по структуре $f$.
+\end{proof}
+\end{frame}
+
+\begin{frame}{Рекурсивность представимых функций в Ф.А.}
+Фиксируем $f$ и $x_1, x_2, \dots, x_n$. Обозначим $y = f(x_1,x_2,\dots,x_n)$. \pause
+По представимости нам известна $\varphi$, что $\vdash \varphi(\overline{x_1},\overline{x_2},\dots,\overline{x_n},\overline{y})$. \pause
+Давайте просто переберём все результаты и доказательства!\pause
+
+\begin{enumerate}
+\item Закодируем доказательства натуральными числами.\pause
+\item Напишем рекурсивную функцию, проверяющую доказательства на корректность.\pause
+\item Параллельный перебор значений и доказательств: $s = 2^y \cdot 3^p$. Переберём все $s$, по $s$ получим $y$ и $p$.
+Проверим, что $p$ --- код доказательства $\vdash \varphi(\overline{x_1},\overline{x_2},\dots,\overline{x_n},\overline{y})$.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Гёделева нумерация}
+
+\begin{enumerate}
+\item Отдельный символ.\vspace{0.2cm}
+
+\begin{tabular}{lc|lc||cll}
+Номер & Символ & Номер & Символ & Имя & $k,n$ & Гёделев номер\\
+3 & ( &               17 & $\&$ &  0 & $0,0$ & $27 + 6$\\
+5 & ) &               19 & $\forall$ & $(')$ & $0,1$ & $27 + 6 \cdot 3$\\
+7 & , &               21 & $\exists$ & $(+)$ & $0,2$ & $27 + 6 \cdot 9$\\
+9 & . &               23 & $\vdash$ & $(\cdot)$ & $1,2$ & $27 + 6 \cdot 2 \cdot 9$\\
+11 & $\neg$ &         $25 + 6\cdot k$ & $x_k$ & $(=)$ & $0,2$ & $29 + 6 \cdot 9$\\
+13 & $\rightarrow$ &  $27 + 6\cdot 2^k \cdot 3^n$ & $f_k^n$\\
+15 & $\vee$ &         $29 + 6\cdot 2^k \cdot 3^n$ & $P_k^n$ 
+\end{tabular}\pause
+
+\item Формула. $\phi \equiv s_0s_1\dots s_{n-1}$. Гёделев номер: $\ulcorner\phi\urcorner = 2^{\ulcorner s_0\urcorner}\cdot 3^{\ulcorner s_1\urcorner} 
+\cdot \dots \cdot p_{n-1}^{\ulcorner s_{n-1}\urcorner}$.\pause
+
+\item Доказательство. $\Pi = \delta_0\delta_1\dots\delta_{k-1}$, его гёделев номер: $\ulcorner\Pi\urcorner =
+2^{\ulcorner \delta_0\urcorner}\cdot 3^{\ulcorner \delta_1\urcorner} \cdot \dots \cdot p_{k-1}^{\ulcorner \delta_{k-1}\urcorner}$
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Проверка доказательства на корректность}
+\begin{thm}Следующая функция рекурсивна:
+$$\text{proof}(f,x_1,x_2,\dots,x_n,y,p) = \left\{\begin{array}{ll} 
+1, & \mbox{если} \vdash\phi(\overline{x_1},\overline{x_2},\dots,\overline{x_n},\overline{y}),\\
+   & p \mbox{ --- гёделев номер вывода}, f = \ulcorner\phi\urcorner \\ 
+0, & \mbox{иначе}
+\end{array}\right.$$\vspace{-0.1cm}\pause
+\end{thm}
+\begin{proof}[Идея доказательства]
+\begin{enumerate}
+%\item По представимости, $\vdash\phi(\overline{x_1},\overline{x_2},\dots,\overline{x_n},\overline{y})$ 
+%эквивалентно $f(x_1,x_2,\dots,x_n)=y$.\pause
+\item Проверка доказательства вычислима.\pause
+\item Согласно тезису Чёрча, любая вычислимая функция
+вычислима с помощью рекурсивных функций.
+\end{enumerate}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Перебор доказательств}
+\begin{lmm}Следующие функции рекурсивны:
+\begin{enumerate}
+\item Функции $\text{plog}_k(n) = \max\{p: n \divisible k^p\}$, $\text{fst}(x) = \text{plog}_2(x)$ и $\text{snd}(x) = \text{plog}_3(x)$.\pause
+\item Числовые литералы: $\overline{k}: \mathbb{N}_0 \rightarrow \mathbb{N}_0$, $\overline{k}(x) = k$.\pause
+\end{enumerate}
+\end{lmm}
+\begin{thm}Если $f: \mathbb{N}^n_0\rightarrow\mathbb{N}_0$, и $f$ представима в Ф.А. формулой $\varphi$, то $f$ --- рекурсивна.
+\end{thm}\pause
+\begin{proof}
+Пусть заданы $x_1,x_2,\dots,x_n$. Ищем $\langle y, p\rangle$, 
+что $\text{proof}(\ulcorner\varphi\urcorner,x_1,x_2,\dots,x_n,y,p)=1$, \pause
+напомним: $y = f(x_1,x_2,\dots,x_n)$, $p = \ulcorner\Pi\urcorner$,
+$\Pi$ --- доказательство $\varphi(\overline{x_1},\overline{x_2},\dots,\overline{x_n},\overline{y})$. \pause
+$$f = S \langle \text{fst}, M\langle S \langle \text{proof}, \overline{\ulcorner\varphi\urcorner}, U^1_{n+1}, U^2_{n+1}, \dots, U^n_{n+1}, 
+  S \langle \text{fst},U^{n+1}_{n+1}\rangle, S\langle \text{snd}, U^{n+1}_{n+1}\rangle \rangle \rangle \rangle$$
+\end{proof}
+\end{frame}
+
+\end{document}
