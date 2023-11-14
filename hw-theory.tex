@@ -902,7 +902,7 @@ $$\infer[\text{Левая проекция}]{\Gamma\vdash \pi_L P:\alpha}{\Gamma
 
 $$\infer[\text{Левая инъекция}]{\Gamma\vdash In_L A : \alpha\vee\beta}{\Gamma\vdash A:\alpha}\quad\quad
 \infer[\text{Правая инъекция}]{\Gamma\vdash In_R B : \alpha\vee\beta}{\Gamma\vdash B:\beta}$$
-$$\infer[\text{Case}]{\Gamma\vdash Case\ L\ R\ D : \gamma}{\Gamma\vdash L : \alpha\rightarrow\gamma\quad\Gamma\vdash R: \beta\rightarrow\gamma\quad \Gamma\vdash D:\alpha\vee\beta}$$
+$$\infer[\text{Сопоставление с образцом}]{\Gamma\vdash \text{Case}\ L\ R\ D : \gamma}{\Gamma\vdash L : \alpha\rightarrow\gamma\quad\Gamma\vdash R: \beta\rightarrow\gamma\quad \Gamma\vdash D:\alpha\vee\beta}$$
 
 Правило для лжи:
 
@@ -910,11 +910,11 @@ $$\infer{\Gamma\vdash \text{absurd\ }E:\alpha}{\Gamma\vdash E:\bot}$$
 
 Постройте натуральный вывод для следующих утверждений, а также постройте соответствующее в смысле изоморфизма Карри-Ховарда 
 лямбда-выражение (и докажите его тип):
-\begin{itemize}
+\begin{enumerate}
 \item Карринг: $(\alpha\with\beta\rightarrow\gamma)\leftrightarrow(\alpha\rightarrow\beta\rightarrow\gamma)$
 \item $(\alpha\vee\beta\rightarrow\gamma)\leftrightarrow(\alpha\rightarrow\gamma)\with(\beta\rightarrow\gamma)$
 \item $((\alpha\rightarrow\bot)\vee\beta)\rightarrow(\alpha\rightarrow\beta)$
-\end{itemize}
+\end{enumerate}
 
 \item Покажите, что в отличии от бета-редуцируемости, для бета-редукции не выполнена теорема Чёрча-Россера
 (рефлексивность и транзитивность отношения для теоремы существенна).
