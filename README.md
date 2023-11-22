@@ -134,3 +134,13 @@ https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf
 ### Где почитать
 + Morten Heine B. Sørensen, Pawel Urzyczyn: Lections on the Curry-Howard Isomorphism
 https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf
+
+## Лекция 11
+### Теория множеств
++ История возникновения теории
++ Аксиомы теории множеств
++ Ординалы
+### Где почитать
++ П.Дж. Коэн, Теория множеств и континуум-гипотеза --- М.: Изд-во <<Мир>>, 1969.
++ Конспекты 2011 и 2018 года по логике.
++ Френкель А.А., Бар-Хиллел И. Основания теории множеств. --- УРСС, 2010
