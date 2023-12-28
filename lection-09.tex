@@ -143,7 +143,7 @@ $\vdash\neg\forall p.\neg\omega_1(\overline{\ulcorner\sigma\urcorner},p)$. \paus
 \begin{proof}
  Рассмотрим Ф.А. с классической моделью. \pause
  Из теоремы Гёделя имеем $\not\vdash\sigma(\overline{\ulcorner\sigma\urcorner})$. \pause
- Рассмотрим $\sigma(\overline{\ulcorner\sigma\urcorner}) \equiv \forall p.\neg\omega_1(\overline{\ulcorner\sigma\urcorner}),p$:
+ Рассмотрим $\sigma(\overline{\ulcorner\sigma\urcorner}) \equiv \forall p.\neg\omega_1(\overline{\ulcorner\sigma\urcorner},p)$:
 нет числа $p$, что $p$ --- номер доказательства $\sigma(\overline{\ulcorner\sigma\urcorner})$. \pause 
  То есть, $\llbracket \forall p.\neg\omega_1(\overline{\ulcorner\sigma\urcorner}),p) \rrbracket = \text{И}$. \pause
  То есть, $\models \sigma(\overline{\ulcorner\sigma\urcorner})$.
@@ -155,7 +155,7 @@ $\vdash\neg\forall p.\neg\omega_1(\overline{\ulcorner\sigma\urcorner},p)$. \paus
 \begin{dfn}$\theta_1\le\theta_2 \equiv \exists p.p+\theta_1=\theta_2\quad\quad\theta_1<\theta_2\equiv\theta_1\le\theta_2\with\neg\theta_1=\theta_2$\end{dfn}\pause
 \begin{dfn}Пусть $\langle \ulcorner\xi\urcorner,p\rangle \in W_2$, если $\vdash\neg\xi(\overline{\ulcorner\xi\urcorner})$.
 Пусть $\omega_2$ выражает $W_2$ в формальной арифметике.\end{dfn}\pause
-\begin{thm}Рассмотрим $\rho(x_1) = \forall p.\omega_1(x_1,p)\rightarrow\exists q.q \le p \with \omega_2(x_2,q)$. \pause
+\begin{thm}Рассмотрим $\rho(x_1) = \forall p.\omega_1(x_1,p)\rightarrow\exists q.q \le p \with \omega_2(x_1,q)$. \pause
 Тогда $\not\vdash\rho(\overline{\ulcorner\rho\urcorner})$ и $\not\vdash\neg\rho(\overline{\ulcorner\rho\urcorner})$. \pause
 $\rho(\overline{\ulcorner\rho\urcorner})$: <<Меня легче опровергнуть, чем доказать>>
 \end{thm}%\pause
