@@ -840,7 +840,7 @@ $\vdash\neg\varphi(\overline{x_1},\dots,\overline{x_n},\overline{y})$ при $f(
 \item $\overline{2}\ \overline{2}\ \overline{2}\ \overline{2}\ \overline{2}\ \overline{2}\ \overline{2}$
 \end{enumerate}
 
-\item На лекции был приведён комбинатор неподвижной точки $Y := \lambda f.\lambda x.(f\ (x\ x))\ (f\ (x\ x))$, обладающий свойством
+\item На лекции был приведён комбинатор неподвижной точки $Y := \lambda f.(\lambda x.f\ (x\ x))\ (\lambda x.f\ (x\ x))$, обладающий свойством
 $Y\ P =_\beta P\ (Y\ P)$ для любого терма $P$. С его помощью оказывается возможным реализовывать рекурсию.
 
 Например, зададим функцию, возводящую 2 в соответствующую степень: $$P := \lambda f.\lambda x.(IsZero\ x)\ 1\ (f\ ((Dec\ x) \cdot 2))$$
