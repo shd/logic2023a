@@ -1,0 +1,370 @@
+\documentclass[handout]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{cancel}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{tikz}
+\usepackage{multicol}
+\usetikzlibrary{patterns}
+\usepackage{chronosys}
+\usepackage{proof}
+\usepackage{multirow}
+\setbeamertemplate{navigation symbols}{}
+%\usetheme{Warsaw}
+
+\newtheorem{thm}{Теорема}[section]
+\newtheorem{dfn}{Определение}[section]
+\newtheorem{lmm}{Лемма}[section]
+\newtheorem{exm}{Пример}[section]
+\newtheorem{snote}{Пояснение}[section]
+
+\newcommand{\divisible}%                                                     
+{\mathrel{\lower.2ex%
+\vbox{\baselineskip=0.7ex\lineskiplimit=0pt%
+\kern6pt \hbox{.}\hbox{.}\hbox{.}}%
+}}
+
+\begin{document}
+
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+
+\begin{frame}{}
+\LARGE\begin{center}Теорема о непротиворечивости формальной арифметики\end{center}
+\end{frame}
+
+\begin{frame}{Два вида индукции}
+\begin{dfn}[принцип математической индукции]
+Какое бы ни было $\varphi(x)$, если $\varphi(0)$ и при всех $x$ выполнено $\varphi(x)\rightarrow \varphi(x')$, то
+при всех $x$ выполнено и само $\varphi(x)$.
+\end{dfn}
+
+\begin{dfn}[принцип полной математической индукции]
+Какое бы ни было $\psi(x)$, если $\psi(0)$ и при всех $x$ выполнено $(\forall t.t \leq x \rightarrow \psi(t))\rightarrow \psi(x')$, то
+при всех $x$ выполнено и само $\psi(x)$.
+\end{dfn}
+
+\begin{thm}Принципы математической индукции эквивалентны\end{thm}
+\begin{proof}
+$(\Rightarrow)$ взяв $\varphi := \psi$, имеем выполненность $\varphi(x)\rightarrow\varphi(x')$, значит, $\forall x.\psi(x)$. \pause\\
+$(\Leftarrow)$ возьмём $\psi(x) := \forall t.t\le x\rightarrow\varphi(t)$.
+\end{proof}
+\end{frame}
+
+\begin{frame}{Наследственные множества}
+\begin{dfn} Назовём вполне упорядоченное отношением $(\in)$ множество $S$ наследственным подмножеством $A$, если 
+$\forall x.x \in A \rightarrow (\forall t.t \in x \rightarrow t \in S) \rightarrow x \in S$.
+\end{dfn}
+\begin{thm}Единственным наследственным подмножеством вполне упорядоченного множества является оно само.\end{thm}
+\begin{proof}Пусть $B \subseteq A$ --- наследственное и $B \ne A$.
+Тогда существует $a = \min (A \setminus B)$. Тогда $(\forall t.t \in a \rightarrow t \in B) \rightarrow a \in B$ по наследственности $B$,
+и выполнено $\forall t.t \in a \rightarrow t \in B$ (по минимальности $a$). Значит, $a \in B$.
+\end{proof}
+\end{frame}
+
+\begin{frame}{Трансфинитная индукция}
+\begin{thm}[Принцип <<полной>> трансфинитной индукции] Если для $\varphi(x)$ (некоторого утверждения
+теории множеств) и некоторого ординала $\varepsilon$ выполнено
+$\forall x.x \in \varepsilon \rightarrow (\forall t.t \in x \rightarrow \varphi(t)) \rightarrow \varphi(x)$,
+то $\forall x.x \in \varepsilon \rightarrow \varphi(x)$.
+\end{thm}
+\begin{proof}Рассмотрим $S = \{ x\in \varepsilon\ |\ \varphi(x) \}$. Тогда $x \in S$ равносильно $\varphi(x)$.
+Тогда перепишем: $\forall e.e \in \varepsilon \rightarrow (\forall x.x \in e \rightarrow x \in S) \rightarrow e \in S$.
+Отсюда по теореме о наследственных множествах $S = \varepsilon$.\end{proof}
+\end{frame}
+
+\begin{frame}{Альтернативная формулировка}
+\begin{thm}Для ординала $\varepsilon$ подмножество $S \in \varepsilon$ --- наследственное, % тогда и только тогда, когда 
+если одновременно:\\
+Если $x \in \varepsilon$ и $x = \varnothing$, то $x \in S$;\\
+Если $x \in \varepsilon$ и существует $y$: $y' = x$, то $y \in S \rightarrow x \in S$;\\
+Если $x \in \varepsilon$ и $x$ --- предельный, то $(\forall t.t \in x \rightarrow t \in S) \rightarrow (x \in S)$.
+\end{thm}
+
+\begin{proof}$(\Rightarrow)$ очевидно. \pause Докажем $(\Leftarrow)$: пусть $S$ не наследственное: 
+$E := \{e \in \varepsilon \ |\  (\forall t.t \in e \rightarrow t \in S) \with e \notin S \}$
+и $E \ne \varnothing$. Тогда пусть $e = \min E$. %Возможны три варианта:
+
+\begin{enumerate}
+\item $e = \varnothing$ или предельный. Тогда $(\forall t.t \in e \rightarrow t \in S) \rightarrow (e \in S)$.
+\item $e = y'$. Тогда $y \in \varepsilon$ ($\varepsilon$ --- ординал) и 
+$(\forall t.t \in y \rightarrow t \in S) \rightarrow (y \in S)$ (так как $e$ минимальный, для которого $S$ не наследственное). \pause
+По условию, $(y \in S) \rightarrow (e \in S)$, отсюда $(\forall t.t \in e \rightarrow t \in S) \rightarrow (e \in S)$.
+
+\begin{center}\tikz{\draw[thick,-stealth] (0,0) -- (7,0); 
+\filldraw (2,0) circle (1pt);
+\filldraw (1,0) circle (1pt);
+\filldraw (3,0) node[above] {$t \in y$} circle (2pt);
+\filldraw[red] (4,0) node[above] {$y$} circle (2pt) ;
+\filldraw (5,0) node[above] {$e\vphantom{y}$} circle (2pt) ; }\end{center}
+
+\end{enumerate}\vspace{-0.3cm}
+\end{proof}
+
+%\begin{thm}[Принцип трансфинитной индукции] Если для $\varphi(x)$ и некоторого ординала $\varepsilon$ выполнено:
+%$\varphi(\varnothing) \with \varphi(x) \rightarrow \varphi(x') \with asdf 
+%\end{thm}
+\end{frame}
+
+%\begin{enumerate}
+%\item $\varphi(\varnothing)$
+%\item Если $\forall u.u \in \upsilon \rightarrow \varphi(u)$, то $\varphi(\upsilon)$ (где $\upsilon$ - это ординал)
+%\end{enumerate}
+%то $\forall u\in\varepsilon.\varphi(u)$
+%\end{thm}
+%\begin{proof}
+%\end{proof}
+%\end{frame}
+
+%\begin{frame}{Индукция для натуральных чисел}
+%\begin{lmm}Свойство индукции выполнено для натуральных чисел:
+%если $\varphi(0)$ и $\forall x\in\mathbb{N}_0.f(x) \rightarrow f(x')$, то $\forall x\in\mathbb{N}_0.f(x)$.
+%\end{lmm}
+%
+%\begin{proof}
+%Пусть $\varphi(\varnothing)$ и $\forall u.(u \in \omega) \rightarrow \varphi(u) \rightarrow \varphi(u')$.
+%Рассмотрим $\tau(n) = \forall u.u \in n \rightarrow \varphi(u)$. Очевидно,
+%что если $m \in n$, то $\tau(n) \rightarrow \tau(m)$. Значит, выполнены условия принципа
+%трансфинитной индукции для $\omega$, отсюда $\tau(\omega)$, отсюда $\forall u.(u \in \omega) \rightarrow \varphi(u)$.
+%\end{proof}
+%\end{frame}
+
+\begin{frame}{Исчисление $S_\infty$}
+\begin{enumerate}
+\item Язык: связки $\neg$, $\vee$, $\forall$, $=$; нелогические символы: $(+)$,$(\cdot)$,$(')$,$0$; переменные: $x$.
+\item Аксиомы: все истинные формулы вида $\theta_1=\theta_2$; все истинные отрицания формул вида $\neg\theta_1=\theta_2$
+($\theta_i$ --- термы без переменных).
+\item Структурные (слабые) правила:
+$$\infer{\zeta\vee\beta\vee\alpha\vee\delta}{\zeta\vee\alpha\vee\beta\vee\delta} \quad\quad
+\infer{\alpha\vee\delta}{\alpha\vee\alpha\vee\delta}$$
+
+сильные правила
+$$\infer{\alpha\vee\delta}{\delta}\quad
+\infer{\neg(\alpha\vee\beta)\vee\delta}{\neg\alpha\vee\delta\quad\neg\beta\vee\delta}\quad
+\infer{\neg\neg\alpha\vee\delta}{\alpha\vee\delta}\quad
+\infer{(\neg\forall x.\alpha)\vee\delta}{\neg\alpha[x := \theta]\vee\delta}\quad$$
+
+и ещё два правила \dots
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Ещё правила $S_\infty$}
+бесконечная индукция
+$$\infer{(\forall x.\alpha)\vee\delta}{\alpha[x:=\overline{0}]\vee\delta
+                                  \quad\alpha[x:=\overline{1}]\vee\delta
+                                  \quad\alpha[x:=\overline{2}]\vee\delta\quad\dots}$$
+
+сечение
+$$\infer{\zeta\vee\delta}{\zeta\vee\alpha\quad\quad\neg\alpha\vee\delta}$$
+Здесь: \\
+$\alpha$ --- секущая формула \\
+Число связок в $\neg\alpha$ --- степень сечения.
+\end{frame}
+
+\begin{frame}{Дерево доказательства}
+\begin{enumerate}
+\item Доказательства образуют деревья.
+\item Каждой формуле в дереве сопоставим порядковое число (ординал).
+\item Порядковое число заключения любого неструктурного правила строго больше порядкового числа его посылок
+(больше или равно в случае структурного правила).
+
+%$$%\infer{(\forall a.a = a)_\omega}{
+%  % \infer{(0 = 0)_1}{}\quad
+%  % \infer{(0'= 0')_2}{\infer{\dots\vphantom{0}}{\infer{(0= 0)_1}{}}}\quad
+%  % \infer{0''= 0''}{\infer{\dots\vphantom{0}}{\infer{0'= 0'}{\infer{\dots\vphantom{0}}{\infer{0= 0}{}}}}}\quad\dots
+%\infer{(\forall a.a = a)_\omega}{
+%   \infer{(0 = 0)_1}{}\quad
+%   \infer{(0'= 0')_2}{}\quad
+%   \infer{(0''= 0'')_3}{}\quad\dots
+%}\quad\quad
+%\infer{(\forall a.a = a)_1}{
+%   \infer{(0 = 0)_0}{}\quad
+%   \infer{(0'= 0')_0}{}\quad
+%   \infer{(0''= 0'')_0}{}\quad\dots
+%}$$
+
+$$\infer{(\neg\neg\forall x.\neg x'=0)_{\omega+1}}{\infer{(\forall x.\neg x' = 0)_\omega}{(\neg 1=0)_1\quad (\neg 2=0)_2 \quad (\neg 3=0)_4 \quad (\neg 4 = 0)_8 \dots}}$$
+
+\item Существует конечная максимальная степень сечения в дереве (назовём её степенью вывода).
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Любая теорема Ф.А. --- теорема $S_\infty$}
+\begin{thm}Если $\vdash_\text{фа}\alpha$, то $\vdash_\infty|\alpha|_\infty$ \end{thm}
+\begin{exm}Обратное неверно: $$\infer{\forall x.\neg\omega(x,\overline{\ulcorner\sigma\urcorner})}
+{\neg\omega(\overline{0},\overline{\ulcorner\sigma\urcorner})\quad\quad
+ \neg\omega(\overline{1},\overline{\ulcorner\sigma\urcorner})\quad\quad
+ \neg\omega(\overline{2},\overline{\ulcorner\sigma\urcorner})\quad\quad\dots}$$
+\end{exm}
+\begin{thm}Если Ф.А. противоречива, то противоречива и $S_\infty$\end{thm}
+\end{frame}
+
+\begin{frame}{Обратимость правил де Моргана, отрицания, бесконечной индукции}
+\begin{thm}\vspace{-0.3cm}
+$$\infer{\neg\alpha\vee\delta\quad\neg\beta\vee\delta\vphantom{overline{1}]}}{\neg(\alpha\vee\beta)\vee\delta}\quad
+  \infer{\alpha\vee\delta\vphantom{overline{1}]}}{\neg\neg\alpha\vee\delta}\quad
+  \infer{\alpha[x:=\overline{0}]\vee\delta
+          \quad\alpha[x:=\overline{1}]\vee\delta
+          \quad\alpha[x:=\overline{2}]\vee\delta\quad\dots}{(\forall x.\alpha)\vee\delta}
+$$\vspace{-0.5cm}
+%Если формула $\alpha$ доказана и имеет вид, похожий на заключение правил де Моргана, 
+%отрицания и бесконечной индукции --- то посылки соответствующих правил могут быть получены из самой 
+%формулы $\alpha$ доказательством, причём доказательством с не большей степенью и не большим порядком.
+\end{thm}
+\begin{proof}\vspace{0.3cm}
+\begin{tabular}{ll}\begin{minipage}{0.5\linewidth}
+Например, формула вида $\neg\neg \alpha\vee\delta$. \pause
+
+\vspace{0.2cm}Проследим историю $\neg\neg\alpha$; она могла быть получена:
+\begin{enumerate}
+\item ослаблением --- заменим $\neg\neg\alpha$ на $\alpha$ в этом узле и последующих.
+\item отрицанием --- выбросим правило, заменим $\neg\neg\alpha$ на $\alpha$ в последующих.
+\end{enumerate}
+%Изменённый вывод --- доказательство требуемого.
+\end{minipage} &
+\begin{minipage}{0.5\linewidth}
+\tikz{
+  \node at (-1.5,3) (J1) { $\delta(0)$ };
+  \node at (1.5,3) (J2) { $\alpha\vee\delta(2)$ };
+  \node at (-1.5,1.5) (I1) { ${\color{red}\neg\neg}\alpha\vee\delta(0)$ };
+  \node at (1.5,1.5) (I2) { $\color{red}\neg\neg\alpha\vee\delta(2)$ };
+  \node at (1.5,0) (C) { ${\color{red}\neg\neg}\alpha\vee\forall x.\delta(x)$ }; 
+  \node at (3.5,1.5) (D) { $\dots$ };
+  \draw[->] (J1) -- (I1); \draw[->] (I1) -- (C);
+  \draw[red,->] (J2) -- (I2); \draw[red,->] (I2) -- (C);
+  \draw[->] (D) -- (C);
+  \draw[blue,->,bend right=20] (J2) .. controls (0,1.5) .. (C);
+}\end{minipage}
+\end{tabular}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Устранение сечений}
+\begin{thm}Если $\alpha$ имеет вывод степени $m>0$ порядка $t$, то
+можно найти вывод степени строго меньшей $m$ с порядком $2^t$.
+\end{thm}
+
+\begin{proof}Трансфинитная индукция. Пусть для всех деревьев порядка $t_1 < t$ 
+условие выполнено. Покажем, что оно выполнено для порядка $t$.
+Рассмотрим заключительное правило. Это может быть...
+
+\begin{enumerate}
+\item Не сечение.
+\item Сечение, секущая формула --- элементарная.
+\item Сечение, секущая формула --- $\neg\alpha$.
+\item Сечение, секущая формула --- $\alpha\vee\beta$.
+\item Сечение, секущая формула --- $\forall x.\alpha$.
+\end{enumerate}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Случай 1. Не сечение}
+$$\infer{(\alpha)_{t}}{(\pi_0)_{t_0}\quad(\pi_1)_{t_1}\quad(\pi_2){t_2}\quad\dots}$$
+Заменим доказательства посылок $(\pi_i)_{t_i}$ на $(\pi'_i)_{2^{t_i}}$ по индукционному предположению.
+
+\begin{enumerate}
+\item Поскольку степени посылок $m'_i < m_i$, то $\max m'_i < \max m_i$.
+\item Поскольку $t_i \le t$, то $2^{t_i} \le 2^t$.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Случай 5. Сечение с формулой вида $\forall x.\alpha$}
+\vspace{-0.1cm}$$\infer{\zeta\vee\delta}{\zeta\vee\forall x.\alpha\quad\quad(\neg\forall x.\alpha)\vee\delta}$$\vspace{-0.1cm}
+Причём степень и порядок выводов компонент, соответственно, $(m_1,t_1)$ и $(m_2,t_2)$.\vspace{-0.1cm}
+\begin{enumerate}
+\item По индукции, вывод $\zeta\vee\forall x.\alpha$ можно упростить до $(m_1',2^{t_1})$.
+\item По обратимости, можно построить вывод $\zeta\vee\alpha[x := \theta]$ за $(m_1',2^{t_1})$.
+\item В формуле $(\neg \forall x. \alpha)\vee\delta$ формула $\neg\forall x.\alpha$ получена
+либо ослаблением, либо квантификацией из $\neg\alpha[x := \theta_k]\vee\delta_k$. 
+\begin{enumerate}
+\item Каждое правило квантификации заменим на:
+$$\infer{\zeta\vee\delta_k}{\zeta\vee\alpha[x := \theta_k]\quad\quad(\neg\alpha[x := \theta_k])\vee\delta_k}$$
+\item Остальные вхождения $\neg\forall x.\alpha$ заменим на $\zeta$ (в правилах ослабления).
+\end{enumerate}
+\item В получившемся дереве меньше степень --- так как в $\neg\alpha[x := \theta]$ меньше связок, чем в $\neg\forall x.\alpha$.
+%\item Нумерацию можно также перестроить.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Случай 5. Как перестроим доказательство}
+\begin{center}\tikz{
+    \node (RRW) at (6,5.5) {$\delta_l$};
+    \node (RR) at (6,4) {${\color{red}(\neg\forall x.\alpha)}\vee\delta_l$};
+    \node (RRnew) at (6.5,3) {$\color{blue}\zeta\vee\delta_l$};
+    \node (LL) at (-2,5) {$\dots$};
+
+    \node (R) at (3.2,3) {${\color{red}(\neg\forall x.\alpha)}\vee\delta_k$};
+    \node (Rnew) at (1,3) {$\color{blue}\zeta\vee\delta_k$};
+    \node (RQ) at (3,5) {$\neg\alpha[x := \theta]\vee\delta_k$};
+    \node (L1) at (0,4) {$\color{blue}\zeta\vee\alpha[x := \theta]$};
+    \node (L) at (-2,2) {$\color{red}\zeta\vee\forall x.\alpha$};
+
+    \node (CR) at (4.5,2) {${\color{red}(\neg\forall x.\alpha)}\vee\delta$};
+    \node (CRnew) at (5,1) {$\color{blue}\zeta\vee\delta$};
+    \node (C) at (0,0) {$\color{red}\zeta\vee\delta$};
+    \draw[red,->] (L) -- (C);
+    \draw[red,->] (LL) -- (L);
+    \draw[red,->] (CR) -- (C);
+    \draw[blue,->,bend right=30] (LL) to (L1);
+    \draw[dashed,->] (R) -- (CR);
+    \draw[dashed,->] (RR) -- (CR);
+    \draw[double,->,blue] (RR) -- (RRnew);
+    \draw[double,->,blue] (CR) -- (CRnew);
+    \draw[double,->,blue] (R) -- (Rnew);
+    \draw[->] (RRW) -- (RR);
+    \draw[->] (RQ) -- (R);
+    \draw[blue,->,bend right=20] (RQ) to (Rnew);
+    \draw[blue,->] (L1) -- (Rnew);
+}\end{center}
+\end{frame}
+
+\begin{frame}{Теорема об устранении сечений}
+\begin{dfn}Итерационная экспонента
+$$(a\uparrow)^m(t
+) = 
+  \left\{
+    \begin{array}{ll}     t,&m=0\\
+                          a^{(a\uparrow)^{m-1}(t)},&m > 0
+    \end{array}
+  \right.
+$$
+\end{dfn}
+\begin{thm}Если $\vdash_\infty\sigma$ степени $m$ порядка $t$, то найдётся доказательство без сечений
+порядка $(2\uparrow)^m(t)$
+\end{thm}
+\begin{proof}
+В силу конечности $m$ воспользуемся индукцией по $m$ и теоремой об уменьшении степени.
+\end{proof}
+\end{frame}
+
+\begin{frame}{Порядок трансфинитной индукции}
+\begin{dfn}$\varepsilon_0$ --- неподвижная точка $\varepsilon_0 = \omega^{\varepsilon_0}$\end{dfn}
+
+Иначе говоря, $\varepsilon_0 = \{ \omega, \omega^\omega, \omega^{\omega^\omega}, (\omega \uparrow)^3(\omega), (\omega\uparrow)^4(\omega), \dots \}$.
+
+Очевидно, что теорема об устранении сечений может быть доказана трансфинитной индукцией до ординала $\varepsilon_0$
+(максимальный порядок дерева вывода, при правильной нумерации вершин).
+\end{frame}
+
+\begin{frame}{Непротиворечивость формальной арифметики}
+\begin{thm}Система $S_\infty$ непротиворечива\end{thm}
+\begin{proof} \pause
+Рассмотрим формулу $\neg 0=0$. 
+Если эта формула выводима в $S_\infty$, то она выводима и в $S_\infty$ без сечений.
+Тогда какое заключительное правило? \pause
+\begin{enumerate}
+\item Правило Де-Моргана? \pause Нет отрицаний дизъюнкции ($\neg(\alpha\vee\beta)\vee\delta$). \pause
+\item Отрицание? \pause Нет двойного отрицания ($\neg\neg\alpha\vee\delta$). \pause
+\item Бесконечная индукция или квантификация? \pause Нет квантора. \pause
+\item Ослабление? \pause Нет дизъюнкции ($\alpha \vee \delta$). \pause
+\end{enumerate}
+
+То есть, неизбежно, $\neg 0=0$ --- аксиома, что также неверно.
+\end{proof}
+\end{frame}
+
+\end{document}

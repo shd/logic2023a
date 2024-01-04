@@ -1,0 +1,449 @@
+\documentclass[handout]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{cancel}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{multicol}
+\usetikzlibrary{patterns,calc}
+\usepackage{chronosys}
+\usepackage{proof}
+\usepackage{multirow}
+\usepackage{marvosym}
+\usepackage{hyperref}
+\setbeamertemplate{navigation symbols}{}
+%\usetheme{Warsaw}
+
+\newtheorem{axm}{Аксиома}[section]
+\newtheorem{thm}{Теорема}[section]
+\newtheorem{dfn}{Определение}[section]
+\newtheorem{lmm}{Лемма}[section]
+\newtheorem{exm}{Пример}[section]
+\newtheorem{snote}{Пояснение}[section]
+
+\newcommand{\divisible}%
+{\mathrel{\lower.2ex%
+\vbox{\baselineskip=0.7ex\lineskiplimit=0pt%
+\kern6pt \hbox{.}\hbox{.}\hbox{.}}%
+}}
+
+\begin{document}
+\begin{frame}{}
+\LARGE\begin{center}Теорема Лёвенгейма-Сколема\end{center}
+\end{frame}
+
+\begin{frame}{Как пересчитать вещественные числа (неформально)?}
+\begin{enumerate}
+\item Номер вещественного числа --- первое упоминание в литературе, т.е. $\langle j, y, n, p, r, c \rangle$:\\
+j --- гёделев номер названия научного журнала (книги);\\
+y --- год издания;\\
+n --- номер;\\
+p --- страница;\\
+r --- строка;\\
+c --- позиция\pause
+\item Попробуете предъявить число $x$, не имеющее номера? Это рассуждение сразу даст номер.\\
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Мощность модели и аксиоматизации}
+\begin{dfn} Пусть задана модель $\langle D, F_n, P_n \rangle$ для некоторой теории первого порядка. 
+Её мощностью будем считать мощность $D$.
+\end{dfn}\pause
+
+\begin{dfn} Пусть задана формальная теория с аксиомами $\alpha_n$. Её мощность --- мощность множества $\{\alpha_n\}$.
+\end{dfn}\pause
+
+\begin{exm} Формальная арифметика, исчисление предикатов, исчисление высказываний --- счётно-аксиоматизируемые.
+\end{exm}
+\end{frame}
+
+\begin{frame}{Элементарная подмодель}
+\begin{dfn}$\mathcal{M}' = \langle D', F'_n, P'_n \rangle$ --- элементарная подмодель $\mathcal{M} = \langle D, F_n, P_n \rangle$, 
+если: \pause
+\begin{enumerate}
+\item $D' \subseteq D$, \pause $F'_n$, $P'_n$ --- сужение $F_n$, $P_n$ (замкнутое на $D'$). \pause
+\item $\mathcal{M}\models \varphi(x_1,\dots,x_n)$ тогда и только тогда, когда $\mathcal{M}'\models \varphi(x_1,\dots,x_n)$
+при $x_i \in D'$. \pause
+\end{enumerate}
+\end{dfn}
+
+\begin{exm}Когда сужение $M$ не является элементарной подмоделью? \pause
+
+$\forall x.\exists y.x \ne y$. Истинно в $\mathbb{N}$. \pause Но пусть $D' = \{ 0 \}$.
+\end{exm}
+\end{frame}
+
+\begin{frame}{Теорема Лёвенгейма-Сколема}
+\begin{thm}Пусть $T$ --- множество всех формул теории первого порядка. 
+Пусть теория имеет некоторую модель $\mathcal{M}$.
+Тогда найдётся элементарная подмодель $\mathcal{M'}$, причём $|\mathcal{M'}| = \max(\aleph_0, |T|)$.
+\end{thm}\pause
+
+\begin{proof} (Схема доказательства)
+\begin{enumerate} 
+\item Построим $D_0$ --- множество всех значений, которые упомянуты в языке теории. \pause
+\item Будем последовательно пополнять $D_i$: $D_0 \subseteq D_1 \subseteq D_2 \dots$, следя за мощностью.
+$D' = \cup D_i$.
+\item Покажем, что $\langle D', F_n, P_n\rangle$ --- требуемая подмодель.
+\end{enumerate}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Начальный $D_0$}
+Пусть $\{f^0_k\}$ --- все 0-местные функциональные символы теории. \pause
+\begin{enumerate}
+\item $D_0 = \{ \llbracket f^0_k \rrbracket \}$, если есть хотя бы один $f^0_k$. \pause
+\item Если таких $f^0_k$ нет, возьмём какое-нибудь одно значение из $D$. \pause
+\end{enumerate}\pause
+
+Очевидно, $|D_0| \le |T|$.
+\end{frame}
+
+\begin{frame}{Пополнение $D$}
+Фиксируем некоторый $D_k$. Напомним, $T$ --- множество всех формул теории. Рассмотрим $\varphi \in T$.\pause
+\begin{enumerate}
+\item $\varphi$ не имеет свободных переменных --- пропустим. \pause
+\item $\varphi$ имеет хотя бы одну свободную переменную $y$. \pause
+\begin{enumerate}
+\item $\varphi (y, x_1, \dots, x_n)$ при $y,x_i \in D_k$ бывает истинным и ложным --- ничего не меняем \pause
+\item $\varphi (y, x_1, \dots, x_n)$ при $y \in D$ и $x_i \in D_k$ либо всегда истинен, либо всегда ложен --- ничего не меняем \pause
+\item $\varphi (y, x_1, \dots, x_n)$ при $y,x_i \in D_k$ тождественно истинен или ложен, но при 
+$y' \in D \setminus D_k$ отличается --- добавим $y'$ к $D_{k+1}$. \pause
+Вместе добавим всевозможные $\llbracket\theta(y')\rrbracket$.
+\end{enumerate}
+\end{enumerate}\pause
+
+Всего добавили не больше $|T| \cdot |D_k|$. \pause $|\cup D_i| \le |T| \cdot |D_k| \cdot |\aleph_0| = \max (|T|, |\aleph_0|)$
+\end{frame}
+
+\begin{frame}{$\mathcal{M}'$ --- элементарная подмодель}
+Индукцией по структуре формул $\tau \in T$ покажем, 
+что все формулы можно вычислить, и что $\llbracket \varphi \rrbracket_\mathcal{M'} = \llbracket \varphi \rrbracket_\mathcal{M}$.\pause
+
+\begin{enumerate}
+\item База, 0 связок. $\tau \equiv P(f_1(x_1,\dots,x_n),\dots,f_n(x_1,\dots,x_n))$. \pause Если $x_i \in D'$, то значит,
+добавлены на некоторых шагах (максимальный пусть $t$). Поэтому в $D_{t+1}$ можно вычислить формулу, и её значение сохранилось. \pause
+\item Переход. Пусть формулы из $k$ связок сохраняют значения. Рассмотрим $\tau$ с $k+1$ связкой. \pause
+\begin{enumerate}
+\item $\tau \equiv \rho \star \sigma$ --- очевидно. \pause
+\item $\tau\equiv\forall y.\varphi(y,x_1,\dots,x_n)$. \pause 
+Каждый $x_i$ добавлен на каком-то шаге --- максимум $t$. \pause 
+Если $\varphi(y,x_1,\dots,x_n)$ бывает истинен и ложен при $y_t, y_f \in D$, то $y_t, y_f \in D_{t+1}$ (по построению). \pause
+Поэтому, если $\mathcal{M}\not\models\forall y.\varphi(y,x_1,\dots,x_n)$, то и 
+$\mathcal{M'}\not\models\forall y.\varphi(y,x_1,\dots,x_n)$. \pause
+Если же $\varphi(y,x_1,\dots,x_n)$ не меняется от $y$, то тем более
+$\llbracket \varphi \rrbracket_\mathcal{M'} = \llbracket \varphi \rrbracket_\mathcal{M}$. \pause
+\item $\tau\equiv\exists y.\varphi(y,x_1,\dots,x_n)$ --- аналогично.
+\end{enumerate}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{<<Парадокс>> Сколема}
+\begin{enumerate}
+\item Как известно, $|\mathbb{R}| = |\mathcal{P}(\mathbb{N})| > |\mathbb{N}| = \aleph_0$. \pause Однако, ZFC --- теория со счётным
+количеством формул. \pause
+Значит, существует счётная модель ZFC, то есть $|\mathbb{R}| = \aleph_0$. \pause В чём ошибка? \pause
+\item У равенств разный смысл, первое --- в предметном языке, второе --- в метаязыке. 
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\begin{center}\LARGE Аксиома выбора \end{center}
+\end{frame}
+
+%\begin{frame}
+%\end{frame}
+
+\begin{frame}{Аксиома выбора}
+\begin{axm}[Аксиома выбора]
+Из любого семейства дизъюнктных непустых множеств $\{A_i\}$ можно выбрать непустую трансверсаль --- 
+множество $S$, что $S \cap A_i = \{ x_i \}$. Иначе, $S \in \times \{A_i\}$.
+\end{axm}
+
+\begin{thm}[Аксиома выбора]
+Пусть $\{A_i\}$ --- семейство непустых множеств. Тогда существует
+$f : \{A_i\} \rightarrow \cup A_i$, причём $\forall a.a \in \{A_i\} \rightarrow f(a) \in a$
+\end{thm}
+
+\begin{proof}По семейству $A_i$ рассмотрим семейство множеств $X(A_i)$:
+$X(A_i) = \{ \langle A_i, a \rangle \ |\ a \in A_i \}$, если $A_i \ne A_j$, то $X(A_i) \cap X(A_j) = \varnothing$,
+тогда $\exists f.f \in \times \{ X(A_i) \}$.
+\end{proof}
+Обратное утверждение также легко показать.
+\end{frame}
+
+\begin{frame}{Аксиома выбора: альтернативные формулировки}
+\begin{thm}[Лемма Цорна]
+Если задано $\langle M, (\preceq) \rangle$ и для всякого линейно-упорядоченного $S \subseteq M$ выполнено
+$\text{upb}_M S \in M$, то в $M$ существует максимальный элемент.
+\end{thm}
+\begin{thm}[Теорема Цермело]
+На любом множестве можно задать полный порядок.
+\end{thm}
+\begin{thm}
+У любой сюръективной функции существует частичная обратная.
+\end{thm}
+
+\begin{thm}
+Аксиома выбора $\Rightarrow$ лемма Цорна: без доказательства
+\end{thm}
+\end{frame}
+
+\begin{frame}{Начальный отрезок}
+
+\begin{dfn}Будем говорить, что $\langle S, (\prec_S)\rangle$ --- начальный отрезок $\langle T, (\prec_T) \rangle$,
+если:\begin{itemize}
+\item $S \subseteq T$;
+\item если $a,b \in S$, то $a \prec_S b$ тогда и только тогда, когда $a \prec_T b$;
+\item если $a \in S$, $b \in T\setminus S$, то $a \prec_T b$.
+\end{itemize}
+
+Будем записывать это как $S \prec T$.
+\end{dfn}
+
+\begin{thm}Если множество начальных отрезков $X$ линейно упорядочено, то в нём есть наибольший элемент.
+\end{thm}
+
+\begin{proof}Пусть $M = \cup \{ T | \langle T, (\prec) \rangle \in X \}$ и
+$(\prec)_M = \cup \{ (\prec) | \langle T, (\prec) \rangle \in X \}$.
+
+Раз все элементы $X$ сравнимы, значит, любые два отношения порядка не противоречат друг другу
+(одно -- продолжение другого). Поэтому что все множества в $X$ --- начальные отрезки $M$. 
+\end{proof}
+
+\end{frame}
+
+\begin{frame}{Лемма Цорна $\Rightarrow$ теорема Цермело}
+%\begin{thm}Любое множество $X$ можно вполне упорядочить\end{thm}
+%\begin{proof}
+Пусть выполнена лемма Цорна и дано некоторое $X$. Покажем, что на нём можно ввести линейный порядок.
+\begin{itemize}
+\item Пусть $S = \{ \langle P, (\prec)\rangle \ |\ P \subseteq X, (\prec)\text{ --- полный порядок} \}$.
+Например, для $X = \{0,1\}$ множество
+$S = \{
+\langle\varnothing,\varnothing\rangle,
+\langle \{0\},\varnothing\rangle,
+\langle\{1\},\varnothing\rangle,
+\langle X, 0 \prec 1\rangle,
+\langle X, 1 \prec 0\rangle
+\}$
+
+\item Введём порядок на $S$: положим $\langle P, (\prec_p)\rangle < \langle Q, (\prec_q)\rangle$, если $P \subseteq Q$,
+$a \prec_p b$ тогда и только тогда, когда $a \prec_q b$, при $a,b \in P$, $a \prec_q b$ при $a \in P, b \in Q\setminus P$.
+
+\item Заметим, что $\langle \varnothing,\varnothing \rangle < \langle \{0\},\varnothing\rangle$,
+но $\langle X, 0 \prec 1\rangle$ несравним с $\langle X, 1 \prec 0\rangle$.
+
+\item Любое линейно-упорядоченное подмножество $\langle T, (<) \rangle$ (где $T \subseteq S$) имеет
+верхнюю грань (она же максимальный элемент): $\langle \cup T, \cup(\prec)\rangle$ (например, 
+для $\{\langle\varnothing,\varnothing\rangle,
+\langle \{0\},\varnothing\rangle,
+\langle X, 0 \prec 1\rangle\}$ это $\langle X, 0 \prec 1\rangle$.
+
+\item По лемме Цорна тогда есть $\langle R, \sqsubset\rangle = \max S$. Заметим, что $R = X$, потому что иначе пусть
+$a \in X\setminus R$. Тогда положив $M = \langle R\cup\{a\}, (\prec_R)\cup\{x\prec a\ |\ x \in R\} \rangle$
+получим, что $M$ тоже вполне упорядоченное (и потому $M \in S$), значит, $R$ не максимальное.
+\end{itemize}
+%\end{proof}
+\end{frame}
+
+\begin{frame}{Теорема Цермело $\Rightarrow$ существование обратной $\Rightarrow$ аксиома выбора}
+\begin{thm}Теорема Цермело $\Rightarrow$ у сюрьективных функций существует частичная обратная.\end{thm}
+\begin{proof}
+Рассмотрим сюрьективную $f: A \rightarrow B$. Рассмотрим семейство $R_b = \{ a \in A\ |\ f(a) = b \}$.
+Построим полный порядок на каждом из $R_b$. Тогда $f^{-1}(b) = \min R_b$.
+\end{proof}
+\begin{thm}Существует частичная обратная у сюръективных функций $\Rightarrow$ существует трансверсаль у дизъюнктных множеств.\end{thm}
+\begin{proof}
+Пусть дано семейство дизъюнктных множеств $\{ A_i \}$. 
+Рассмотрим $f: \cup A_i \rightarrow \{A_i\}$, что
+$f(a) = \cup\{ A_i \in \{ A_i \}\ |\ a \in A_i \}$. Поскольку $A_i$ дизъюнктны,
+$f(a) = A_i$ при всех $a$. Тогда существует $f^{-1}(A_i) \in A_i$. Тогда $\{ f^{-1}(A_i) \} \in \times \{A_i\}$.
+\end{proof}
+\end{frame}
+
+
+\begin{frame}{Зачем нужна аксиома выбора?}
+\begin{dfn}Пределом функции $f$ в точке $x_0$ по \emph{Коши} называется такой $y$, что
+$$\forall \varepsilon\in\mathbb{R}^+.\exists \delta.\forall x.|x-x_0| < \delta \rightarrow |f(x) - y| < \varepsilon$$
+\end{dfn}
+
+\vspace{-0.5cm}
+\begin{dfn}Пределом функции $f$ в точке $x_0$ по \emph{Гейне} называется такой $y$, что
+для любой $x_n \rightarrow x_0$ выполнено $f(x_n) \rightarrow y$.
+\end{dfn}
+\end{frame}
+
+\begin{frame}{Предел по Гейне влечёт предел по Коши}
+\begin{thm}
+Пусть $\lim_{x \rightarrow x_0}f(x) = y$ по Гейне, тогда
+$\forall \varepsilon.\exists \delta.\forall x.|x_\delta-x_0|<\delta \rightarrow |f(x_\delta)-y| < \varepsilon$.
+\end{thm}
+
+\begin{proof}
+Пусть не так. То есть, 
+$\exists \varepsilon.\forall \delta.\exists x_\delta.|x_\delta-x_0|<\delta \with |f(x_\delta)-y| \ge \varepsilon$.
+Фиксируем $\varepsilon$ и возьмём $\delta_n = \frac{1}{n}$ и $p_n = x_{\delta_n}$. 
+$p_n \rightarrow x_0$, так как $|x_\frac{1}{n} - x_0| < \frac{1}{n}$, 
+{\color{blue}по определению предела по Гейне} $f(p_n) \rightarrow y$, 
+но по предположению $|f(p_n) - y| \ge \varepsilon$.
+\end{proof}\pause
+
+\begin{snote}
+Для применения предела по Гейне нужна $p_n$ --- как множество. $\langle p_1, p_2, p_3, \dots\rangle$?\pause
+%$\langle x_\frac{1}{1}: |x_\frac{1}{1}-x_0|<1 \with |f(x_\frac{1}{1})-y| \ge \varepsilon$; $x_\frac{1}{2}: |x_\frac{1}{2}-x_0|<\frac{1}{2} \with |f(x_\frac{1}{2})-y| \ge \varepsilon; ...\rangle$ 
+%\pause
+
+%\vspace{0.3cm}
+... %$\exists \varepsilon.\forall \delta.\exists x_\delta.|x_\delta-x_0|<\delta \with |f(x_\delta)-y| \ge \varepsilon$.\\
+Фиксируем $\varepsilon$ и рассмотрим $X_\delta = \{ x_\delta \ |\ |x_\delta-x_0| <\delta \with |f(x_\delta)-y| \ge \varepsilon\}$.
+Возьмём $\delta_n = \frac{1}{n}$ и $x_{\frac{1}{n}} \in X_\frac{1}{n}$.\pause
+
+... То есть, по семейству непустых множеств $\{ X_\delta \}$ по аксиоме выбора построим $p: \{ X_\delta \} \rightarrow \cup X_\delta$,
+что $p(X_\delta) \in X_\delta$, и построим последовательность $p(X_\frac{1}{n}) \rightarrow x_0$.
+\end{snote}
+\end{frame}
+
+\begin{frame}{Предел по Коши влечёт предел по Гейне}
+\begin{thm}Пусть $\lim_{x \rightarrow x_0} f(x) = y$ и дана $x_n \rightarrow x_0$.
+Тогда $f(x_n) \rightarrow y$.\end{thm}
+\begin{proof}
+%Пусть $\lim_{x \rightarrow x_0} f(x) = y$ и дана $x_n \rightarrow x_0$. 
+Фиксируем $\varepsilon > 0$.
+\begin{itemize}
+\item (определение предела по Коши) существует $\delta$, что $\forall x.|x - x_0| < \delta \rightarrow |f(x) - y| < \varepsilon$.
+\item (сходимость $x_n$ к $x_0$) найдётся $N$, что $\forall n.n > N \rightarrow |x_n - x_0|<\delta$.
+\item (предыдущие два пункта) $\forall n.n > N \rightarrow |f(x_n) - y| < \varepsilon$.
+\end{itemize}
+\end{proof}\pause
+
+Почему здесь не требуется аксиома выбора? Потому что нам нужен $\delta$ из единственного множества 
+$\{ \delta \in \mathbb{R}\ |\ \forall x.|x - x_0| < \delta \rightarrow |f(x) - y| < \varepsilon\}$. 
+То же про $N$. Аксиома выбора для конечного семейства множеств доказуема в ZF.
+\end{frame}
+
+\begin{frame}{Равенство и функции}
+\begin{exm}
+Пусть $A_0 = \{0,1,3,5\}$ и $A_1 = \{3,5,1,0,0,5,3\}$.
+Верно ли, что $A_0 = A_1$?\pause
+
+Да, так как $\forall x.x \in \{0,1,3,5\} \leftrightarrow x \in \{3,5,1,0,0,5,3\}$.\end{exm}\pause
+
+\begin{thm}
+Если $f: A \rightarrow B$, также $a,b\in A$ и $a=b$, то $f(a) = f(b)$.
+\end{thm}
+
+\begin{proof}
+Пусть $F \subseteq A\times B$ --- график функции $f$.
+
+Легко показать, что если $a=b$ и $y_1 = y_2$, то $\langle a, y_1\rangle = \langle b,y_2\rangle$.\\
+%Значит (по аксиоме равенства), $\langle a,x\rangle \in F$ тогда и только тогда,
+%когда $\langle b,x\rangle \in F$. 
+По определению функции, $\forall x.\forall y_1.\forall y_2.\langle x,y_1\rangle \in F \with \langle x,y_2 \rangle \in F \rightarrow y_1 = y_2$.\\
+Также, если $f(a) = y_1$, $f(b) = y_2$, то $\langle a,y_1 \rangle \in F$ и $\langle b,y_2 \rangle \in F$.\\
+Тогда: $\langle a,y_1\rangle = \langle b,y_1\rangle = \langle b,y_2 \rangle = \langle a,y_2\rangle$,
+то есть $f(a) = y_2 = f(b)$.
+
+%Пусть $\langle a,x \rangle \in F$ (поскольку $f$ --- функция, такое $x$ должно существовать).
+%Тогда из $a=b$ следует $\langle b,x \rangle = \langle a,x \rangle$ (по свойствам упорядоченной пары), значит, $f(b) = x$.
+\end{proof}
+% следует $f(A_0) = f(A_1)$ 
+%по определению функционального бинарного отношения:
+%$$\forall x.\exists y.F(x, y) \with \forall y_0.\forall y_1.F(x,y_0) \with F(x,y_1) \rightarrow y_0=y_1$$.
+%\end{exm}
+\end{frame}
+
+\begin{frame}{Теорема Диаконеску}
+\begin{thm}Если рассмотреть ИИП с ZFC, то для любого $P$ выполнено $\vdash P \vee \neg P$.\end{thm}
+\begin{proof}Рассмотрим $\mathcal{B} = \{0,1\}$, $A_0 = \{ x \in \mathcal{B} | x = 0 \vee P \}$ и 
+$A_1 = \{ x \in \mathcal{B} | x = 1 \vee P\}$.
+$\{A_0,A_1\}$ --- непустое семейство непустых множеств, и по акс. выбора существует
+$f: \{A_0,A_1\} \rightarrow \cup A_i$, что $f(A_i) \in A_i$. (Если $P$, то $A_0 = A_1$ и $\{A_0,A_1\} = \{\mathcal{B}\}$).
+
+\vspace{0.3cm}
+\begin{tabular}{ll}
+$\vdash f(A_0) \in A_0 \with f(A_1) \in A_1$ & $f(A_i) \in A_i$\\
+$\vdash({\color{olive}f(A_0) \in \mathcal{B}} \with f(A_0) = 0 \vee P) \with ({\color{olive}f(A_1) \in \mathcal{B}} \with f(A_1) = 1 \vee P)$ & Опр. $A_i$\\
+%$\vdash(f(A_0) = 0 \vee P) \with (f(A_1) = 1 \vee P)$ & Удал. $(\with)$\\
+$\vdash (f(A_0) = 0 \with f(A_1) = 1) \vee P$ & Удал. $(\with)$ + дист.\\
+$\vdash P\vee{\color{blue}f(A_0) \ne f(A_1)}$ & Перегруппировка\\\pause
+$\vdash P \rightarrow A_0 = A_1$ & Определение $A_i$\\
+$\vdash A_0 = A_1 \rightarrow f(A_0) = f(A_1)$ & Теорема выше\\
+$\vdash \color{blue} f(A_0) \ne f(A_1) \rightarrow \neg P$ & Контрапозиция\\
+$\vdash P \vee \neg P$ & Подставили
+\end{tabular}
+
+\end{proof}
+\end{frame}
+
+\begin{frame}{Слабые варианты аксиомы выбора}
+
+\begin{thm}[конечного выбора]
+Если $X_1\ne\varnothing, \dots, X_n\ne\varnothing$, $X_i\cap X_j = \varnothing$ при $i \ne j$, то $\times \{X_1, \dots, X_n\} \ne \varnothing$.
+\end{thm}
+
+\begin{proof}
+\begin{itemize}\item База: $n=1$. Тогда $\exists x_1.x_1 \in X_1$, поэтому $\exists x_1.\{x_1\} \in \times \{X_1\}$.
+
+\item Переход: %если $\exists v.v \in \times \{X_{1,n}\}$ и $\exists x_{n+1}.x_{n+1} \in X_{n+1}$, то
+$\exists v.v \in \times \{X_{1,n}\}\rightarrow\exists x_{n+1}.x_{n+1} \in X_{n+1}\rightarrow
+v \cup \{x_{n+1}\} \in \times (X_{1,n}\cup\{X_{n+1}\})$
+\end{itemize}\vspace{-0.3cm}\end{proof}
+
+%Построим явно: $(\exists x_1.x_1 \in X_1) \rightarrow \exists f.\exists x_1.f = \{\langle X_1, x_1 \rangle\}\with x_1 \in X_1$
+
+%Построим явно: $$\exists x_1.\dots\exists x_n.x_1 \in X_1 \with \dots \with x_n \in X_1 \rightarrow \varphi(\langle X_1, x_1\rangle, \dots, \langle X_n, x_n\rangle)$$
+%И потом:
+%$$X_1 \ne \varnothing \with \dots \with X_n \ne \varnothing \rightarrow \exists f.\varphi(f)$$
+
+%Докажем явным выписыванием: 
+%$x_1 \in X_1 \with \dots \with x_n \in X_n \rightarrow \varphi(\{\langle X_1, x_1\rangle, \dots, \langle X_n, x_n\rangle\})$\\
+%$\exists x_1 \in X_1 \with \dots \with (\exists x_n \in X_n)\rightarrow \exists f.\varphi(f)$
+%$$(x_1 \in X_1) \with \dots \with (x_n \in X_n) \rightarrow (f = \{\langle X_1, x_1 \rangle, \dots, \langle X_n, x_n \rangle\} \rightarrow f(X_1) = x_1 \with \dots \with f(X_n) = x_n)$$
+%$$(f = \{\langle X_1, x_1 \rangle, \dots, \langle X_n, x_n \rangle\} \rightarrow f(X_1) = x_1 \with \dots \with f(X_n) = x_n)$$
+%$$(\exists x_1. x_1 \in X_1)\with\dots\with(\exists x_n.x_n \in X_n)\rightarrow\exists f.f(X_1) \in X_1 \with \dots \with f(X_n) \in X_n$$
+
+\begin{axm}[счётного выбора]
+Для счётного семейства непустых множеств существует функция, каждому из которых сопоставляющая один из своих элементов
+\end{axm}
+
+\begin{axm}[зависимого выбора]
+если $\forall x \in E.\exists y \in E. x R y$, то существует последовательность $x_n: \forall n.x_n R x_{n+1}$
+\end{axm}
+\end{frame}
+
+\begin{frame}{Аксиома конструктивности: V=L}
+
+\begin{dfn}
+\emph{Универсум фон Неймана} $V$ --- все наследственные фундированные множества.
+
+Конструктивный универсум $L = \cup_a L_a$, где:
+$$L_a = \left\{\begin{array}{ll}
+    \varnothing, & a=0\\
+    \{ \{ x\in L_b\ |\ \varphi(x,t_1,\dots,t_k) \}\ |\ \varphi\text{ --- формула}, t_i \in L_b\}, & a = b'\\
+    \bigcup_{b < a}(L_b), & a \text{ --- пред.}
+\end{array}\right.$$
+\end{dfn}
+
+
+\vspace{-0.3cm}При наличии аксиомы фундирования можно показать, что $V = \cup_a V_a$, где:
+$$V_a = \left\{\begin{array}{ll}
+    \varnothing, & a=0\\
+    \mathcal{P}(V_b), & a = b'\\
+    \bigcup_{b < a}(V_b), & a \text{ --- предельный}
+\end{array}\right.$$
+
+Аксиома конструктивности: $V=L$, то есть все фундированные множества задаются формулами.
+
+%Тогда $V = \bigcup_\alpha V_\alpha$
+
+\end{frame}
+
+
+
+\end{document}

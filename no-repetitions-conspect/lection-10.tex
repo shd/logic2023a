@@ -1,0 +1,529 @@
+\documentclass[handout]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{cancel}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{tikz}
+\usepackage{multicol}
+\usetikzlibrary{patterns}
+\usepackage{chronosys}
+\usepackage{proof}
+\usepackage{multirow}
+\usepackage{comment}
+\setbeamertemplate{navigation symbols}{}
+%\usetheme{Warsaw}
+
+\newtheorem{thm}{Теорема}[section]
+\newtheorem{dfn}{Определение}[section]
+\newtheorem{lmm}{Лемма}[section]
+\newtheorem{exm}{Пример}[section]
+\newtheorem{snote}{Пояснение}[section]
+
+\newcommand{\divisible}%
+{\mathrel{\lower.2ex%
+\vbox{\baselineskip=0.7ex\lineskiplimit=0pt%
+\kern6pt \hbox{.}\hbox{.}\hbox{.}}%
+}}
+
+\begin{document}
+
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+
+\begin{frame}{}
+\begin{center}\Large Лямбда-исчисление \end{center}
+\end{frame}
+
+\begin{frame}{Лямбда-исчисление, синтаксис}
+$$\Lambda ::= (\lambda x.\Lambda) | (\Lambda\ \Lambda) | x$$
+
+Мета-язык: 
+\begin{itemize}
+\item Мета-переменные:\begin{itemize}
+\item $A\dots Z$ --- мета-переменные для термов. 
+\item $x,y,z$ --- мета-переменные для переменных. 
+\end{itemize}
+
+\item Правила расстановки скобок аналогичны правилам для кванторов:
+\begin{itemize}
+\item Лямбда-выражение ест всё до конца строки
+\item Аппликация левоассоциативна
+\end{itemize}
+\end{itemize}
+
+\begin{exm}
+\begin{itemize}
+\item $a\ b\ c\ (\lambda d.e\ f\ \lambda g.h)\ i \equiv \Big({\color{red}\Big(}((a\ b)\ c)\ {\color{blue}\Big(}\lambda d.((e\ f)\ (\lambda g.h)){\color{blue}\Big)}{\color{red}\Big)}\ i\Big)$
+\item $0 := \lambda f.\lambda x.x;\quad(+1) := \lambda n.\lambda f.\lambda x.n\ f\ (f\ x);\quad(+2) := \lambda x.(+1)\ ((+1)\ x)$
+\end{itemize}
+\end{exm}
+\end{frame}
+
+\begin{frame}{Альфа-эквивалентность}
+$$FV(A) = \left\{\begin{array}{ll} \{x\}, & A \equiv x\\
+  FV(P)\cup FV(Q), & A \equiv P\ Q\\
+  FV(P)\setminus\{x\}, & A \equiv \lambda x.P\end{array}\right.$$
+
+Примеры: 
+\begin{itemize}
+\item $M := \lambda b.\lambda c.a\ c\ (b\ c)$; $FV(M) = \{a\}$
+\item $N := x\ (\lambda x.(x\ (\lambda y.x)))$; $FV(N) = \{x\}$
+\end{itemize}
+
+\begin{dfn}$A=_\alpha B$, если и только если выполнено одно из трёх:
+\begin{enumerate}
+\item $A \equiv x$, $B \equiv y$, $x \equiv y$;
+\item $A \equiv P_a Q_a$, $B \equiv P_b Q_b$ и $P_a =_\alpha P_b$, $Q_a =_\alpha Q_b$;
+\item $A \equiv (\lambda x.P)$, $B \equiv (\lambda y.Q)$, $P[x := t] =_\alpha Q[y := t]$, где $t$ не входит в $A$ и $B$.
+\end{enumerate}\end{dfn}
+
+\begin{dfn}$L = \Lambda/=_\alpha$\end{dfn}
+\end{frame}
+
+\begin{frame}{Альфа-эквивалентность, пример}
+\begin{enumerate}
+\item \color{gray}$A \equiv x$, $B \equiv y$, $x \equiv y$;
+\item \color{gray}$A \equiv P_a Q_a$, $B \equiv P_b Q_b$ и $P_a =_\alpha P_b$, $Q_a =_\alpha Q_b$;
+\item \color{gray}$A \equiv (\lambda x.P)$, $B \equiv (\lambda y.Q)$, $P[x := t] =_\alpha Q[y := t]$, где $t$ не входит в $A$ и $B$.
+\end{enumerate}\vspace{-0.2cm}\begin{lmm}\vspace{-0.3cm}
+$$\lambda a.\lambda b.a\ b =_\alpha \lambda b.\lambda a.b\ a$$\vspace{-0.3cm}
+\end{lmm}\vspace{-0.3cm}
+\begin{proof}
+\begin{center}\begin{tabular}{rcll}
+  $t$ & $=_\alpha$ &$t$& Правило 1\\
+  $s$ & $=_\alpha$ &$s$& Правило 1\\
+  $t\ s$ & $=_\alpha$ &$t\ s$& Правило 2\\
+  $\lambda b.(t\ b)$ & $=_\alpha$ &$\lambda a.(t\ a)$ & Правило 3\\
+  $\lambda a.\lambda b.(a\ b)$ & $=_\alpha$ &$\lambda b.\lambda a.(b\ a)$ & Правило 3\\
+\end{tabular}\end{center}\vspace{-0.3cm}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Бета-редукция}
+Интуиция: вызов функции.
+\begin{center}\begin{tabular}{l|l}
+$\lambda$-выражение & Python \\\hline
+$\lambda f.\lambda x.f\ x$ & \texttt{def one(f,x): return f(x)}\\
+$(\lambda x.x\ x)\ (\lambda x.x\ x)$ & \texttt{(lambda x: x x) (lambda x: x x)}\\
+ &   \texttt{def omega(x): return x(x); omega(omega)}
+\end{tabular}\end{center}
+
+\pause
+\begin{dfn} Терм вида $(\lambda x.P)\ Q$ --- бета-редекс.\end{dfn}
+\begin{dfn} $A \rightarrow_\beta B$, если:
+\begin{enumerate}
+\item $A \equiv (\lambda x.P)\ Q$, $B \equiv P\ [x := Q]$, при условии свободы для подстановки;
+\item $A \equiv (P\ Q)$, $B \equiv (P'\ Q')$, при этом $P \rightarrow_\beta P'$ и $Q = Q'$, либо $P = P'$ и $Q \rightarrow_\beta Q'$;
+\item $A \equiv (\lambda x.P)$, $B \equiv (\lambda x.P')$, и $P \rightarrow_\beta P'$.
+\end{enumerate}
+\end{dfn}\end{frame}
+
+\begin{frame}{Бета-редукция, пример}
+\begin{exm}
+$(\lambda x.x\ x)\ (\lambda n.n) \rightarrow_\beta (\lambda n.n)\ (\lambda n.n) \rightarrow_\beta \lambda n.n$
+\end{exm}
+\begin{exm}
+$(\lambda x.x\ x)\ (\lambda x.x\ x) \rightarrow_\beta (\lambda x.x\ x)\ (\lambda x.x\ x)$
+\end{exm}
+\end{frame}
+
+\begin{frame}{Нормальная форма}
+\begin{dfn}Лямбда-терм $N$ находится в нормальной форме, если нет $Q$: $N \rightarrow_\beta Q$.\end{dfn}
+\begin{exm}В нормальной форме:\\
+$\lambda f.\lambda x.x\ (f\ (f\ \lambda g.x))$\end{exm}\pause
+\begin{exm}Не в нормальной форме (редексы подчёркнуты):\\
+$\lambda f.\lambda x.\underline{(\lambda g.x)\ (f\ (f\ x))}$\\
+$(\underline{(\lambda x.x)\ (\lambda x.x)})\ (\underline{(\lambda x.x)\ (\lambda x.x)})$
+\end{exm}
+\begin{dfn}$(\twoheadrightarrow_\beta)$ --- транзитивное и рефлексивное замыкание $(\rightarrow_\beta)$.\end{dfn}
+\end{frame}
+
+\begin{frame}{Булевские значения}
+$T := \lambda x.\lambda y.x$
+$F := \lambda x.\lambda y.y$
+
+Тогда: $Or := \lambda a.\lambda b.a\ T\ b$:
+
+$Or\ F\ T = \underline{((\lambda a.\lambda b.a\ T\ b)\ F)}\ T \rightarrow_\beta (\lambda b.F\ T\ b)\ T
+\rightarrow_\beta F\ T\ T =$
+
+$=(\lambda x.\lambda y.y)\ T\ T\rightarrow_\beta (\lambda y.y)\ T \rightarrow_\beta T$
+\end{frame}
+
+\begin{frame}{Чёрчевские нумералы}
+$$f^{(n)}(x) = \left\{\begin{array}{ll}x, & n = 0\\f(f^{(n-1)}(x)), & n > 0\end{array}\right.$$
+
+\begin{dfn}
+Чёрчевский нумерал $\overline{n} = \lambda f.\lambda x.f^{(n)}(x)$
+\end{dfn}
+
+\begin{exm}
+$\overline{3} = \lambda f.\lambda x.f(f(f(x)))$
+
+Инкремент: $Inc = \lambda n.\lambda f.\lambda x.n\ f\ (f\ x)$
+\end{exm}\vspace{-0.3cm}
+
+$$\begin{array}{l}(\lambda n.\lambda f.\lambda x
+
+.n\ f\ (f\ x))\ \overline{0} = (\lambda n.\lambda f.\lambda x.n\ f\ (f\ x))\ (\lambda f'.\lambda x'.x') \rightarrow_\beta \pause\\
+  \dots\lambda f.\lambda x.(\lambda f'.\lambda x'.x')\ f\ (f\ x) \rightarrow_\beta \pause\\
+  \dots\lambda f.\lambda x.(\lambda x'.x')\ (f\ x) \rightarrow_\beta \pause\\
+  \dots\lambda f.\lambda x.f\ x = \overline{1}\end{array}$$
+\pause
+
+Декремент: $Dec = \lambda n.\lambda f.\lambda x.n\ (\lambda g.\lambda h.h\ (g\ f))\ (\lambda u.x)\ (\lambda u.u)$
+\end{frame}
+
+\begin{frame}{Упорядоченная пара и алгебраический тип}
+\begin{dfn}$Pair(a,b) := \lambda s.s\ a\ b$\\
+$Fst := \lambda p.p\ T$\\
+$Snd := \lambda p.p\ F$
+\end{dfn}
+
+\begin{exm}
+$Fst (Pair (a,b)) = (\lambda p.p\ T)\ \lambda s.s\ a\ b \twoheadrightarrow_\beta (\lambda s.s\ a\ b)\ T \twoheadrightarrow_\beta a$
+\end{exm}
+
+\begin{dfn}
+$InL\ L := \lambda p.\lambda q.p\ L$\\
+$InR\ R := \lambda p.\lambda q.q\ R$\\
+$Case\ t\ f\ g := t\ f\ g$
+\end{dfn}
+
+\end{frame}
+
+\begin{frame}{Теорема Чёрча-Россера}
+\begin{thm}[Чёрча-Россера] Для любых термов $N$, $P$, $Q$, если $N \twoheadrightarrow_\beta P$, $N \twoheadrightarrow_\beta Q$,
+и $P \ne Q$, то найдётся $T$: $P \twoheadrightarrow_\beta T$ и $Q \twoheadrightarrow_\beta T$.\end{thm}
+\begin{thm}Если у терма $N$ существует нормальная форма, то она единственна\end{thm}
+\begin{proof}Пусть не так и $N \twoheadrightarrow_\beta P$ вместе с $N \twoheadrightarrow_\beta Q$, $P \ne Q$.
+Тогда по теореме Чёрча-Россера существует $T$: $P \twoheadrightarrow_\beta T$ и $Q \twoheadrightarrow_\beta T$,
+причём $T \ne P$ или $T \ne Q$ в силу транзитивности $(\twoheadrightarrow_\beta)$\end{proof}
+\end{frame}
+
+\begin{frame}{Бета-эквивалентность, неподвижная точка}
+\begin{exm}$\Omega = (\lambda x.x\ x)\ (\lambda x.x\ x)$ не имеет нормальной формы:
+$\Omega \rightarrow_\beta \Omega$\end{exm}
+\begin{dfn}$(=_\beta)$ --- транзитивное, рефлексивное и симметричное замыкание $(\rightarrow_\beta)$.\end{dfn}
+\begin{thm}Для любого терма $N$ найдётся такой терм $R$, что $R =_\beta N\ R$.\end{thm}
+\begin{proof}Пусть $Y = \lambda f.(\lambda x.f\ (x\ x))\ (\lambda x.f\ (x\ x))$.
+Тогда $R := Y\ N$:
+
+$$Y\ N =_\beta (\lambda x.N\ ({\color{red}x}\ {\color{blue}x}))\ (\lambda x.N\ (x\ x)) =_\beta N\ ({\color{red}(\lambda x.N\ (x\ x)})\ ({\color{blue}\lambda x.N\ (x\ x)}))$$
+\end{proof}
+\end{frame}
+
+\begin{frame}{Интуиционистское И.В. (натуральный, естественный вывод)}
+\begin{itemize}
+\item Формулы языка (секвенции) имеют вид: $\Gamma\vdash\alpha$.
+Правила вывода: 
+\begin{flushright}$\quad\quad\quad\infer[(\text{аннотация})]{\text{заключение}}{\text{посылка 1}\quad\quad\text{посылка 2}\quad\quad\dots}$\end{flushright}
+\vspace{-0.7cm}
+\item Аксиома:\\$\infer[\text{(акс.)}]{\Gamma,\alpha\vdash\alpha}{\vphantom{\Gamma}}$ 
+
+\item Правила введения связок:\\$\infer{\Gamma\vdash\alpha\rightarrow\beta}{\Gamma,\alpha\vdash\beta}\quad\quad\infer{\Gamma\vdash\alpha\vee\beta}{\Gamma\vdash\alpha}$, $\infer{\Gamma\vdash\alpha\vee\beta}{\Gamma\vdash\beta}\quad\quad\infer{\Gamma\vdash\alpha\with\beta}{\Gamma\vdash\alpha\quad\quad\Gamma\vdash\beta}$
+
+\item Правила удаления связок:\\$\infer{\Gamma\vdash\beta}{\Gamma\vdash\alpha\quad\Gamma\vdash\alpha\rightarrow\beta}\quad\quad\infer{\Gamma\vdash\gamma}{\Gamma\vdash\alpha\rightarrow\gamma\quad\Gamma\vdash\beta\rightarrow\gamma\quad\Gamma\vdash\alpha\vee\beta}$
+ $\infer{\Gamma\vdash\alpha}{\Gamma\vdash\alpha\with\beta}\quad\quad\infer{\Gamma\vdash\beta}{\Gamma\vdash\alpha\with\beta}\quad\quad\infer{\Gamma\vdash\alpha}{\Gamma\vdash\bot}$
+\item Пример доказательства:\vspace{-0.3cm}
+$$\infer[(\text{введ}\with)]{A\with B\vdash B \with A}{\infer[(\text{удал}\with)]{A \with B \vdash B}{\infer[(\text{акс.})]{A \with B\vdash A \with B}{}}
+                                           \quad\quad\infer[(\text{удал}\with)]{A \with B \vdash A}{\infer[(\text{акс.})]{A \with B\vdash A \with B}{}}}$$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Эквивалентность натурального и гильбертовского выводов}
+\begin{dfn}$$|\alpha|_\bot = \left\{\begin{array}{ll}X,&\alpha\equiv X\\|\sigma|_\bot\star|\tau|_\bot,& \alpha\equiv\sigma\star\tau\\
+                                                     |\sigma|_\bot\rightarrow\bot,& \alpha\equiv\neg\sigma\end{array}\right.\quad\quad
+             |\alpha|_\neg = \left\{\begin{array}{ll}X,&\alpha\equiv X\\|\sigma|_\neg\star|\tau|_\neg,& \alpha\equiv\sigma\star\tau\\A\with\neg A,& \alpha\equiv\bot\end{array}\right.
+$$\end{dfn}
+\begin{thm}\begin{enumerate}\item $\Gamma\vdash_n\alpha$ тогда и только тогда, когда $|\Gamma|_\neg\vdash_h|\alpha|_\neg$.
+\item $\Gamma\vdash_h\alpha$ тогда и только тогда, когда $|\Gamma|_\bot\vdash_n|\alpha|_\bot$.
+\end{enumerate}
+\end{thm}
+\begin{proof}Индукция по структуре\end{proof}
+\end{frame}
+
+\begin{frame}{Просто-типизированное лямбда-исчисление}
+\begin{dfn}Импликационный фрагмент интуиционистской логики:
+
+$$\infer{\Gamma,\varphi \vdash_\rightarrow \varphi}{} \quad\quad 
+  \infer{\Gamma\vdash_\rightarrow\varphi\rightarrow\psi}{\Gamma,\varphi\vdash_\rightarrow\psi} \quad\quad 
+  \infer{\Gamma\vdash_\rightarrow\psi}{\Gamma\vdash_\rightarrow\varphi\quad\quad\Gamma\vdash_\rightarrow\varphi\rightarrow\psi}$$
+\end{dfn}
+
+%\flushright <<Нет человека, равного Кари по храбрости>>\\
+%Ярл Сигурд, Cага о Ньяле.
+\vspace{-0.3cm}
+\begin{thm}Если $\Gamma\vdash\alpha$, то $\Gamma\vdash_\rightarrow\alpha$.\end{thm}
+\begin{proof}
+Определим модель Крипке: \begin{itemize}
+\item миры --- замкнутые множества формул: $\alpha\in\Gamma$ т.и.т.т. $\Gamma\vdash_\rightarrow\alpha$, 
+\item порядок --- $(\subseteq)$,
+\item $\Gamma\Vdash X$ т.и.т.т. $X\in\Gamma$.
+\end{itemize}
+
+%Мы покажем, что $\Gamma\Vdash\alpha$ т.и.т.т. $\Gamma\vdash_\rightarrow\alpha$.\pause
+
+Из корректности моделей Крипке следует, что что если $\Gamma\vdash\alpha$, то $\Gamma\Vdash \alpha$.
+Требуемое следует из того, что $\Gamma\Vdash \alpha$ влечёт $\Gamma\vdash_\rightarrow\alpha$.
+\end{proof}
+\end{frame}
+
+\begin{frame}{$\Gamma\Vdash \alpha$ т.и.т.т. $\Gamma\vdash_\rightarrow\alpha$}
+Индукция по структуре $\alpha$.
+\begin{itemize}
+\item $\alpha \equiv X$. Утверждение следует из определения;
+\item $\alpha \equiv \varphi\rightarrow\psi$. 
+\begin{itemize}
+
+\item Пусть $\Gamma\Vdash \varphi\rightarrow\psi$. То есть, $\Gamma \subseteq \Delta$ и $\Delta \Vdash \varphi$
+влечёт $\Delta \Vdash \psi$.
+Возьмём $\Delta$ как замыкание $\Gamma\cup\{\varphi\}$. Значит, $\Gamma\vdash_\rightarrow\varphi$
+ и, по индукционному предположению, $\Delta\Vdash\varphi$.
+Тогда $\Delta\Vdash\psi$. По индукционному предположению, $\Delta\vdash_\rightarrow\psi$. 
+То есть, $\Gamma,\varphi\vdash_\rightarrow\psi$, откуда
+
+$$\infer{\Gamma\vdash\alpha\rightarrow\beta}{\Gamma,\alpha\vdash\beta}$$
+\item Пусть $\Gamma\vdash_\rightarrow\varphi\rightarrow\psi$. Проверим $\Gamma\Vdash\varphi\rightarrow\psi$.
+Пусть $\Gamma \subseteq \Delta$ и пусть $\Delta\Vdash\varphi$. 
+
+По индукционному предположению, $\varphi\in\Delta$.
+То есть, $\Delta\vdash_\rightarrow\varphi$ и $\Delta\vdash_\rightarrow\varphi\rightarrow\psi$.
+Тогда $$\infer{\Delta\vdash_\rightarrow\psi}{\Delta\vdash_\rightarrow\varphi\quad\Delta\vdash_\rightarrow\varphi\rightarrow\psi}$$
+
+По индукционному предположению, $\Delta\Vdash\psi$, отчего $\Gamma\Vdash\varphi\rightarrow\psi$.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Просто-типизированное лямбда-исчисление}
+\begin{dfn}
+Просто-типизированное лямбда-исчисление (по Карри). \pause Типы: $\tau ::= \alpha | (\tau\rightarrow\tau)$. \pause Язык: $\Gamma\vdash A:\varphi$
+$$\infer[x \notin \Gamma]{\Gamma,x:\varphi \vdash x:\varphi}{} \quad\quad 
+  \infer[x \notin \Gamma]{\Gamma\vdash \lambda x.A: \varphi\rightarrow\psi}{\Gamma,x:\varphi\vdash A:\psi} \quad\quad 
+  \infer{\Gamma\vdash B A:\psi}{\Gamma\vdash A:\varphi\quad\quad\Gamma\vdash B:\varphi\rightarrow\psi}$$
+\end{dfn}
+\end{frame}
+
+\begin{frame}{Пример: тип чёрчевских нумералов}
+Пусть $\Gamma = f:\alpha\rightarrow\alpha, x: \alpha$
+
+$$\infer[\lambda]{\vdash \lambda f.\lambda x.f\ (f\ x) : (\alpha\rightarrow\alpha)\rightarrow(\alpha\rightarrow\alpha)}{
+  \infer[\lambda]{f: \alpha\rightarrow\alpha \vdash \lambda x.f\ (f\ x) : (\alpha\rightarrow\alpha)}{
+    \infer[App]{{\color{blue}\{ f:\alpha\rightarrow\alpha, x: \alpha\}\ }\Gamma \vdash f\ (f\ x): \alpha}{
+      \infer[App]{\Gamma \vdash f\ x: \alpha}{
+        \infer[Ax]{\Gamma \vdash x: \alpha}{}\quad\quad\infer[Ax]{\Gamma \vdash f: \alpha\rightarrow\alpha}{}
+      }\quad\quad
+      \infer[Ax]{\Gamma \vdash f: \alpha\rightarrow\alpha}{}
+    }
+  }
+}$$
+\end{frame}
+
+
+\begin{frame}{Изоморфизм Карри-Ховарда}
+
+\begin{tabular}{ll}
+$\lambda$-исчисление & исчисление высказываний\\\hline
+Выражение & доказательство\\
+Тип выражения & высказывание\\
+Тип функции & импликация\\
+Упорядоченная пара & Конъюнкция\\
+Алгебраический тип & Дизъюнкция\\
+Необитаемый тип & Ложь
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}{Изоморфизм Карри-Ховарда: отрицание}
+
+\begin{dfn}Ложь ($\bot$) --- необитаемый тип;
+$\texttt{failwith/raise/throw} : \alpha\rightarrow\bot$; $\neg\varphi\equiv\varphi\rightarrow\bot$
+ \end{dfn}
+
+Например, контрапозиция:
+$(\alpha\rightarrow\beta)\rightarrow(\neg\beta\rightarrow\neg\alpha)$
+
+$$\infer[\lambda]{\lambda f^{\alpha\rightarrow\beta}.\lambda n^{\beta\rightarrow\bot}.\lambda a^\alpha.n\ (f\ a): (\alpha\rightarrow\beta)\rightarrow(\neg\beta\rightarrow\neg\alpha)}
+        {\infer[\lambda]{f:\alpha\rightarrow\beta\vdash\lambda n^{\beta\rightarrow\bot}.\lambda a^\alpha.n\ (f\ a): \neg\beta\rightarrow\neg\alpha}
+               {\infer[\lambda]{f:\alpha\rightarrow\beta,n:\beta\rightarrow\bot\vdash\lambda a^\alpha.n\ (f\ a): \neg\alpha}{
+                       \infer[App]{f:\alpha\rightarrow\beta,n:\beta\rightarrow\bot, a:\alpha \vdash n\ (f\ a): \bot}{
+                              \infer[App]{\Phi \vdash f\ a: \beta}{\infer[Ax]{\Phi \vdash a: \alpha}{}\quad\quad\infer[Ax]{\Phi \vdash f:\alpha\rightarrow\beta}{}}
+    \quad\quad \infer[Ax]{\Phi \vdash n: \beta\rightarrow\bot}{}
+               }
+               }}}$$
+
+Снятие двойного отрицания: $((\alpha\rightarrow\bot)\rightarrow\bot)\rightarrow\alpha$, то есть $\lambda f^{(\alpha\rightarrow\bot)\rightarrow\bot}.?: \alpha$.\\
+$f$ угадывает, что передать $x: \alpha\rightarrow\bot$. Тогда надо по $f$ угадать, что передать $x$.
+\end{frame}
+
+\begin{frame}{Исчисление по Чёрчу и по Карри}
+\begin{dfn}
+Просто-типизированное лямбда-исчисление по Карри.
+$$\infer[x \notin \Gamma]{\Gamma,x:\varphi \vdash x:\varphi}{} \quad\quad 
+  \infer[x \notin \Gamma]{\Gamma\vdash \lambda x.A: \varphi\rightarrow\psi}{\Gamma,x:\varphi\vdash A:\psi} \quad\quad 
+  \infer{\Gamma\vdash B A:\psi}{\Gamma\vdash A:\varphi\quad\quad\Gamma\vdash B:\varphi\rightarrow\psi}$$
+
+Просто-типизированное лямбда-исчисление по Чёрчу. 
+$$\infer[x \notin \Gamma]{\Gamma,x:\varphi \vdash x:\varphi}{} \quad\quad 
+  \infer[x \notin \Gamma]{\Gamma\vdash \lambda x^{\color{blue}\varphi}.A: \varphi\rightarrow\psi}{\Gamma,x:\varphi\vdash A:\psi} \quad\quad 
+  \infer{\Gamma\vdash B A:\psi}{\Gamma\vdash A:\varphi\quad\quad\Gamma\vdash B:\varphi\rightarrow\psi}$$
+\end{dfn}\pause
+
+\begin{exm}
+\begin{tabular}{l|l}
+По Карри & По Чёрчу\\\hline
+$\lambda f.\lambda x.f\ (f\ x) : (\alpha\rightarrow\alpha)\rightarrow(\alpha\rightarrow\alpha)$ & $\lambda f^{\alpha\rightarrow\alpha}.\lambda x^\alpha.f\ (f\ x) : (\alpha\rightarrow\alpha)\rightarrow(\alpha\rightarrow\alpha)$\\\pause
+$\lambda f.\lambda x.f\ (f\ x) : (\beta\rightarrow\beta)\rightarrow(\beta\rightarrow\beta)$ & $\lambda f^{\beta\rightarrow\beta}.\lambda x^\beta.f\ (f\ x) : (\beta\rightarrow\beta)\rightarrow(\beta\rightarrow\beta)$
+\end{tabular}
+\end{exm}
+
+%Изоморофизм Карри-Ховарда:\\
+%Типизированы по Чёрчу: Си, Паскаль, Джава, ...\\
+%Типизированы по Карри: Окамль, Хаскель, ...
+\end{frame}
+
+\begin{frame}{Комбинаторы S,K}
+\begin{dfn}Комбинатор --- лямбда-терм без свободных переменных
+\end{dfn}
+\begin{dfn}$S := \lambda x.\lambda y.\lambda z.x\ z\ (y\ z)$, $K := \lambda x.\lambda y.x$, $I := \lambda x.x$\end{dfn}
+
+\begin{thm}Пусть $N$ --- некоторый замкнутый лямбда-терм. Тогда найдётся выражение $C$, состоящее из комбинаторов $S$,$K$, 
+что $N =_\beta C$\end{thm}
+%\begin{exm}$I =_\beta S\ K\ K$\end{exm}
+\pause
+\begin{exm}
+\begin{tabular}{ll}
+$K := \lambda x^\alpha.\lambda y^\beta.x$ & $\alpha\rightarrow\beta\rightarrow\alpha$\\
+$S := \lambda x^{\alpha\rightarrow\beta\rightarrow\gamma}.\lambda y^{\alpha\rightarrow\beta}.\lambda z^\alpha.x\ z\ (y\ z)$ & $(\alpha\rightarrow\beta\rightarrow\gamma)\rightarrow(\alpha\rightarrow\beta)\rightarrow\alpha\rightarrow\gamma$\\
+\end{tabular}
+$$I =_\beta S\ K\ K$$
+\end{exm}
+\end{frame}
+
+\begin{frame}\begin{center}\Large Дальнейшее развитие: изоморфизм Карри-Ховарда и вокруг него\end{center}\end{frame}
+
+\begin{frame}{Исчисление второго порядка}
+\begin{itemize}
+\item Напомним о порядках:
+
+\begin{tabular}{lll}
+Порядок & Объекты & Пример\\\hline
+0 (И.В.) & Атомарные & $P$ \\
+1 (И.П. 1) & Множества & $\{ x | P(x) \}$ \\
+2 (И.П. 2) & Множества множеств & $\{ P | \forall t.t > 0 \rightarrow P(t) \}$
+\end{tabular}\pause
+
+\item Можно заменить схемы аксиом на аксиомы:
+$\forall a.\forall b.a \rightarrow b \rightarrow a$\pause
+
+\item
+Острый угол: импредикативность (формулы могут говорить о себе). Что такое <<предикат>>? Произвольное выражение,
+а подстановка --- буквальная замена текста? Тогда каково $\llbracket p(p) \rrbracket$ при 
+$p(x) = x(x) \rightarrow \bot$?
+
+\pause Нужна точная формализация.
+\item Самый простой вариант: переменные второго порядка --- только булевские пропозициональные переменные. 
+\pause
+$$\llbracket\forall p.Q\rrbracket = \left\{\begin{array}{ll}\text{И}, & 
+         \llbracket Q \rrbracket^{p := \text{И}} = \llbracket Q \rrbracket^{p := \text{Л}} = \text{И}\\
+        \text{Л}, & \text{иначе}\end{array}\right.$$
+
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Изоморфизм Карри-Ховарда для логики второго порядка}
+Типы и значения, зависящие от типов.
+\begin{itemize}
+\item Что такое $T: \forall x.x \rightarrow x$? \pause \\
+ \texttt{template <class x> class T \{ x f (x); \}} \pause
+\item Что такое $T: \exists x.\tau(x)$? \pause \\
+ Абстрактный тип данных: $\texttt{interface T \{$\tau$\}; f(T x)}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Зависимые типы}
+\begin{itemize}\item Рассмотрим код\\ \texttt{int n; cin >{}>{} n; int arr[n];} \\
+Каков тип \texttt{arr}? \pause
+\item $\texttt{sizeof(arr)} = n \cdot \texttt{sizeof(int)}$ \pause
+\item $arr = \Pi n^{\texttt{int}}.\texttt{int[}n\texttt{]}$ \pause
+\item Аналогично, \texttt{printf(const char*, ...)} --- капитуляция. \pause
+\item Есть языки, где тип выписывается (например, Идрис).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Прямолинейное: доказательства в коде}
+\begin{itemize}
+\item \texttt{Div2: (l: int) -> (even l) -> int}\pause
+\item \texttt{even l} --- что это?\pause
+\item $$even (x) ::= \left\{\begin{array}{ll} EZ, & x = 0\\ EP(even(y)), & x = y''\end{array}\right.$$\pause
+\item \texttt{Div2 10 (EP (EP (EP (EP (EP EZ)))))}\pause
+\item А если \texttt{Div2 p}? В общем случае сложно.
+
+\texttt{Plus2: (l: int) -> (p: even l) -> (l+2, even (l+2)) = (l+2, EP p)}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Интереснее: доказательства утверждений}
+
+Натуральные числа: $\texttt{Nat} ::= 0 | \texttt{suc Nat}$,
+
+$$a + b = \left\{\begin{array}{ll} a, & b = 0\\ \texttt{suc }(a + c), & b = \texttt{suc }c\end{array}\right.$$
+
+\texttt{\\func pmap {A B : \\} (f : A -> B) \{a a' : A\} (p : a = a') : f a = f a' => ...}
+
+\texttt{\\func +-comm (n m : Nat) : n + m = m + n\\
+  | 0, 0 => idp\\
+  | suc n, 0 => pmap suc (+-comm n 0)\\
+  | 0, suc m => pmap suc (+-comm 0 m)\\
+  | suc n, suc m => pmap suc (+-comm (suc n) m *> \\
+                    pmap suc (inv (+-comm n m)) *> +-comm n (suc m))}
+
+\end{frame}
+
+\begin{comment}
+\begin{frame}{Гомотопическая теория типов}
+\begin{dfn}Изоморфизм Карри-Ховарда-Воеводского.
+
+\begin{tabular}{lll}
+Логика & $\lambda$-исчисление & Топология\\\hline
+Утверждение & Тип & Пространство \\
+Доказательство & Значение & Точка в пространстве\\
+Предикат $(=)$ & Зависимый тип $(=)$ & Путь между точками
+\end{tabular}\end{dfn}
+
+\begin{enumerate}
+\item Точный смысл равенства.
+\item Позволяет легко формулировать утверждения про топологию, гомологическую алгебру и т.п.
+\item Можно реализовать (кубическая теория типов). Реализации для Агды, Кока, ..., отдельные языки (Аренд)
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Какие вопросы пытаемся решать?}
+\begin{exm}Самое простое: $x=y$. Почему $x^2 = y^2$?\end{exm} \pause
+
+А что если так $(a = b) = \{ \langle a,b \rangle | a < 10 \with b < 10 \}$?
+Тогда $5=7$, но $25 \ne 49$. \pause
+
+Постулируется в формальной арифметике: $(A2)\ a = b \rightarrow a' = b'$ \pause
+
+\begin{proof}Путь $x$ в $y$ --- функция $f: [0,1] \rightarrow S$, 
+$f(0)=x$, $f(1)=y$. $f(x) = x^2$ --- непрерывная функция. Тогда $f(x^2)$ --- тоже непрерывная,
+то есть $x^2 = y^2$.\end{proof}
+\end{frame}
+\end{comment}
+
+\begin{frame}{Что ещё}
+\begin{itemize}
+\item Гомотопическая теория типов...
+\item Метод резолюций и рядом --- Prolog, SMT-солверы,...
+\item Можно пытаться совмещать (F*, ...)
+\end{itemize}
+\end{frame}
+\end{document}
