@@ -1,0 +1,393 @@
+\documentclass[handout]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{cancel}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{tikz}
+\usepackage{multicol}
+\usetikzlibrary{patterns}
+\usepackage{chronosys}
+\usepackage{proof}
+\usepackage{multirow}
+\setbeamertemplate{navigation symbols}{}
+%\usetheme{Warsaw}
+
+\newtheorem{thm}{Теорема}[section]
+\newtheorem{dfn}{Определение}[section]
+\newtheorem{lmm}{Лемма}[section]
+\newtheorem{exm}{Пример}[section]
+\newtheorem{snote}{Пояснение}[section]
+
+\newcommand{\divisible}%
+{\mathrel{\lower.2ex%
+\vbox{\baselineskip=0.7ex\lineskiplimit=0pt%
+\kern6pt \hbox{.}\hbox{.}\hbox{.}}%
+}}
+
+\begin{document}
+
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+
+\begin{frame}{}
+\LARGE\begin{center}Теоремы Гёделя о неполноте арифметики\end{center}
+\end{frame}
+
+\begin{frame}{Основные свойства исчислений: Ф.А.}
+\begin{tabular}{lllll}
+      & К.И.В. & И.И.В. & К.И.П. & Ф.А. + кл. модель\\\hline
+корректность & да  & да  & да (лекция 5) & да (сейчас)\\
+непротиворечивость & да  & да  & да (лекция 6) & {\color{red}верим} (т. Гёделя №2)\\
+полнота & да & да & да (лекция 6) & {\color{red}нет} (т. Гёделя №1)\\
+разрешимость & да  & да & нет (лекция 7)& {\color{red}нет} (док-во т. Тарского)
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Классическая модель Ф.А.}
+А как определять <<нестандартные>> предикаты и функции ($Q'_1$, $c(p,q)$ и т.п.)? \pause
+Для простоты разрешим только нелогические функциональные и предикатные символы ($=$, $+$, $\cdot$, 0, $'$).\pause
+\begin{dfn}Классическая модель формальной арифметики: $D = \mathbb{N}_0$, оценки предикатных и функциональных символов 
+--- естественные.
+\end{dfn}
+
+\begin{thm}Формальная арифметика корректна\end{thm}
+\begin{proof}Свойства аксиом $A1\dots A8$ очевидны. 
+
+Доказательство схемы аксиом индукции:
+$$\psi(0) \with (\forall x.\psi(x) \rightarrow \psi(x')) \rightarrow \psi(x)$$
+Индукция по структуре формулы $\psi$, затем математическая индукция по $x$.
+\end{proof}
+\end{frame}
+
+\begin{frame}{Схема аксиом индукции чуть подробнее}
+Индукция по структуре формулы $\psi$ в $$\psi(0) \with (\forall x.\psi(x) \rightarrow \psi(x')) \rightarrow \psi(x)$$
+Для примера база: $$\theta_0(0) = \theta_1(0) \with (\forall x.\theta_0(x) = \theta_1(x) \rightarrow \theta_0(x') = \theta_1(x')) \rightarrow \theta_0(x) = \theta_1(x)$$
+
+Докажем индукцией по $x$.
+\begin{enumerate}
+\item $x := 0$. Тогда либо $\llbracket \theta_0(0) = \theta_1(0) \rrbracket = \text{Л}$, 
+либо $\llbracket \theta_0(x) = \theta_1(x) \rrbracket^{x := 0} = \text{И}$
+\item $x := s$. Тогда $s$ раз применяем переход $$\llbracket \theta_0(x) = \theta_1(x) \rightarrow \theta_0(x') = \theta_1(x') \rrbracket^{x := \overline{0\dots s}} = \text{И}$$
+отсюда $$\llbracket\theta_0(x') = \theta_1(x') \rrbracket^{x := s} = \llbracket\theta_0(x) = \theta_1(x) \rrbracket^{x := s+1} = \text{И}$$
+\end{enumerate}
+
+\pause
+Можно ли верить этому доказательству (доказываем индукцию через индукцию)?
+\end{frame}
+
+\begin{frame}{Самоприменимость}
+\begin{dfn}Пусть $\xi$ --- формула с единственной свободной
+переменной $x_1$. Тогда:
+$\langle\ulcorner \xi \urcorner,p\rangle \in W_1$, если $\vdash \xi(\overline{\ulcorner \xi \urcorner})$ и $p$ --- номер доказательства.
+\end{dfn}
+
+\begin{dfn}Отношение $W_1$ рекурсивно, поэтому выражено в Ф.А. формулой $\omega_1$ со свободными переменными $x_1$ и $x_2$, причём:
+\begin{enumerate}
+\item $\vdash \omega_1(\overline{\ulcorner \varphi \urcorner},\overline{p})$, если $p$ --- гёделев номер
+доказательства самоприменения $\varphi$;
+\item $\vdash \neg\omega_1(\overline{\ulcorner \varphi \urcorner},\overline{p})$ иначе.
+\end{enumerate}
+\end{dfn}
+
+\begin{dfn}
+Определим формулу $\sigma(x_1) := \forall p.\neg\omega_1(x_1,p)$. 
+\end{dfn}
+\end{frame}
+
+\begin{frame}{Первая теорема Гёделя о неполноте арифметики}
+\begin{dfn}Если для любой формулы $\phi(x)$ из $\vdash\phi(0)$, $\vdash\phi(\overline{1})$,
+$\vdash\phi(\overline{2})$, $\dots$ выполнено $\not\vdash\exists x.\neg\phi(x)$, 
+то теория \emph{омега-непротиворечива}.
+\end{dfn}
+
+\begin{thm}{Первая теорема Гёделя о неполноте арифметики}
+\begin{itemize}
+\item Если формальная арифметика непротиворечива, то $\not\vdash\sigma(\overline{\ulcorner\sigma\urcorner})$.
+\item Если формальная арифметика $\omega$-непротиворечива, то $\not\vdash\neg\sigma(\overline{\ulcorner\sigma\urcorner})$.
+\end{itemize}
+\end{thm}
+\end{frame}
+
+\begin{frame}{Доказательство теоремы Гёделя}
+Напомним: $\sigma(x_1) := \forall p.\neg\omega_1(x_1,p)$. $W_1(\ulcorner\xi\urcorner,p)$ --- $p$ есть доказательство самоприменения $\xi$.
+\begin{proof}
+\begin{itemize}
+\item Пусть $\vdash\sigma(\overline{\ulcorner\sigma\urcorner})$. Значит, $p$ --- номер доказательства. \pause Тогда
+$\langle\ulcorner\sigma\urcorner,p\rangle \in W_1$. \pause Тогда $\vdash\omega_1(\overline{\ulcorner\sigma\urcorner},\overline{p})$. \pause 
+Тогда $\vdash\exists p.\omega_1(\overline{\ulcorner\sigma\urcorner},p)$. \pause То есть
+$\vdash\neg\forall p.\neg\omega_1(\overline{\ulcorner\sigma\urcorner},p)$. \pause То есть $\vdash\neg\sigma(\overline{\ulcorner\sigma\urcorner})$. Противоречие.
+\pause
+\item Пусть $\vdash\neg\sigma(\overline{\ulcorner\sigma\urcorner})$. \pause То есть $\vdash\exists p.\omega_1(\overline{\ulcorner\sigma\urcorner},p)$.
+\begin{itemize}
+\item
+\pause Но найдётся ли натуральное число $p$, что $\vdash\omega_1(\overline{\ulcorner\sigma\urcorner},\overline{p})$?
+\pause Пусть нет. То есть $\vdash\neg\omega_1(\overline{\ulcorner\sigma\urcorner},\overline{0})$,
+                          $\vdash\neg\omega_1(\overline{\ulcorner\sigma\urcorner},\overline{1})$, 
+                          \dots \pause По $\omega$-непротиворечивости $\not\vdash\exists p.\neg\neg\omega_1(\overline{\ulcorner\sigma\urcorner},p)$. \pause
+\end{itemize}
+       Значит, найдётся натуральное $p$, что $\vdash\omega_1(\overline{\ulcorner\sigma\urcorner},\overline{p})$. \pause 
+То есть, $\langle\ulcorner\sigma\urcorner, p\rangle\in W_1$. \pause
+То есть, $p$ --- доказательство самоприменения $W_1$: $\vdash\sigma(\overline{\ulcorner\sigma\urcorner})$. \pause Противоречие.
+\end{itemize}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Почему теорема о неполноте?}
+\begin{dfn}\emph{Семантически} полная теория --- теория, в которой любая общезначимая формула доказуема.\\
+\emph{Синтаксически} полная теория --- теория, в которой для каждой формулы $\alpha$ выполнено $\vdash\alpha$ или $\vdash\neg\alpha$.\end{dfn}
+\begin{thm}Формальная арифметика с классической моделью семантически неполна.\end{thm} \pause
+\begin{proof}
+ Рассмотрим Ф.А. с классической моделью. \pause
+ Из теоремы Гёделя имеем $\not\vdash\sigma(\overline{\ulcorner\sigma\urcorner})$. \pause
+ Рассмотрим $\sigma(\overline{\ulcorner\sigma\urcorner}) \equiv \forall p.\neg\omega_1(\overline{\ulcorner\sigma\urcorner},p)$:
+нет числа $p$, что $p$ --- номер доказательства $\sigma(\overline{\ulcorner\sigma\urcorner})$. \pause 
+ То есть, $\llbracket \forall p.\neg\omega_1(\overline{\ulcorner\sigma\urcorner}),p) \rrbracket = \text{И}$. \pause
+ То есть, $\models \sigma(\overline{\ulcorner\sigma\urcorner})$.
+\end{proof}
+
+\end{frame}
+
+\begin{frame}{Первая теорема Гёделя о неполноте в форме Россера}
+\begin{dfn}$\theta_1\le\theta_2 \equiv \exists p.p+\theta_1=\theta_2\quad\quad\theta_1<\theta_2\equiv\theta_1\le\theta_2\with\neg\theta_1=\theta_2$\end{dfn}\pause
+\begin{dfn}Пусть $\langle \ulcorner\xi\urcorner,p\rangle \in W_2$, если $\vdash\neg\xi(\overline{\ulcorner\xi\urcorner})$.
+Пусть $\omega_2$ выражает $W_2$ в формальной арифметике.\end{dfn}\pause
+\begin{thm}Рассмотрим $\rho(x_1) = \forall p.\omega_1(x_1,p)\rightarrow\exists q.q \le p \with \omega_2(x_1,q)$. \pause
+Тогда $\not\vdash\rho(\overline{\ulcorner\rho\urcorner})$ и $\not\vdash\neg\rho(\overline{\ulcorner\rho\urcorner})$. \pause
+$\rho(\overline{\ulcorner\rho\urcorner})$: <<Меня легче опровергнуть, чем доказать>>
+\end{thm}%\pause
+%\begin{proof}Сложное техническое доказательство, использующее утверждения
+%вида $\vdash a \le \overline{n} \leftrightarrow a = \overline{0} \vee a = \overline{1} \vee \dots \vee a = \overline{n}$
+%\end{proof} \pause
+\end{frame}
+
+\begin{frame}{Формальное доказательство}
+Неполнота варианта теории, изложенной выше, формально доказана на Coq, Russell O'Connor, 2005:\\
+\vspace{0.5cm}
+``My proof, excluding standard libraries and the library for Pocklington’s criterion, 
+consists of 46 source files, 7 036 lines of specifications, 37 906 lines of proof, 
+and 1 267 747 total characters. The size of the gzipped tarball (gzip -9) of all 
+the source files is 146 008 bytes, which is an estimate of the information content of my proof.''\\
+\vspace{0.5cm}
+\texttt{Theorem Incompleteness : forall T : System,}\\
+\hspace{0.5cm}\texttt{Included Formula NN T ->}\\
+\hspace{0.5cm}\texttt{RepresentsInSelf T ->}\\
+\hspace{0.5cm}\texttt{DecidableSet Formula T ->}\\
+\hspace{0.5cm}\texttt{exists f : Formula,}\\
+\hspace{0.5cm}\texttt{Sentence f/\textbackslash (SysPrf T f \textbackslash/ SysPrf T (notH f) -> Inconsistent LNN T)}.
+\end{frame}
+
+\begin{frame}{Consis}
+\begin{lmm}
+$\vdash 1=0$ тогда и только тогда, когда $\vdash\alpha$ при любом $\alpha$.
+\end{lmm}
+\begin{dfn}
+Обозначим за $\psi(x,p)$ формулу, выражающую в формальной арифметике рекурсивное
+отношение Proof: $\langle \ulcorner\xi\urcorner,p\rangle \in \text{Proof}$, если $p$ --- гёделев номер
+доказательства $\xi$. \pause\\
+Обозначим $\pi(x)\equiv\exists p.\psi(x,p)$
+\end{dfn} \pause
+\begin{dfn}Формулой Consis назовём формулу
+$\neg \pi(\overline{\ulcorner 1=0 \urcorner})$
+\end{dfn} \pause
+Неформальный смысл: <<формальная арифметика непротиворечива>>
+\end{frame}
+
+\begin{frame}{Вторая теорема Гёделя о неполноте арифметики}
+\begin{thm}Если Consis доказуем, то формальная арифметика противоречива.\end{thm}
+\begin{proof}(неформально) \pause
+Формулировка 1 теоремы Гёделя о неполноте арифметики: 
+<<если Ф.А. непротиворечива, то недоказуемо $\sigma(\overline{\ulcorner\sigma\urcorner})$>>. \pause
+То есть, $\forall p.\neg\omega_1(\overline{\ulcorner\sigma\urcorner},p)$. \pause То есть, 
+если $\text{Consis}$, то $\sigma(\overline{\ulcorner\sigma\urcorner})$. \pause
+То есть, если $\text{Consis}$, то $\sigma(\overline{\ulcorner\sigma\urcorner})$, --- и это можно доказать,
+то есть $\vdash\text{Consis}\rightarrow\sigma(\overline{\ulcorner\sigma\urcorner})$. \pause Однако
+если формальная арифметика непротиворечива, то $\not\vdash\sigma(\overline{\ulcorner\sigma\urcorner})$.
+\end{proof}
+\end{frame}
+
+\begin{frame}{Слишком много неформальности}
+Рассмотрим такой особый $\text{Consis}'$:
+$$\begin{array}{l}\pi'(x) := \exists p.\psi(x,p) \with \neg\psi(\overline{\ulcorner 1 = 0 \urcorner},p)\\
+                  \text{Consis}' := \pi'(\overline{\ulcorner 1 = 0 \urcorner})\end{array}$$
+
+Заметим:
+\begin{enumerate}
+\item Если ФА непротиворечива, то $\llbracket \pi'(x) \rrbracket = \llbracket \pi(x) \rrbracket$:
+\begin{itemize}
+\item если $x \ne \ulcorner 1 = 0 \urcorner$ и $\llbracket\psi(x,p)\rrbracket = \text{И}$, 
+то $\llbracket\psi(\overline{\ulcorner 1 = 0\urcorner},p)\rrbracket = \text{Л}$
+\item если $x = \ulcorner 1 = 0 \urcorner$, то $\psi(\overline{\ulcorner 1 = 0 \urcorner},p) = \text{Л}$ при любом $p$.
+\end{itemize}
+\item Но $\vdash \text{Consis}'$.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Условия выводимости Гильберта-Бернайса-Лёба}
+\begin{dfn}
+Будем говорить, что формула $\psi$, выражающая отношение Proof, 
+формула $\pi$ и формула Consis соответствуют
+условиям Гильберта-Бернайса-Лёба, если следующие условия выполнены для любой формулы $\alpha$:
+
+\begin{enumerate}
+\item $\vdash \alpha$ влечет $\vdash \pi(\overline{\ulcorner\alpha\urcorner})$
+\item $\vdash \pi (\overline{\ulcorner\alpha\urcorner}) \rightarrow \pi(\overline{\ulcorner\pi(\overline{\ulcorner\alpha\urcorner})\urcorner})$
+\item $\vdash \pi (\overline{\ulcorner\alpha\rightarrow \beta\urcorner}) \rightarrow \pi(\overline{\ulcorner\alpha\urcorner}) \rightarrow \pi(\overline{\ulcorner\beta\urcorner})$
+\end{enumerate}
+\end{dfn}
+\end{frame}
+
+\begin{frame}{Первая теорема Гёделя о неполноте ещё раз}
+\begin{lmm}Лемма об автоссылках. Для любой формулы $\phi(x_1)$ можно построить 
+такую замкнутую формулу $\alpha$ (не использующую неаксиоматических предикатных
+и функциональных символов), что $\vdash \phi(\overline{\ulcorner\alpha\urcorner}) \leftrightarrow \alpha$.
+\end{lmm}
+
+\begin{thm}Существует такая замкнутая формула $\gamma$, что если Ф.А. непротиворечива, то 
+$\not\vdash \gamma$, а если Ф.А. $\omega$-непротиворечива, то и $\not\vdash\neg\gamma$.
+\end{thm}
+\begin{proof}Рассмотрим $\phi(x_1) \equiv \neg\pi(x_1)$. Тогда по лемме об автоссылках существует
+$\gamma$, что $\vdash \gamma \leftrightarrow \neg\pi(\overline{\ulcorner\gamma\urcorner})$.
+
+\begin{itemize}
+\item Предположим, что $\vdash \gamma$. Тогда $\vdash \gamma \rightarrow \neg\pi(\overline{\ulcorner\gamma\urcorner})$, то есть $\not\vdash\gamma$
+\item Предположим, что $\vdash \neg\gamma$. Тогда $\vdash \pi(\overline{\ulcorner\gamma\urcorner})$,
+то есть $\vdash \exists p.\psi(\overline{\ulcorner\gamma\urcorner},p)$. Тогда по $\omega$-непротиворечивости
+найдётся $p$, что $\vdash \psi(\overline{\ulcorner\gamma\urcorner},\overline{p})$, то есть $\vdash \gamma$.
+\end{itemize}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Доказательство второй теоремы Гёделя}
+\begin{enumerate}
+\item Пусть $\gamma$ таково, что $\vdash \gamma \leftrightarrow \neg\pi(\overline{\ulcorner\gamma\urcorner})$.
+\item Покажем $\pi(\overline{\ulcorner\gamma\urcorner})\vdash \pi(\overline{\ulcorner 1=0\urcorner})$. 
+
+\begin{enumerate}
+\item По условию 2, $\vdash \pi(\overline{\ulcorner\gamma\urcorner}) \rightarrow \pi(\overline{\ulcorner\pi(\overline{\ulcorner\gamma\urcorner})\urcorner})$.
+По теореме о дедукции $\pi(\overline{\ulcorner\gamma\urcorner})\vdash \pi(\overline{\ulcorner\pi(\overline{\ulcorner\gamma\urcorner})\urcorner})$;
+
+\item Так как $\vdash \pi(\overline{\ulcorner\gamma\urcorner})\rightarrow\neg\gamma$, то 
+по условию 1 $\vdash \pi(\overline{\ulcorner\pi(\overline{\ulcorner\gamma\urcorner})\rightarrow\neg\gamma\urcorner})$;
+
+\item По условию 3, $\pi(\overline{\ulcorner\gamma\urcorner})\vdash \pi(\overline{\ulcorner\pi(\overline{\ulcorner\gamma\urcorner})\urcorner})
+\rightarrow \pi(\overline{\ulcorner\pi(\overline{\ulcorner\gamma\urcorner})\rightarrow\neg\gamma\urcorner})\rightarrow
+\pi(\overline{\ulcorner\neg\gamma\urcorner})$;
+
+\item Таким образом, $\pi(\overline{\ulcorner\gamma\urcorner})\vdash\pi(\overline{\ulcorner\neg\gamma\urcorner})$;
+
+\item Однако $\vdash \gamma\rightarrow\neg\gamma\rightarrow 1=0$. Условие 3 (применить два раза) даст $\pi(\overline{\ulcorner\gamma\urcorner})\vdash \pi(\overline{\ulcorner 1=0 \urcorner})$.
+\end{enumerate}
+
+\item $\neg\pi(\overline{\ulcorner 1=0 \urcorner})\rightarrow\neg\pi(\overline{\ulcorner\gamma\urcorner})$ (т. о дедукции, контрапозиция).
+\item $\vdash \neg\pi(\overline{\ulcorner 1=0 \urcorner})\rightarrow\gamma$ (определение $\gamma$).
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Расширение на другие теории}
+\begin{dfn}Теория $\mathcal{S}$ --- расширение теории $\mathcal{T}$, если
+из $\vdash_\mathcal{T} \alpha$ следует $\vdash_\mathcal{S} \alpha$\end{dfn}
+
+\begin{dfn}Теория $\mathcal{S}$ --- рекурсивно-аксиоматизируемая, если найдётся теория $\mathcal{S'}$ с тем же языком, что:
+\begin{enumerate}
+\item $\vdash_\mathcal{S} \alpha$ тогда и только тогда, когда $\vdash_\mathcal{S'} \alpha$;
+\item Множество аксиом теории $\mathcal{S'}$ рекурсивно.
+\end{enumerate}
+\end{dfn}
+
+\begin{thm}Если $\mathcal{S}$ --- непротиворечивое рекурсивно-аксиоматизируемое расширение формальной арифметики, то
+в ней можно доказать аналоги теорем Гёделя о неполноте арифметики.
+\end{thm}
+\end{frame}
+
+\begin{frame}{Сужение: система Робинсона}
+\begin{dfn}Теория первого порядка, использующая нелогические функциональные символы $0$, $(+)$ и $(\cdot)$, нелогический
+предикатный символ $(=)$ и следующие нелогические аксиомы, называется системой Робинсона.
+
+\vspace{-0.4cm}
+$$\begin{array}{ll}
+a = a & a = b \rightarrow b = a \\
+a = b \rightarrow b = c \rightarrow a = c & a = b \rightarrow a' = b' \\
+a' = b' \rightarrow a = b & \neg 0 = a' \\
+a = b \rightarrow a + c = b + c \with c + a = c + b & a = b \rightarrow a \cdot c = b \cdot c \with c \cdot a = c \cdot b \\
+\neg a = 0 \rightarrow \exists b. a = b' & a + 0 = a\\
+a + b' = (a + b)' & a \cdot 0 = 0 \\
+a \cdot b' = a \cdot b + a 
+\end{array}$$
+\end{dfn}
+
+\vspace{-0.3cm}
+Система Робинсона неполна: аксиомы --- в точности утверждения, необходимые для доказательства теорем Гёделя.
+Система Робинсона не имеет схем аксиом.
+\end{frame}
+
+\begin{frame}{Арифметика Пресбургера}
+\begin{dfn}Теория первого порядка, использующая нелогические функциональные символы $0$, $1$, $(+)$, нелогический
+предикатный символ $(=)$ и следующие нелогические аксиомы, называется арифметикой Пресбургера.
+
+$$\begin{array}{l}
+\neg (0 = x + 1) \\
+x + 1 = y + 1 \rightarrow x = y\\
+x + 0 = x \\
+x + (y + 1) = (x + y) + 1\\
+(\varphi(0) \with \forall x.\varphi(x) \rightarrow \varphi(x+1)) \rightarrow \forall y.\varphi(y)
+\end{array}$$\end{dfn}
+
+\begin{thm}Арифметика Пресбургера разрешима и синтаксически и семантически полна.\end{thm}
+\end{frame}
+
+\begin{frame}{Невыразимость доказуемости}
+\begin{dfn}
+$\text{Th}_\mathcal{S} = \{ \ulcorner\alpha\urcorner\ |\ \vdash_\mathcal{S}\alpha \}$; 
+$\text{Tr}_\mathcal{S} = \{ \ulcorner\alpha\urcorner\ |\ \llbracket\alpha\rrbracket_\mathcal{S} = \text{И} \}$
+\end{dfn}
+
+\begin{lmm}Пусть $D(\ulcorner\alpha\urcorner) = \ulcorner\alpha(\overline{\ulcorner\alpha\urcorner})\urcorner$ для
+любой формулы $\alpha(x)$. Тогда $D$ представима в формальной арифметике.
+\end{lmm}
+
+
+\begin{thm}Если расширение Ф.А. $\mathcal{S}$ непротиворечиво и $D$ представима в нём, то $\text{Th}_\mathcal{S}$ невыразимо в $\mathcal{S}$\end{thm}
+
+\begin{proof}Пусть $\delta(a,p)$ представляет $D$, и пусть $\sigma(x)$ выражает множество $\text{Th}_\mathcal{S}$ (рассматриваемое как
+одноместное отношение).
+
+Пусть $\alpha(x) := \forall p.\delta(x,p)\rightarrow\neg\sigma(p)$. Верно ли, что $\ulcorner\alpha\urcorner\in\text{Th}$?
+\end{proof}
+\end{frame}
+
+\begin{frame}{Неразрешимость формальной арифметики}
+\begin{thm}Если формальная арифметика непротиворечива, то формальная арифметика неразрешима\end{thm}
+\begin{proof}
+Пусть формальная арифметика разрешима. 
+Значит, есть рекурсивная функция $f(x)$: $f(x)=1$ тогда и только тогда, 
+когда $x \in \text{Th}_\text{Ф.А.}$. То есть, $\text{Th}_\text{Ф.А.}$ выразимо в формальной арифметике.
+
+По теореме о невыразимости доказуемости, 
+$\text{Th}_\text{Ф.А.}$ невыразимо в формальной арифметике. Противоречие.
+\end{proof}
+\end{frame}
+
+\begin{frame}{Теорема Тарского}
+\begin{thm}[Тарского о невыразимости истины]
+Не существует формулы $\varphi(x)$, что $\llbracket \varphi(x) \rrbracket = \text{И}$ (в стандартной интерпретации) тогда и только
+тогда, когда $x \in \text{Tr}_\text{ФА}$. \end{thm}
+\begin{proof}
+Пусть теория $\mathcal{S}$ --- формальная арифметика + аксиомы: все истинные в стандартной интерпретации формулы.
+Очевидно, что $\text{Th}_\mathcal{S} = \text{Tr}_\mathcal{S} = \text{Tr}_\text{ФА}$. 
+То есть $\text{Tr}_\text{ФА}$ невыразимо в $\mathcal{S}$.
+
+Пусть $\varphi$ таково, что $\llbracket\varphi(x)\rrbracket = \text{И}$ при $x \in \text{Tr}$.
+Тогда $\vdash\varphi(x)$, если $x \in \text{Tr}$ и $\vdash\neg\varphi(x)$, если $x \notin\text{Tr}$.
+
+Тогда $\text{Tr}$ выразимо в $\mathcal{S}$. Противоречие.
+\end{proof}
+
+\pause
+Однако, если взять $D = \mathbb{R}$, истина становится выразима (алгоритм Тарского).
+\end{frame}
+
+\end{document}

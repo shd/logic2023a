@@ -1,0 +1,570 @@
+\documentclass[handout]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{cancel}
+\usepackage{amssymb}
+\usepackage{dutchcal}
+\usepackage{mathrsfs}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{tikz}
+\usetikzlibrary{patterns}
+\usepackage{chronosys}
+\usepackage{proof}
+\usepackage{multirow}
+\setbeamertemplate{navigation symbols}{}
+%\usetheme{Warsaw}
+
+\newtheorem{thm}{Теорема}[section]
+\newtheorem{lmm}{Теорема}[section]
+\newtheorem{dfn}{Определение}[section]
+\newtheorem{exm}{Пример}[section]
+
+\begin{document}
+
+\begin{frame}{Алгебра Линденбаума}
+\begin{thm}Пусть $\alpha \approx \beta$, если $\alpha\vdash\beta$ и $\beta\vdash\alpha$.
+Тогда $(\approx)$ --- отношение эквивалентности.
+\end{thm}
+\begin{proof}
+Надо доказать, что для любых $\alpha$, $\beta$, $\gamma$:
+\begin{enumerate}
+\item $\alpha\approx\alpha$ (очевидно, $\alpha\vdash\alpha$);
+\item $\alpha\approx\beta$ влечёт $\beta\approx\alpha$ (очевидно из определения);
+\item $\alpha\approx\beta$ и $\beta\approx\gamma$ влечёт $\alpha\approx\gamma$:
+
+из посылок следует $\alpha\vdash\beta$ и $\beta\vdash\gamma$, соединив доказательства, получим $\alpha\vdash\gamma$.
+\end{enumerate}
+\end{proof}
+\vspace{-0.3cm}
+$L/_\approx$ --- частично-упорядоченное множество. Элементы будем обозначать $[\alpha]$.
+
+\begin{lmm}$\alpha\vdash\beta$ тогда и только тогда, когда $[\alpha]\le[\beta]$.\end{lmm}
+\end{frame}
+
+\begin{frame}{$\mathcal{L}$ --- решётка.}
+
+Покажем $[\alpha]\cdot[\beta] = [\alpha\with\beta]$. То есть, $[\alpha\with\beta]$ --- наибольшая нижняя грань $\alpha$ и $\beta$.
+
+\begin{itemize}
+\item \emph{(... нижняя грань)} $[\alpha\with\beta] \le [\alpha]$: заметим, что $\alpha\with\beta\vdash\alpha$.
+\item \emph{(наибольшая ...)} Если $[\sigma] \le [\alpha]$ и $[\sigma]\le[\beta]$, то
+$[\sigma] \le [\alpha\with\beta]$:
+
+Рассмотрим вывод в контексте $\sigma$:
+\begin{tabular}{lll}
+$(1..a)$ & $\alpha$ & из $[\sigma] \le [\alpha]$ \\
+$(a+1..b)$ & $\beta$ & из $[\sigma] \le [\beta]$ \\
+$(b+1)$ & $\alpha\rightarrow\beta\rightarrow\alpha\with\beta$ & Сх. акс\\
+$(b+2)$ & $\beta\rightarrow\alpha\with\beta$ & M.P. $a$, $b+1$\\
+$(b+3)$ & $\alpha\with\beta$ & M.P. $b$, $b+2$
+\end{tabular}
+
+Отсюда $\sigma \vdash \alpha\with\beta$.
+\end{itemize}
+
+Утверждение $[\alpha]+[\beta] = [\alpha\vee\beta]$ показывается аналогично.
+\end{frame}
+
+\begin{frame}{$\mathcal{L}$ --- импликативная решётка с 0, согласованная с ИИВ}
+\begin{itemize}
+\item \emph{(импликативная ...)} Покажем $[\alpha]\rightarrow[\beta] = [\alpha\rightarrow\beta]$:
+
+в самом деле, $[\alpha]\rightarrow[\beta] = \text{наиб }\{[\sigma]\ |\ [\alpha\with\sigma] \le [\beta]\}$. Покажем требуемое
+двумя включениями:
+
+\begin{enumerate}
+\item $\alpha\with(\alpha\rightarrow\beta) \vdash \beta$ (карринг + транзитивность импликации)
+\item Если $\alpha\with\sigma \vdash \beta$, то $\sigma\vdash\alpha\rightarrow\beta$ (карринг + теорема о дедукции)
+\end{enumerate}
+
+\item \emph{(... с нулём ...)} Покажем, что $0 = [A \with \neg A]$: 
+
+в самом деле, $A \with \neg A \vdash \sigma$ при любом $\sigma$.
+
+\item \emph{(... согласованная с ИИВ)}
+\begin{enumerate}
+\item Из доказательства видно, что $[\alpha\with\beta] = [\alpha]\cdot[\beta]$,
+$[\alpha\vee\beta] = [\alpha]+[\beta]$, $[\alpha\rightarrow\beta]=[\alpha]\rightarrow[\beta]$, $[A\with\neg A] = 0$.
+
+\item $[A \rightarrow A] = [A] \rightarrow [A] = 1$ по свойствам алгебры Гейтинга
+\item $[\neg \alpha] = [\alpha \rightarrow A\with\neg A] = [\alpha] \rightarrow 0 = \sim[\alpha]$
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{$\Gamma(\mathcal{L})$ --- алгебра Гейтинга, согласованная с ИИВ.}
+
+Надо учитывать существование нового элемента $\omega$.
+
+Например, импликация/псевдодополнение:
+%покажем $[\alpha\rightarrow\beta]_\Gamma=[\alpha]_\Gamma\rightarrow[\beta]_\Gamma$ двумя включениями:
+$[\alpha]\rightarrow[\beta] = \text{наиб }\{s\ |\ [\alpha]\cdot s \le [\beta]\}$. 
+
+\begin{itemize}
+\item \emph{(... нижняя грань)} $[\alpha]\cdot [\alpha\rightarrow\beta] \le [\beta]$ --- аналогично случаю для $\mathcal{L}$
+\item \emph{(наибольшая ...)} Если $[\alpha]\cdot s \le [\beta]$, то 
+\begin{itemize}
+\item $s = [\sigma]$, то есть $s \ne \omega$ --- аналогично случаю для $\mathcal{L}$;
+\item $s = \omega$, тогда $[\alpha]\cdot \omega \le [\beta]$. Но $[\alpha] \ne \omega$ --- либо
+$[\alpha] < \omega$, либо $[\alpha] = 1$. В обоих случаях $[\alpha] \cdot 1 \le [\beta]$.
+Отсюда $s$ не наибольший.
+\end{itemize}
+%$\sigma\vdash\alpha\rightarrow\beta$ (карринг + теорема о дедукции)
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\begin{center}\LARGE Исчисление предикатов\end{center}
+
+\end{frame}
+
+%\begin{frame}{Ограничения языка исчисления высказываний}
+%
+%\only<+>
+%{$$\infer{\text{Сократ смертен}}{\text{Каждый человек смертен}\quad\quad\text{Сократ --- человек}}$$\vspace{-0.3cm}}
+%
+%\only<+->{$$
+%\infer{
+%   \text{Сократ {\color{red}--- смертный}}
+%}
+%{\text{{\color{blue}Каждый} объект, если он {\color{red}--- человек}, то он {\color{red}--- смертный}}\quad\quad
+% \text{Сократ {\color{red}--- человек}}
+%}
+%$$\vspace{-0.3cm}}
+
+%\onslide<+->В исчислении высказываний такое выразимо отчасти:
+%$$
+%\infer{\text{Сократ смертен}}{\text{Если нечто --- человек, то оно смертно}\quad\quad\text{Сократ --- человек}}
+%$$\pause\vspace{-0.3cm}
+%\onslide<+->
+%\begin{center}\begin{tabular}{lp{2cm}l}
+%\multirow{3}{*}{
+%$$
+%\infer{A\rightarrow C}{A \rightarrow B \quad\quad  B \rightarrow C}
+%$$}
+%&&$A$: Данный объект --- Сократ\\
+%&&$B$: Данный объект --- человек\\
+%&&$C$: Данный объект --- смертен
+%\end{tabular}\end{center}
+
+
+\begin{frame}{Ограничения языка исчисления высказываний}
+%\only<+>
+$$\infer{\text{Сократ смертен}}{\text{{\color{blue}Каждый} человек смертен}\quad\quad\text{Сократ {\color{red}есть} человек}}$$
+%\onslide<+->
+\pause
+\begin{center}Цель: увеличить формализованную часть метаязыка.\end{center} \pause
+
+Мы неформально знакомы с {\color{red}предикатами} ($P: D \rightarrow V$) и {\color{blue}кванторами} ($\forall x.H(x) \rightarrow S(x)$).
+$$
+\infer{{\color{red}S}(\text{Сократ})}{{\color{blue}\forall} x.{\color{red}H}(x)\rightarrow {\color{red}S}(x)\quad\quad {\color{red}H}(\text{Cократ})}
+$$
+\end{frame}
+
+\begin{frame}{Начнём с примера}
+
+$$\color{blue}\forall {\color{red}x}.{\color{red}\sin x} = {\color{red}0} \vee {\color{red}(\sin x)^2+1} > {\color{red}1}$$ \pause
+
+\begin{enumerate}
+\item Предметные (здесь: числовые) выражения
+\begin{enumerate}
+\item Предметные переменные ($\color{red}x$).\pause
+\item Одно- и двухместные функциональные символы <<синус>>, <<возведение в квадрат>> и <<сложение>>.\pause%:
+%$$\color{blue}\forall x.s (x) = 0 \vee p(q(s(x)),1) > 1$$ \pause
+\item Нульместные функциональные символы <<ноль>> ($\color{red}0$) и <<один>> ($\color{red}1$).\pause%:
+%$$\color{blue}\forall x.E(f (x),z) \vee G (p(q(s (x)),o), o)$$ 
+\end{enumerate}
+\item Логические выражения
+\begin{enumerate}\item Предикатные символы <<равно>> и <<больше>> %($\color{blue}E$) ($\color{blue}G$).\pause
+%$$\color{blue}\forall x.E(f (x),0) \vee G (p(q(s (x)),1), 1)$$
+\end{enumerate}
+\end{enumerate}
+
+\end{frame}
+
+
+\begin{frame}{Язык исчисления предикатов}
+\begin{enumerate}
+\item Два типа: предметные и логические выражения. \pause
+\item Предметные выражения: метапеременная {\color{blue}$\theta$}. \pause
+\begin{itemize}
+\item Предметные переменные: {\color{blue}$a$}, {\color{blue}$b$}, {\color{blue}$c$}, \dots, метапеременные {\color{blue}$x$}, {\color{blue}$y$}. \pause
+\item Функциональные выражения: {\color{blue}$f(\theta_1,\dots,\theta_n)$}, метапеременные {\color{blue}$f$}, {\color{blue}$g$}, \dots\\\pause
+%Имена разнообразны: {\color{blue}$(\theta_1+\theta_2)$}, {\color{blue}$0$} и т.п.\pause
+\item Примеры: %{\color{blue}$(x+1)^2$}. \\\pause
+% Раскроем сокращения: {\color{blue}$(\theta_0+\theta_1)\equiv p(\theta_0,\theta_1)$},
+%   {\color{blue}$\theta_1^2\equiv q(\theta_1)$}, {\color{blue}$1\equiv r$}, {\color{blue}$2\equiv s$}. \pause\\
+  {\color{blue}$r$},
+  {\color{blue}$q(p(x,s),r)$}.
+\end{itemize}\pause
+\item Логические выражения: метапеременные {\color{blue}$\alpha$}, {\color{blue}$\beta$}, {\color{blue}$\gamma$}, \dots
+\begin{itemize}
+\item Предикатные выражения: {\color{blue}$P(\theta_1,\dots,\theta_n)$}, метапеременная {\color{blue}$P$}.\\\pause
+Имена: {\color{blue}$A$}, {\color{blue}$B$}, {\color{blue}$C$}, \dots \pause %также {\color{blue}$(\theta_1=\theta_2)$} и т.п.\pause
+\item Связки: {\color{blue}$(\varphi\vee\psi)$}, {\color{blue}$(\varphi\with\psi)$}, {\color{blue}$(\varphi\rightarrow\psi)$}, 
+   {\color{blue}$(\neg\varphi)$}.\pause
+\item Кванторы: {\color{blue}$(\forall x.\varphi)$} и {\color{blue}$(\exists x.\varphi)$}.
+\end{itemize}
+%\item Пример: $\forall \epsilon.\exists \delta.|x-x_0|<\delta\rightarrow|f(x)-f(x_0)|<\epsilon$\pause
+%переходит в: $\forall e.\exists d.L(s(x,x_0),d) \rightarrow L(s(f(x),f(x_0)),e)$
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Сокращения записи, метаязык}
+
+\begin{enumerate}
+\item Метапеременные:
+\begin{itemize}
+\item $\color{blue}\psi$, $\color{blue}\phi$, $\color{blue}\pi$, \dots --- формулы
+\item $\color{blue}P$, $\color{blue}Q$, \dots --- предикатные символы
+\item $\color{blue}\theta$, \dots --- термы
+\item $\color{blue}f$, $\color{blue}g$, \dots --- функциональные символы
+\item $\color{blue}x$, $\color{blue}y$, \dots --- предметные переменные
+\end{itemize}\pause
+
+\item Скобки --- как в И.В.; квантор --- жадный:
+\begin{center}${\color{blue}(\forall a.} \underbrace{{\color{blue}A \vee B \vee C \rightarrow \exists b.}
+                    \underbrace{\color{blue}D \with \neg E}_{\exists b.\dots}}_{\forall a.\dots} \color{blue}) \with F$\end{center}
+\pause
+
+\item Дополнительные обозначения при необходимости:
+\begin{itemize}
+\item $\color{blue}(\theta_1 = \theta_2)$ вместо $\color{blue}E(\theta_1,\theta_2)$
+\item $\color{blue}(\theta_1 + \theta_2)$ вместо $\color{blue}p(\theta_1,\theta_2)$
+\item $\color{blue}0$ вместо $\color{blue}z$
+\item \dots
+\end{itemize}
+
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Теория моделей: два типа значений}
+
+Напомним формулу:\vspace{-0.3cm}
+
+$$\forall x.\sin x = 0 \vee (\sin x)^2+1 > 1$$
+
+Без синтаксического сахара:\vspace{-0.3cm}
+
+\only<1>{$$\forall x.E(f (x),z)~\vee~G (p(q(s (x)),o), o)$$}
+\only<2>{$$\forall x.{\color{blue}E}(f (x),z)~\vee~{\color{blue}G} (p(q(s (x)),o), o)$$}
+\only<3>{$${\color{blue}\forall} x.{\color{blue}E}(f (x),z) {\color{blue}~\vee~} {\color{blue}G} (p(q(s (x)),o), o)$$}
+\only<4>{$${\color{blue}\forall} {\color{red}x}.{\color{blue}E}(f ({\color{red}x}),z) {\color{blue}~\vee~} {\color{blue}G} 
+   (p(q(s ({\color{red}x})),o),o)$$}
+\only<5>{$${\color{blue}\forall} {\color{red}x}.{\color{blue}E}({\color{red}f} ({\color{red}x}),{\color{red}z}) {\color{blue}~\vee~} {\color{blue}G} 
+   ({\color{red}p}({\color{red}q}({\color{red}s} ({\color{red}x})),{\color{red}o}), {\color{red}o})$$\vspace{0.0cm}}
+
+\onslide<2->\begin{enumerate}
+\item {\color{blue}Истинностные (логические) значения: }
+
+\begin{enumerate}
+\item предикаты (в том числе пропозициональные переменные = нульместные предикаты);
+\onslide<3->\item логические связки и кванторы.
+\end{enumerate}
+
+\onslide<4->\item {\color{red}Предметные значения:}
+
+\begin{enumerate}
+\item предметные переменные;
+\onslide<5->\item функциональные символы (в том числе константы = нульместные функциональные символы)
+\end{enumerate}
+
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Оценка исчисления предикатов}
+\begin{dfn}Оценка --- упорядоченная четвёрка $\langle D, F, P, E \rangle$, где:\pause
+
+\begin{enumerate}
+\item $D$ --- предметное множество;\pause
+\item $F$ --- оценка для функциональных символов; пусть $f_n$ --- $n$-местный функциональный символ:
+ $$F_{f_n}: D^n \rightarrow D$$\pause
+
+\item $P$ --- оценка для предикатных символов; пусть $T_n$ --- $n$-местный предикатный символ:
+ $$P_{T_n}: D^n \rightarrow V\quad\quad\quad\pause V = \{\text{И}, \text{Л}\}$$\pause
+
+\item $E$ --- оценка для предметных переменных.
+ $$E(x) \in D$$
+\end{enumerate}\end{dfn}
+\end{frame}
+
+\begin{frame}{Оценка формулы}
+
+Запись и сокращения записи подобны исчислению высказываний: $$\llbracket \phi \rrbracket \in V,\quad
+      \llbracket Q(x,f(x))\vee R\rrbracket^{x := 1, f(t) := t^2, R := \text{И}} = \text{И}$$\pause
+
+\begin{enumerate}
+\item Правила для связок $\vee$, $\with$, $\neg$, $\rightarrow$ остаются прежние;\pause
+\item $\llbracket f_n (\theta_1, \theta_2, \dots, \theta_n) \rrbracket = F_{f_n} (\llbracket\theta_1\rrbracket,
+          \llbracket\theta_2\rrbracket, \dots, \llbracket\theta_n\rrbracket)$\pause
+\item $\llbracket P_n (\theta_1, \theta_2, \dots, \theta_n) \rrbracket = P_{T_n} (\llbracket\theta_1\rrbracket,
+          \llbracket\theta_2\rrbracket, \dots, \llbracket\theta_n\rrbracket)$\pause
+\item $$\llbracket \forall x.\phi \rrbracket = \left\{\begin{array}{ll}
+   \text{И}, & \text{если } \llbracket\phi\rrbracket^{x := t} = \text{И}\text{ при всех } t \in D\\
+   \text{Л}, & \text{если найдётся } t \in D, \text{ что } \llbracket\phi\rrbracket^{x := t} = \text{Л}
+  \end{array}\right.$$\pause
+\item $$\llbracket \exists x.\phi \rrbracket = \left\{\begin{array}{ll}
+   \text{И}, & \text{если найдётся } t \in D, \text{ что } \llbracket\phi\rrbracket^{x := t} = \text{И}\\
+   \text{Л}, & \text{если } \llbracket\phi\rrbracket^{x := t} = \text{Л}\text{ при всех } t \in D
+  \end{array}\right.$$
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Пример (очевидная интерпретация)}
+Оценим:
+$$\llbracket \forall a.\exists b.\neg a+1 = b \rrbracket$$ \pause
+
+Зададим оценку:
+\begin{itemize}
+\item $D := \mathbb{N}$;
+\item $F_{1} := 1$, $F_{(+)}$ --- сложение в $\mathbb{N}$;
+\item $P_{(=)}$ -- равенство в $\mathbb{N}$.
+\end{itemize}\pause\vspace{0.5cm}
+
+Фиксируем $a\in\mathbb{N}$. Тогда: 
+$$\llbracket a+1 = b \rrbracket^{b := a} = \text{Л}$$\pause
+поэтому при любом $a\in\mathbb{N}$:
+$$\llbracket \exists b.\neg a+1 = b \rrbracket = \text{И}$$\pause
+
+Итого:
+$$\llbracket \forall a.\exists b.\neg a+1 = b \rrbracket = \text{И}$$
+
+\end{frame}
+
+\begin{frame}{Пример (странная интерпретация)}
+
+$$\llbracket \forall a.\exists b.\neg a+1 = b \rrbracket$$ \pause
+
+Зададим интерпретацию:
+\begin{itemize}
+\item $D := \{\square\}$;
+\item $F_{(1)} := \square$, $F_{(+)} (a,b) := \square$;
+\item $P_{(=)} (a,b) := \text{И}$.
+\end{itemize}\pause\vspace{0.5cm}
+
+Тогда:
+$$\llbracket a+1 = b \rrbracket^{\alt<4->{a \in D, b \in D}{a := \square,b := \square}} = \text{И}$$\pause\pause
+Итого:
+$$\llbracket \forall a.\exists b.\neg a+1 = b \rrbracket = \text{Л}$$
+
+\end{frame}
+
+\begin{frame}{Общезначимость}
+\begin{dfn}Формула исчисления предикатов общезначима, если истинна при любой оценке:
+$$\models\phi$$\end{dfn}\pause
+
+То есть истинна при любых $D$, $F$, $P$ и $E$.
+\end{frame}
+
+\begin{frame}{Пример: общезначимая формула}
+\begin{thm}$$\llbracket\forall x.Q(f(x))\vee\neg Q(f(x))\rrbracket$$\end{thm}
+
+\begin{proof}
+Фиксируем $D$, $F$, $P$, $E$. \pause Пусть $x \in D$. \pause
+Обозначим $P_{Q}(F_{f}(E_x))$ за $t$. \pause
+Ясно, что $t \in V$. Разберём случаи.
+\begin{itemize}
+\item Если $t = \text{И}$, то $\llbracket Q(f(x))\rrbracket^{Q(f(x)):=t} = \text{И}$,
+  потому $\llbracket Q(f(x))\vee\neg Q(f(x))\rrbracket^{Q(f(x)):=t} = \text{И}$
+\item Если $t = \text{Л}$, то $\llbracket \neg Q(f(x))\rrbracket^{Q(f(x)):=t} = \text{И}$, потому
+  всё равно $\llbracket Q(f(x))\vee\neg Q(f(x))\rrbracket^{Q(f(x)):=t} = \text{И}$
+\end{itemize}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Свободные вхождения}
+\begin{dfn}Вхождение подформулы в формулу --- это позиция первого символа этой подформулы в формуле.
+\end{dfn}
+\vspace{-0.4cm}
+$$\text{Вхождения }{\color{blue}x}\text{ в формулу:}\quad (\forall {\color{blue}x}.A({\color{blue}x}) \vee \exists {\color{blue}x}.B({\color{blue}x})) \vee C({\color{blue}x})$$
+\vspace{-0.7cm}
+
+\begin{dfn}Рассмотрим формулу $\forall x.\psi$ (или $\exists x.\psi$). Здесь переменная $x$ связана в $\psi$.
+Все вхождения переменной $x$ в $\psi$ --- связанные.\end{dfn}
+\begin{dfn}Вхождение $x$ в $\psi$ свободное, если не находится в области действия никакого квантора по $x$.
+Переменная входит свободно в $\psi$, если имеет хотя бы одно свободное вхождение. $FV(\psi), FV(\Gamma)$ --- множества свободных
+переменных в $\psi$, в $\Gamma$\end{dfn}
+
+\begin{exm}$\exists y.(\forall x.P(x))\vee P({\color{blue}x}) \vee Q(y)$\end{exm}
+\end{frame}
+
+\begin{frame}{Подстановка, свобода для подстановки}
+$$\psi[x := \theta] := \left\{\begin{array}{ll}\psi, & \psi\equiv y, y \not\equiv x\\
+                                  \psi, & \psi\equiv\forall x.\pi \textrm{ или } \psi\equiv\exists x.\pi\\
+                                  \pi[x := \theta] \star \rho [x := \theta], & \psi\equiv \pi\star\rho\\
+                                  \theta, & \psi\equiv x\\
+                                  \forall y.\pi[x := \theta], & \psi \equiv \forall y.\pi \textrm{ и } y \not\equiv x\\
+                                  \exists y.\pi[x := \theta], & \psi \equiv \exists y.\pi \textrm{ и } y \not\equiv x
+\end{array}\right.$$
+
+\begin{dfn}Терм $\theta$ свободен для подстановки вместо $x$ в $\psi$ ($\psi[x := \theta]$), если 
+ни одно свободное вхождение переменных в $\theta$ не станет связанным после подстановки.\end{dfn}
+
+\begin{center}\begin{tabular}{c|c}
+Свобода есть & Свободы нет\\\hline
+$(\forall x.P(y)) [y := z]$ & $(\forall x.P(y)) [y := x]$\\
+$(\forall y.\forall x.P(x)) [x := y]$ & $(\forall y.\forall x.P(t)) [t := y]$
+\end{tabular}\end{center}
+
+\end{frame}
+
+\begin{frame}{Теория доказательств}
+
+Рассмотрим язык исчисления предикатов. Возьмём все схемы аксиом классического исчисления высказываний и добавим ещё две схемы аксиом 
+(здесь везде $\theta$ свободен для подстановки вместо $x$ в $\varphi$):
+
+\begin{tabular}{ll}
+11. & $(\forall x.\varphi) \rightarrow \varphi[x:=\theta]$\\
+12. & $\varphi[x:=\theta] \rightarrow \exists x.\varphi$ 
+\end{tabular}
+
+Добавим ещё два правила вывода (здесь везде $x$ не входит свободно в $\varphi$):
+$$\infer[\text{Правило для }\forall]{\varphi\rightarrow\forall x.\psi}{\varphi\rightarrow\psi}$$
+$$\infer[\text{Правило для }\exists]{(\exists x.\psi)\rightarrow\varphi}{\psi\rightarrow\varphi}$$
+
+\begin{dfn}Доказуемость, выводимость, полнота, корректность --- аналогично исчислению высказываний.\end{dfn}
+\end{frame}
+
+\begin{frame}{Важность ограничений на схемы аксиом и правила вывода}
+
+\begin{itemize}
+\item Рассмотрим формулу $(\forall x.\exists y.\neg x = y) \rightarrow ((\exists y.\neg x = y)[x := y])$\pause
+\item Соответствует 11 схеме $$(\forall x.\varphi) \rightarrow \varphi[x:=\theta]\quad\quad\varphi \equiv \exists y.\neg x = y\quad\quad
+\theta \equiv y$$\pause\vspace{-0.2cm}
+\item Но нарушается свобода для подстановки 
+$$(\exists y.\neg x = y)[x := {\color{red}y}] \equiv (\exists {\color{red}y}.\neg {\color{red}y} = y)$$\pause\vspace{-0.2cm}
+\item Пусть $D = \mathbb{N}$ и $(=)$ есть равенство на $\mathbb{N}$. Тогда 
+$$\llbracket\exists y.\neg x = y\rrbracket=\text{И}\quad\quad\llbracket(\exists y.\neg x = y) [x := y]\rrbracket = \text{Л}$$\pause\vspace{-0.2cm}
+\item $\not\models (\forall x.\exists y.\neg x = y) \rightarrow ((\exists y.\neg x = y)[x := y])$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Теорема о дедукции для исчисления предикатов}
+\begin{thm}Если $\Gamma\vdash\alpha\rightarrow\beta$, то $\Gamma,\alpha\vdash\beta$.
+Если $\Gamma,\alpha\vdash\beta$ и в доказательстве не применяются правила для кванторов 
+по свободным переменным из $\alpha$, то $\Gamma\vdash\alpha\rightarrow\beta$.\end{thm}
+\begin{proof}$(\Rightarrow)$ --- как в КИВ \pause $(\Leftarrow)$ --- та же схема, два новых случая. \pause
+
+Перестроим: $\delta_1, \delta_2, \dots, \delta_n \equiv \beta$ в $\alpha\rightarrow\delta_1, \alpha\rightarrow\delta_2, \dots, \alpha\rightarrow\delta_n$.
+
+Дополним: обоснуем $\alpha\rightarrow\delta_n$, если предыдущие уже обоснованы.\pause
+
+Два новых похожих случая: правила для $\forall$ и $\exists$. Рассмотрим $\forall$.
+
+Доказываем $(n)\ \ \alpha\rightarrow\psi\rightarrow\forall x.\varphi$ (правило для $\forall$), значит, доказано  
+$(k)\ \ \alpha\rightarrow\psi\rightarrow\varphi$. \pause
+\begin{tabular}{lll}
+$(n-0.9) \dots (n-0.8)$ & $(\alpha\rightarrow\psi\rightarrow\varphi)\rightarrow(\alpha\with\psi)\rightarrow\varphi$ & Т. о полноте КИВ\\
+$(n-0.6)$ & $(\alpha\with\psi)\rightarrow\varphi$ & M.P. $k$,$n-0.8$\\\pause
+$(n-0.4)$ & $(\alpha\with\psi)\rightarrow\forall x.\varphi$ & Правило для $\forall$, $n-0.6$\\\pause
+$(n-0.3) \dots (n-0.2)$ & $((\alpha\with\psi)\rightarrow\forall x.\varphi)\rightarrow(\alpha\rightarrow\psi\rightarrow\forall x.\varphi)$ & Т. о полноте КИВ\\
+$(n)$ & $\alpha\rightarrow\psi\rightarrow\forall x.\varphi$ & M.P. $n-0.4$, $n-0.2$
+\end{tabular}
+
+\end{proof}
+\end{frame}
+
+
+\begin{frame}{Следование}
+\begin{dfn}$\gamma_1,\gamma_2,\dots,\gamma_n\models\alpha$, если выполнено два условия:
+\begin{enumerate}
+\item $\alpha$ выполнено всегда, когда выполнено $\gamma_1,\gamma_2,\dots,\gamma_n$;
+\item $\alpha$ не использует кванторов по переменным, входящим свободно в $\gamma_1,\gamma_2,\dots,\gamma_n$.
+\end{enumerate}
+\end{dfn}
+
+\begin{thm}Если $\Gamma\vdash\alpha$ и в доказательстве не используются кванторы по свободным
+переменным из $\Gamma$, то $\Gamma\models\alpha$\end{thm}
+\end{frame}
+
+\begin{frame}{Важность второго условия}
+\begin{exm}Покажем, что $\Gamma\models\alpha$ ведёт себя неестественно, если 
+в $\alpha$ используются кванторы по переменным, входящим свободно в $\Gamma$.\pause
+
+Легко показать, что $P(x)\vdash \forall x.P(x)$. \pause
+\begin{tabular}{lll}
+(1) & $P(x)$ & Гипотеза \\
+(2) & $P(x)\rightarrow (A\rightarrow A \rightarrow A) \rightarrow P(x)$ & Сх. акс. 1\\
+(3) & $(A\rightarrow A \rightarrow A) \rightarrow P(x)$ & M.P. 1, 2\\
+(4) & $(A\rightarrow A \rightarrow A) \rightarrow \forall x.P(x)$ & Правило для $\forall$, 3\\
+(5) & $(A\rightarrow A \rightarrow A)$ & Сх. акс. 1\\
+(6) & $\forall x.P(x)$ & M.P. 5, 4
+\end{tabular}\pause
+
+Пусть $D = \mathbb{Z}$ и $P(x) = x > 0$. Тогда не будет выполнено $P(x)\models \forall x.P(x)$.
+\end{exm}
+\end{frame}
+
+\begin{frame}{Корректность}
+%\begin{thm}Если $\Gamma\vdash\alpha$,
+%и $\alpha$ не использует кванторов по переменным, входящим
+%свободно в $\Gamma$,
+% то $\Gamma\models\alpha$\end{thm}
+%\begin{thm}В любой модели для любой $\forall y.\varphi$ найдётся $\mathcal{y} \in \mathcal{D}$, что $\llbracket\forall y.\varphi\rrbracket = \llbracket\varphi\rrbracket^{y := \mathcal{y}}$\end{thm}
+\begin{thm}Если $\theta$ свободен для подстановки 
+вместо $x$ в $\varphi$, то $\llbracket\varphi\rrbracket^{x := \llbracket\theta\rrbracket} = \llbracket\varphi[x := \theta]\rrbracket$\end{thm}
+\begin{proof}[Доказательство (индукция по структуре $\varphi$)]
+\begin{itemize}
+\item База: $\varphi$ не имеет кванторов. Очевидно.
+\item Переход: пусть справедливо для $\psi$. Покажем для $\varphi = \forall y.\psi$. 
+\begin{itemize}
+\item $x=y$ либо $x \notin FV(\psi)$. Тогда: 
+$\llbracket\forall y.\psi\rrbracket^{x := \llbracket\theta\rrbracket} = \llbracket\forall y.\psi\rrbracket = \llbracket(\forall y.\psi)[x := \theta]\rrbracket$
+
+\item $x \ne y$. Тогда: $\llbracket\forall y.\psi\rrbracket^{x := \llbracket\theta\rrbracket} = 
+  \llbracket\psi\rrbracket^{y \in D; x := \llbracket\theta\rrbracket} = \dots$
+%\vspace{-0.3cm}
+
+{\color{olive}Свобода для подстановки: $y\notin\theta$.}
+\vspace{-0.3cm}
+ $$\dots = \llbracket\psi\rrbracket^{x := \llbracket\theta\rrbracket; y \in D} = \dots$$
+\vspace{-0.8cm}
+
+{\color{olive}Индукционное предположение.}
+\vspace{-0.3cm}
+
+ $$\dots = \llbracket\psi[x := \theta]\rrbracket^{y \in D} = 
+\llbracket\forall y.(\psi[x := \theta])\rrbracket = \dots$$
+\vspace{-0.5cm}
+
+{\color{olive}Но $\forall y.(\psi[x := \theta]) \equiv (\forall y.\psi) [x := \theta]$ (как текст). Отсюда:}
+\vspace{-0.3cm}
+
+$$\dots = \llbracket(\forall y.\psi)[ x := \theta]\rrbracket$$
+\vspace{-0.5cm}
+\end{itemize}
+\end{itemize} \end{proof}
+\end{frame}
+
+\begin{frame}{Корректность}
+\begin{thm}Если $\Gamma \vdash \alpha$ и в доказательстве не используются кванторы по свободным переменным из $FV(\Gamma)$, то $\Gamma \models \alpha$\end{thm}
+\begin{proof}Фиксируем $D, F, P$. Индукция по длине доказательства $\alpha$: при любом $E$ выполнено $\Gamma\models\alpha$ 
+при длине доказательства $n$, покажем для $n+1$. 
+\begin{itemize}
+\item Схемы аксиом (1)..(10), правило M.P.: аналогично И.В.
+\item Схемы (11) и (12), например, схема $(\forall x.\varphi) \rightarrow \varphi [x := \theta]$: \vspace{-0.6cm}
+
+$$\llbracket (\forall x.\varphi) \rightarrow \varphi [x := \theta]\rrbracket = \llbracket ((\forall x.\varphi) \rightarrow \varphi) [x := \theta] \rrbracket =
+  \llbracket ((\forall x.\varphi) \rightarrow \varphi \rrbracket ^ { x := \llbracket\theta\rrbracket } = \text{И}$$
+
+\item Правила для кванторов: например, введение $\forall$:
+
+%$\llbracket\alpha \rightarrow \forall x.\beta\rrbracket = $
+  Пусть $\llbracket \psi \rightarrow \varphi \rrbracket = \text{И}$. Причём $x \notin FV(\Gamma)$ и $x \notin FV(\psi)$. То есть,
+  при любом $\mathcal{x}$ выполнено $\llbracket \psi \rightarrow \varphi \rrbracket^{x := \mathcal{x}} = \text{И}$. Тогда
+  $\llbracket \psi \rightarrow (\forall x.\varphi) \rrbracket = \text{И}$.
+
+%  Тогда $\llbracket \forall x.\varphi \rrbracket = \text{И}$, тогда $\llbracket \varphi \rrbracket ^ { x := \llbracket\theta\rrbracket } = \text{И}$,
+%  то есть и $\llbracket ((\forall x.\varphi) \rightarrow \varphi \rrbracket ^ { x := \llbracket\theta\rrbracket } = \text{И}$.
+\end{itemize}
+\end{proof}
+\end{frame}
+
+\end{document}

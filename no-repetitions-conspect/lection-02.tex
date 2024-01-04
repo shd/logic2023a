@@ -1,0 +1,508 @@
+\documentclass[handout]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+\usepackage{xcolor}
+\usepackage{proof}
+\setbeamertemplate{navigation symbols}{}
+\usepackage{tikz}
+\usetikzlibrary{hobby,fit,backgrounds,calc,shapes.geometric,patterns}
+%\usetheme{Warsaw}
+\begin{document}
+
+\newtheorem{axiom}{Аксиома}
+\newtheorem{exmprus}{Пример}
+\newtheorem{defrus}{Определение}
+\newtheorem{lemmarus}{Лемма}
+\newtheorem{thmrus}{Теорема}
+
+\begin{frame}{}
+\begin{center}\Large Теоремы об исчислении высказываний.\end{center}
+\end{frame}
+
+\begin{frame}{Напоминание: истинность}
+\begin{itemize}
+\item Если $\alpha$ истинна при любой оценке переменных, то $\alpha$ общезначима: $$\models\alpha$$
+\item Если $\alpha$ истинна при любой оценке переменных, при которой истинны 
+высказывания $\gamma_1, \dots, \gamma_n$, будем говорить, что $\alpha$ --- \emph{следствие} этих высказываний:
+$$\gamma_1, \dots, \gamma_n \models \alpha$$\pause
+\item Истинна при какой-нибудь оценке --- \emph{выполнима}.\pause
+\item Не истинна ни при какой оценке --- \emph{невыполнима}.\pause
+\item Не истинна при какой-нибудь оценке --- \emph{опровержима}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Выводимость из гипотез}
+
+\begin{defrus}[доказательство формулы $\alpha$] 
+--- такое доказательство (вывод) $\delta_1, \delta_2, \dots, \delta_n$,
+что $\alpha\equiv\delta_n$.
+
+Формула $\alpha$ доказуема (выводима), если существует её доказательство. Обозначение:
+$$\vdash \alpha$$\end{defrus}\pause
+
+\begin{defrus}[вывод формулы $\alpha$ из гипотез $\gamma_1,\dots,\gamma_k$]
+--- такая последовательность
+$\delta_1,\dots,\delta_n$, причём каждое $\delta_i$ либо:
+\begin{itemize}
+\item является аксиомой;
+\item либо получается по правилу Modus Ponens из предыдущих;
+\item либо является одной из гипотез: существует $t: \delta_i \equiv \gamma_t$.
+\end{itemize}
+
+Формула $\alpha$ выводима из гипотез $\gamma_1,\dots,\gamma_k$, если существует её вывод. Обозначение:
+$$\gamma_1,\dots,\gamma_k\vdash\alpha$$\end{defrus}
+
+\end{frame}
+
+\begin{frame}{Корректность и полнота}
+\begin{defrus}[корректность теории]
+Теория корректна, если любое доказуемое в ней утверждение общезначимо.
+То есть, $\vdash\alpha$ влечёт $\models\alpha$.
+\end{defrus}
+
+\begin{defrus}[полнота теории]
+Теория семантически полна, если любое общезначимое в ней утверждение доказуемо.
+То есть, $\models\alpha$ влечёт $\vdash\alpha$.
+\end{defrus}
+\end{frame}
+
+\begin{frame}{Корректность исчисления высказываний}
+\begin{thmrus}[корректность]
+Если $\vdash\alpha$, то $\models\alpha$
+\end{thmrus}
+
+\begin{proof}
+Индукция по длине вывода $n$.
+\begin{itemize}
+\item База, $n=1$ --- частный случай перехода (без правила Modus Ponens)
+\item Переход. Пусть для любого доказательства длины $n$ формула $\delta_n$ общезначима.
+Тогда рассмотрим обоснование $\delta_{n+1}$ и разберём случаи:
+\begin{enumerate}
+\item Аксиома --- убедиться, что все аксиомы общезначимы.
+\item Modus Ponens $j$, $k$ --- убедиться, что если $\models\delta_j$ и 
+$\models\delta_j\rightarrow\delta_{n+1}$, то $\models\delta_{n+1}$.
+\end{enumerate}
+\end{itemize}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Общезначимость схемы аксиом №9}
+Общезначимость схемы аксиом --- истинность каждой аксиомы, задаваемой данной схемой, при любой оценке:
+$$\llbracket(\alpha\rightarrow\beta)\rightarrow(\alpha\rightarrow\neg\beta)\rightarrow\neg\alpha\rrbracket
+   = \textnormal{И}$$
+
+Построим таблицу истинности формулы в зависимости от оценки $\alpha$ и $\beta$:
+\vspace{0.3cm}
+
+{\footnotesize
+\begin{tabular}{cc|ccccc}
+$\llbracket\alpha\rrbracket$ & $\llbracket\beta\rrbracket$ & $\llbracket\neg\alpha\rrbracket$ & 
+    $\llbracket\alpha\rightarrow\beta\rrbracket$ & $\llbracket\alpha\rightarrow\neg\beta\rrbracket$ 
+  & $\llbracket(\alpha\rightarrow\neg\beta)\rightarrow\neg\alpha\rrbracket$ & 
+    $\llbracket(\alpha\rightarrow\beta)\rightarrow(\alpha\rightarrow\neg\beta)\rightarrow\neg\alpha\rrbracket$\\
+\hline
+  Л & Л & И & И & И & И & И\\
+  Л & И & И & И & И & И & И\\
+  И & Л & Л & Л & И & Л & И\\
+  И & И & Л & И & Л & И & И
+\end{tabular}}
+
+\end{frame}
+
+\begin{frame}{Общезначимость заключения правила Modus Ponens}
+Пусть в выводе есть формулы $\delta_j$, $\delta_k \equiv \delta_j\rightarrow\delta_{n+1}$, $\delta_{n+1}$ (причём
+$j < n+1$ и $k < n+1$).\vspace{0.3cm}\pause
+
+
+Фиксируем какую-нибудь оценку. 
+По индукционному предположению, $\delta_j$ и $\delta_j\rightarrow\delta_{n+1}$ общезначимы.
+Поэтому при данной оценке $\llbracket\delta_j\rrbracket \equiv \textnormal{И}$ и
+$\llbracket\delta_j\rightarrow\delta_{n+1}\rrbracket \equiv \textnormal{И}$.\vspace{0.3cm}\pause
+
+Построим таблицу истинности для импликации:
+
+\begin{center}\begin{tabular}{ccc}
+$\llbracket\delta_j\rrbracket$ &$\llbracket\delta_{n+1}\rrbracket$ & $\llbracket\delta_j\rightarrow\delta_{n+1}\rrbracket$\\
+\hline
+Л & Л & И \\
+Л & И & И \\
+И & Л & Л \\
+И & И & И
+\end{tabular}\end{center}\pause
+
+Из таблицы видно, что $\llbracket\delta_{n+1}\rrbracket = \textnormal{Л}$ только если 
+$\llbracket\delta_j\rightarrow\delta_{n+1}\rrbracket = \textnormal{Л}$ или 
+$\llbracket\delta_j\rrbracket = \textnormal{Л}$. Значит, это невозможно, и
+$\llbracket\delta_{n+1}\rrbracket = \textnormal{И}$
+
+\end{frame}
+
+\begin{frame}{Контекст, метаязык}
+
+Будем обозначать большими греческими буквами середины
+алфавита, возможно с индексами, ($\Gamma$, $\Delta_1$, ...) списки формул.
+Будем использовать, где удобно:
+
+$$\Gamma \vdash \alpha$$\pause
+
+Списки можно указывать через запятую:
+
+$$\Gamma, \Delta, \zeta \vdash \alpha$$\pause
+это означает то же, что и 
+$$\gamma_1,\gamma_2,\dots,\gamma_n,\delta_1,\delta_2,\dots,\delta_m,\zeta\vdash\alpha$$
+если 
+$$\Gamma := \{\gamma_1,\gamma_2,\dots,\gamma_n\},\quad \Delta := \{\delta_1,\delta_2,\dots,\delta_m\}$$
+
+\end{frame}
+
+\begin{frame}{Теорема о дедукции}
+
+\begin{theorem}[О дедукции, Жак Эрбран, 1930]
+$\Gamma,\alpha\vdash\beta$ выполнено тогда и только тогда, когда выполнено $\Gamma\vdash\alpha\rightarrow\beta$
+\end{theorem}\pause
+
+\vspace{0.5cm}
+Доказательство <<в две стороны>>, сперва <<справа налево>>.
+Пусть $\Gamma\vdash\alpha\rightarrow\beta$, покажем $\Gamma,\alpha\vdash\beta$\pause\vspace{0.5cm}
+
+То есть по условию существует вывод: $$\delta_1, \delta_2, \dots, \delta_{n-1}, \alpha\rightarrow\beta$$\pause
+
+Тогда следующая последовательность --- тоже вывод: 
+$$\delta_1, \delta_2, \dots, \delta_{n-1}, \alpha\rightarrow\beta, \alpha, \beta$$
+
+%Рассмотрим формулу $(A \rightarrow B) \rightarrow (\neg B)$
+
+\end{frame}
+
+\begin{frame}{Доказательство: $\Gamma\vdash\alpha\rightarrow\beta$ влечёт $\Gamma,\alpha\vdash\beta$}
+\begin{tabular}{lll}
+№ п/п & формула & пояснение\\
+\hline
+$(1)$ & $\delta_1$ & в соответствии с исходным доказательством\\
+    & $\dots$ \\
+$(n-1)$ & $\delta_{n-1}$ & в соответствии с исходным доказательством\\
+$(n)$ & $\alpha\rightarrow\beta $ & в соответствии с исходным доказательством\\
+$(n+1)$ & $\alpha$ & гипотеза\\
+$(n+2)$ & $\beta$ & Modus Ponens n$+1$, $n$
+\end{tabular}\pause\vspace{1cm}
+
+Вывод $\Gamma,\alpha\vdash\beta$ предоставлен, первая часть теоремы доказана.
+\end{frame}
+
+\begin{frame}{Доказательство: $\Gamma,\alpha\vdash\beta$ влечёт $\Gamma\vdash\alpha\rightarrow\beta$}
+
+Пусть даны формулы вывода $$\delta_1,\delta_2,\dots,\delta_{n-1},\beta$$
+
+Аналогично предыдущему пункту, перестроим вывод.\pause
+
+Построим <<черновик>> вывода, приписав $\alpha$ слева к каждой формуле:
+$$\alpha\rightarrow\delta_1,\alpha\rightarrow\delta_2,\dots,\alpha\rightarrow\delta_{n-1},\alpha\rightarrow\beta$$\pause
+Данная последовательность формул не обязательно вывод: $\Gamma:=\varnothing$, $\alpha := A$
+$$\delta_1 := A\rightarrow B\rightarrow A$$\pause
+припишем $A$ слева --- вывод не получим:
+$$\alpha\rightarrow\delta_1 \equiv A \rightarrow (A\rightarrow B\rightarrow A)$$
+\end{frame}
+
+\begin{frame}[fragile]{Последовательности, странная нумерация}
+
+\begin{defrus}[конечная последовательность]
+Функция $\delta: 1\dots n \rightarrow \mathcal{F}$
+\end{defrus}
+
+\begin{defrus}[конечная последовательность, индексированная дробными числами]
+Функция $\zeta: I \rightarrow \mathcal{F}$, где $I \subset \mathbb{Q}$ и $|I| \in \mathbb{N}$
+\end{defrus}
+
+\begin{exmprus}[странный мотивационный пример: язык Фокал]
+%\begin{exmrus}
+\begin{tabular}{cp{1cm}|p{1cm}c}Программа &&& Вывод \\\hline
+\begin{minipage}{0.4\textwidth}
+\begin{verbatim}
+
+10.1    t n,!
+10.15   s n = n+1
+10.17   i (n-3) 10.1,11.0,11.0
+11.0    t "That's all"
+\end{verbatim}
+\end{minipage}
+&&&
+%{\color{gray}Что программа печатает:}
+\begin{minipage}{0.3\textwidth}
+\begin{verbatim}
+
+=     0.0000
+=     1.0000
+=     2.0000
+That's all
+\end{verbatim}
+\end{minipage}
+\end{tabular}
+\end{exmprus}
+\end{frame}
+
+
+\begin{frame}{Доказательство: $\Gamma,\alpha\vdash\beta$ влечёт $\Gamma\vdash\alpha\rightarrow\beta$}
+
+\begin{proof} (индукция по длине вывода). Если $\delta_1, \dots, \delta_n$ --- вывод
+$\Gamma,\alpha\vdash\beta$, то найдётся вывод $\zeta_k$ для $\Gamma\vdash\alpha\rightarrow\beta$,
+причём $\zeta_1 \equiv \alpha\rightarrow\delta_1, \dots, \zeta_n \equiv \alpha\rightarrow\delta_n$.
+
+\begin{itemize}
+\item База $(n=1)$: частный случай перехода (без M.P.).
+
+\item Переход. Пусть $\delta_1, \dots, \delta_{n+1}$ --- исходный вывод. И пусть (по индукционному предположению)
+уже по начальному фрагменту $\delta_1, \dots, \delta_n$ построен вывод $\zeta_k$ утверждения 
+$\Gamma\vdash\alpha\rightarrow\delta_n$. 
+
+Но $\delta_{n+1}$ как-то был обоснован --- разберём случаи:
+\begin{enumerate}
+\item $\delta_{n+1}$ --- аксиома или $\delta_{n+1} \in \Gamma$ %(выполнено без доказательства в новом выводе)\pause
+\item $\delta_{n+1}\equiv\alpha$\pause
+\item $\delta_{n+1}$ --- Modus Ponens из $\delta_j$ и 
+$\delta_k \equiv \delta_j\rightarrow\delta_{n+1}$.
+\end{enumerate}
+
+В каждом из случаев можно дополнить черновик до полноценного вывода.
+\end{itemize}\end{proof}
+
+\end{frame}
+
+\begin{frame}{Доказательство: $\Gamma,\alpha\vdash\beta$ влечёт $\Gamma\vdash\alpha\rightarrow\beta$, случай аксиомы}
+\begin{tabular}{lll}
+№ п/п & новый вывод & пояснение \\
+\hline
+& \dots\\
+$(1)$ & $\alpha\rightarrow\delta_1$ \\
+& \dots\\
+$(2)$ & $\alpha\rightarrow\delta_2$ \\
+    & \dots \\
+$(n)$ & $\alpha\rightarrow\delta_n$ \\
+ & \color{cyan}$\alpha\rightarrow\delta_{n+1}$ & \color{cyan}$\delta_{n+1}$ --- аксиома, либо $\delta_{n+1} \in \Gamma$\\
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Доказательство: $\Gamma,\alpha\vdash\beta$ влечёт $\Gamma\vdash\alpha\rightarrow\beta$, случай аксиомы}
+\begin{tabular}{lll}
+№ п/п & новый вывод & пояснение \\
+\hline
+& \dots\\
+$(1)$ & $\alpha\rightarrow\delta_1$ \\
+& \dots\\
+$(2)$ & $\alpha\rightarrow\delta_2$ \\
+    & \dots \\
+\color{cyan}$(n+0.3)$ & \color{cyan}$\delta_{n+1}\rightarrow\alpha\rightarrow\delta_{n+1}$ & \color{cyan}схема аксиом 1\\
+\color{cyan}$(n+0.6)$ & \color{cyan}$\delta_{n+1}$ & \color{cyan}аксиома, либо $\delta_{n+1} \in \Gamma$\\
+$(n+1)$ & $\alpha\rightarrow\delta_{n+1}$ & M.P. $n+0.6$, $n+0.3$\\
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Доказательство: $\Gamma,\alpha\vdash\beta$ влечёт $\Gamma\vdash\alpha\rightarrow\beta$, случай $\delta_i\equiv\alpha$}
+\begin{tabular}{lll}
+№ п/п & новый вывод & пояснение \\
+\hline
+    & \dots \\
+$(1)$ & $\alpha\rightarrow\delta_1$ \\
+    & \dots \\
+$(2)$ & $\alpha\rightarrow\delta_2$ \\
+    & \dots \\
+\color{cyan}$(n+0.2)$ & \color{cyan}$\alpha \rightarrow (\alpha \rightarrow \alpha)$ & \color{cyan} Сх. акс. 1\\
+\color{cyan}$(n+0.4)$ & \color{cyan}$(\alpha \rightarrow (\alpha \rightarrow \alpha)) \rightarrow 
+  (\alpha \rightarrow (\alpha \rightarrow \alpha) \rightarrow \alpha) \rightarrow
+  (\alpha \rightarrow \alpha)$& \color{cyan}Сх. акс. 2\\
+\color{cyan}$(n+0.6)$ & \color{cyan}$(\alpha \rightarrow (\alpha \rightarrow \alpha) \rightarrow \alpha) \rightarrow
+  (\alpha \rightarrow \alpha)$ &\color{cyan}M.P. $n+0.2$, $n+0.4$\\
+\color{cyan}$(n+0.8)$ & \color{cyan}$\alpha \rightarrow (\alpha \rightarrow \alpha) \rightarrow \alpha$ & 
+    \color{cyan}Сх. акс. 1\\
+$(n+1)$ & $\alpha \rightarrow \alpha$ & M.P. $n+0.8$, $n+0.6$\\
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Доказательство: $\Gamma,\alpha\vdash\beta$ влечёт $\Gamma\vdash\alpha\rightarrow\beta$, случай Modus Ponens}
+\begin{tabular}{lll}
+№ п/п & новый вывод & пояснение \\
+\hline
+    & \dots \\
+$(1)$ & $\alpha\rightarrow\delta_1$ \\
+    & \dots \\
+$(2)$ & $\alpha\rightarrow\delta_2$ \\
+    & \dots \\
+$(j)$ & $\alpha\rightarrow\delta_j$ \\
+    & \dots \\
+$(k)$ & $\alpha\rightarrow\delta_j\rightarrow\delta_{n+1}$ \\
+    & \dots \\
+\color{cyan}$(n+0.3)$ & \color{cyan}$(\alpha\rightarrow\delta_j)
+    \rightarrow(\alpha\rightarrow\delta_j\rightarrow\delta_{n+1})\rightarrow(\alpha\rightarrow\delta_{n+1})$ & \color{cyan}Сх. акс. 2\\
+\color{cyan}$(n+0.6)$ & \color{cyan}$(\alpha\rightarrow\delta_j
+    \rightarrow\delta_{n+1})\rightarrow(\alpha\rightarrow\delta_{n+1})$ & \color{cyan}M.P. $j$, $n+0.3$\\
+$(n+1)$ & $\alpha\rightarrow\delta_{n+1}$ & M.P. $k$, $n+0.6$\\
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Некоторые полезные правила}
+
+\begin{lemmarus}[Правило контрапозиции]Каковы бы ни были формулы $\alpha$ и $\beta$, справедливо, что 
+$\vdash (\alpha \rightarrow \beta) \rightarrow (\neg\beta \rightarrow \neg\alpha)$.
+\end{lemmarus}\pause
+
+\begin{lemmarus}[правило исключённого третьего]Какова бы ни была формула $\alpha$, $\vdash\alpha\vee\neg\alpha$.
+\end{lemmarus}
+
+\begin{lemmarus}[об исключении допущения]
+Пусть справедливо $\Gamma, \rho \vdash \alpha$ и $\Gamma, \neg \rho \vdash \alpha$.
+Тогда также справедливо $\Gamma \vdash \alpha$.
+\end{lemmarus}
+
+\begin{proof}Доказывается с использованием лемм, указанных выше.\end{proof}
+
+\end{frame}
+
+\begin{frame}{Теорема о полноте исчисления высказываний}
+\begin{thmrus}Если $\models\alpha$, то $\vdash\alpha$.
+\end{thmrus}
+\end{frame}
+
+\begin{frame}{Специальное обозначение}
+\begin{defrus}[условное отрицание]
+Зададим некоторую оценку переменных, такую, что $\llbracket\alpha\rrbracket = x$. 
+
+Тогда \emph{условным отрицанием} формулы $\alpha$ назовём следующую формулу $\llparenthesis\alpha\rrparenthesis$:
+$$\llparenthesis\alpha\rrparenthesis = \left\{\begin{array}{ll}\alpha, & x = \textnormal{И}\\
+       \neg\alpha, & x = \textnormal{Л}\end{array}\right.$$
+
+\end{defrus}
+
+Аналогично записи для оценок, будем указывать оценку переменных, если это потребуется / будет неочевидно из контекста:
+$$\llparenthesis \neg X \rrparenthesis^{X:=\textnormal{Л}} = \neg X\quad\quad\quad\llparenthesis \neg X \rrparenthesis^{X:=\textnormal{И}} = \neg\neg X$$
+
+Также, если $\Gamma := \gamma_1, \gamma_2, \dots, \gamma_n$, то за $\llparenthesis \Gamma \rrparenthesis$ 
+обозначим $\llparenthesis \gamma_1 \rrparenthesis, \llparenthesis \gamma_2 \rrparenthesis, \dots \llparenthesis \gamma_n \rrparenthesis$.
+\end{frame}
+
+\begin{frame}{Таблицы истинности и высказывания}
+
+Рассмотрим связку <<импликация>> и её таблицу истинности:
+
+\begin{center}\begin{tabular}{cccc}
+$\llbracket A\rrbracket$ & $\llbracket B\rrbracket$ & $\llbracket A\rightarrow B\rrbracket$ & формула\\\hline
+Л & Л & И & $\neg A, \neg B \vdash A \rightarrow B$\\
+Л & И & И & $\neg A, B \vdash A \rightarrow B$\\
+И & Л & Л & $A, \neg B \vdash \neg (A \rightarrow B)$\\
+И & И & И & $A, B \vdash A \rightarrow B$
+\end{tabular}\end{center}\pause
+
+Заметим, что с помощью условного отрицания данную таблицу можно записать в одну строку:
+
+$$\llparenthesis A \rrparenthesis, \llparenthesis B \rrparenthesis \vdash \llparenthesis A \rightarrow B \rrparenthesis $$
+
+\end{frame}
+
+
+\begin{frame}{Полнота исчисления высказываний}
+
+\begin{thmrus}[О полноте исчисления высказываний]
+Если $\models\alpha$, то $\vdash\alpha$
+\end{thmrus}\pause
+
+\begin{enumerate}
+\item Построим таблицы истинности для каждой связки $(\star)$ и докажем в них каждую строку:
+$$ \llparenthesis\varphi\rrparenthesis, \llparenthesis\psi\rrparenthesis \vdash \llparenthesis\varphi\star\psi\rrparenthesis$$\pause
+\vspace{-0.5cm}
+\item Построим таблицу истинности для $\alpha$ и докажем в ней каждую строку:
+$$\llparenthesis \Xi \rrparenthesis \vdash \llparenthesis \alpha \rrparenthesis$$\pause
+\vspace{-0.5cm}
+\item Если формула общезначима, то в ней все строки будут иметь вид $\llparenthesis \Xi \rrparenthesis \vdash\alpha$,
+потому от гипотез мы сможем избавиться и получить требуемое $\vdash\alpha$.
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Шаг 1. Лемма о связках}
+
+Запись
+
+$$\llparenthesis\varphi\rrparenthesis, \llparenthesis\psi\rrparenthesis \vdash \llparenthesis\varphi\star\psi\rrparenthesis$$
+
+сводится к 14 утверждениям:
+
+\begin{center}\begin{tabular}{rclp{1cm}rcl}
+$\neg\varphi, \neg\psi$&$ \vdash $&$\neg (\varphi \with \psi)$& & $\neg\varphi, \neg\psi$&$ \vdash $&$     (\varphi \rightarrow  \psi)$ \\
+$\neg\varphi,     \psi$&$ \vdash $&$\neg (\varphi \with \psi)$& &$\neg\varphi,     \psi$&$ \vdash $&$     (\varphi \rightarrow  \psi)$ \\
+$    \varphi, \neg\psi$&$ \vdash $&$\neg (\varphi \with \psi)$& &$ \varphi, \neg\psi$&$ \vdash $&$\neg (\varphi \rightarrow  \psi)$ \\
+$    \varphi,     \psi$&$ \vdash $&$     (\varphi \with \psi)$& &$    \varphi,     \psi$&$ \vdash $&$     (\varphi \rightarrow  \psi)$ \\
+$\neg\varphi, \neg\psi$&$ \vdash $&$\neg (\varphi \vee  \psi)$& &$    \varphi          $&$ \vdash $&$     \neg\neg\varphi$ \\
+$\neg\varphi,     \psi$&$ \vdash $&$     (\varphi \vee  \psi)$& &$\neg\varphi          $&$ \vdash $&$         \neg\varphi$\\
+$    \varphi, \neg\psi$&$ \vdash $&$     (\varphi \vee  \psi)$ \\
+$    \varphi,     \psi$&$ \vdash $&$     (\varphi \vee  \psi)$
+\end{tabular}\end{center}
+\end{frame}
+
+\begin{frame}{Шаг 2. Обобщение на любую формулу}
+
+\begin{lemmarus}[Условное отрицание формул]
+Пусть пропозициональные переменные $\Xi := \{X_1, \dots, X_n\}$ ---
+все переменные, которые используются в формуле $\alpha$. И пусть
+задана некоторая оценка переменных.
+
+Тогда, $\llparenthesis \Xi \rrparenthesis \vdash\llparenthesis\alpha\rrparenthesis$
+\end{lemmarus}\pause
+
+\begin{proof}Индукция по длине формулы $\alpha$.
+\begin{itemize}
+\item База: формула $\alpha$ --- атомарная, т.е. $\alpha \equiv X_i$. Тогда при любом $\Xi$ выполнено 
+$\llparenthesis\Xi\rrparenthesis^{X_i := \text{И}} \vdash X_i$ и $\llparenthesis\Xi\rrparenthesis^{X_i := \text{Л}} \vdash \neg X_i$.
+\item Переход: $\alpha \equiv \varphi\star\psi$, причём $\llparenthesis\Xi\rrparenthesis\vdash\llparenthesis\varphi\rrparenthesis$
+и $\llparenthesis\Xi\rrparenthesis\vdash\llparenthesis\psi\rrparenthesis$\pause
+
+Тогда построим вывод: 
+
+\begin{tabular}{lll}
+$(1)\dots(n)$ & $\llparenthesis\varphi\rrparenthesis$ & индукционное предположение\\
+$(n+1)\dots(k)$ & $\llparenthesis\psi\rrparenthesis$ & индукционное предположение\\
+$(k+1)\dots(l)$ & $\llparenthesis\varphi\star\psi\rrparenthesis$ & 
+  лемма о связках: $\llparenthesis\varphi\rrparenthesis$ и $\llparenthesis\psi\rrparenthesis$ доказаны выше,\\
+  & & значит, их можно использовать как гипотезы
+\end{tabular}
+\end{itemize}
+\end{proof}
+
+\end{frame}
+
+\begin{frame}{Шаг 3. Избавляемся от гипотез}
+
+\begin{lemmarus}Пусть при всех оценках переменных
+$\llparenthesis\Xi\rrparenthesis \vdash \alpha$, тогда
+$\vdash\alpha$.
+\end{lemmarus}\pause
+
+\begin{proof}
+Индукция по количеству переменных $n$.
+
+\begin{itemize}
+\item База: $n=0$. Тогда $\vdash\alpha$ есть из условия.\pause
+\item Переход: пусть $\llparenthesis X_1, X_2,  \dots X_{n+1} \rrparenthesis \vdash \alpha$.
+Рассмотрим $2^n$ пар выводов:
+$$\infer
+  {\llparenthesis X_1, X_2, \dots X_n \rrparenthesis \vdash \alpha}
+  {\llparenthesis X_1, X_2, \dots X_n\rrparenthesis,\neg X_{n+1} \vdash \alpha\quad\quad 
+   \llparenthesis X_1, X_2, \dots X_n\rrparenthesis,X_{n+1} \vdash \alpha
+}$$
+\end{itemize}
+При этом, $\llparenthesis X_1, X_2, \dots X_n \rrparenthesis  \vdash \alpha$ при всех оценках
+переменных $X_1, \dots X_n$. Значит, $\vdash\alpha$ по индукционному предположению.
+\end{proof}
+
+\end{frame}
+
+\begin{frame}{Заключительные замечания}
+Теорема о полноте --- конструктивна. Получающийся вывод --- экспоненциальный по длине.
+
+Несложно по изложенному доказательству разработать программу, строящую вывод.
+
+Вывод для формулы с 3 переменными --- порядка 3 тысяч строк.
+
+\end{frame}
+
+\end{document}
