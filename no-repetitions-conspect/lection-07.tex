@@ -1,0 +1,377 @@
+\documentclass[handout]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{cancel}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{tikz}
+\usetikzlibrary{patterns}
+\usepackage{chronosys}
+\usepackage{proof}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{comment}
+\setbeamertemplate{navigation symbols}{}
+%\usetheme{Warsaw}
+
+\newtheorem{thm}{Теорема}[section]
+\newtheorem{lmm}{Лемма}[section]
+\newtheorem{dfn}{Определение}[section]
+\newtheorem{exm}{Пример}[section]
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+
+\begin{document}
+
+\begin{frame}
+\begin{center}\Large {\it Лекция 7}\\\vspace{0.5cm}
+Неразрешимость исчисления предикатов\\
+Аксиоматика Пеано и формальная арифметика
+\end{center}
+\end{frame}
+
+\begin{frame}{Общие результаты об исчислениях}
+\begin{tabular}{llll}
+      & К.И.В. & И.И.В. & К.И.П.\\\hline
+корректность & да (лекция 1) & да (ДЗ IV.10) & да (лекция 5)\\
+непротиворечивость & да (очев.) & да (из непр. КИВ) & да (лекция 6)\\
+полнота & да (лекция 2) & да (лекция 4) & да (лекция 6)\\
+разрешимость & да (лекция 2) & да (лекция 4) & \pause\color{red}Нет (сейчас)
+\end{tabular}
+\end{frame}
+
+\begin{comment}
+\begin{frame}{Полнота ИП доказывается от противного}
+Попробуем построить алгоритм по доказательству --- как это делали для теоремы о полноте ИВ.
+\begin{enumerate}
+\item Раз $\{\neg\varphi\}$ непротиворечиво, то у него есть модель. 
+Как построить эту модель ? Видимо, <<метод Британского музея>>: перебрать все доказуемые формулы. 
+\item Если в процессе нашли $\neg\varphi \vdash \alpha \with \neg \alpha$, то $\vdash\varphi$ (способ перестроения --- см. ДЗ VI.3).
+\item Если, {\color{olive}перебрав все $\aleph_0$ формул,} противоречия не нашли --- значит, есть модель $\{\neg\varphi\}$, и $\not\vdash\varphi$.
+\item Итого: теорема о полноте ИП не поможет найти доказательство.
+\end{enumerate}
+\end{frame}
+\end{comment}
+
+\begin{frame}{Машина Тьюринга}
+\begin{dfn}Машина Тьюринга:
+\begin{enumerate}
+\item Внешний алфавит $q_1, \dots, q_n$, выделенный символ-заполнитель $q_\varepsilon$
+\item Внутренний алфавит (состояний) $s_1, \dots, s_k$; $s_s$ --- начальное, $s_f$ --- допускающее, $s_r$ --- отвергающее.
+\item Таблица переходов $\langle k, s \rangle \Rightarrow \langle k', s', \leftrightarrow \rangle$
+\end{enumerate}
+\end{dfn}
+
+\begin{dfn}Состояние машины Тьюринга:
+\begin{enumerate}
+\item Бесконечная лента с символом-заполнителем $q_\varepsilon$, текст конечной длины.
+\item Головка над определённым символом.
+\item Символ состояния (состояние в узком смысле) --- символ внутреннего алфавита.
+\end{enumerate}
+\end{dfn}
+
+\end{frame}
+
+\begin{frame}{Машина, меняющая все 0 на 1, а все 1 --- на 0}
+\begin{enumerate}
+\item Внешний алфавит $\varepsilon, 0, 1$.
+\item Внутренний алфавит $s_s, s_f$ (начальное и допускающее состояния соответственно).
+\item Переходы:
+
+\begin{tabular}{l|lll}
+    & $\varepsilon$ & 0 & 1\\\hline
+$s_s$ & $\langle s_f,\varepsilon,\cdot\rangle$ & $\langle s_s,1,\rightarrow\rangle$ & $\langle s_s,0,\rightarrow\rangle$\\
+$s_f$ & $\langle s_f,\varepsilon,\cdot\rangle$ & $\langle s_f,0,\cdot\rangle$ & $\langle s_f,1,\cdot\rangle$
+\end{tabular}
+\end{enumerate}\pause
+
+\begin{exm}
+Головка --- на первом символе $011$, состояние $s_s$.\pause
+
+$\underline{0}11$ \pause $\Rightarrow 1\underline{1}1$ \pause $\Rightarrow 10\underline{1}$ \pause $\Rightarrow 100\underline{\varepsilon}$
+\pause
+
+Состояние $s_f$, допускающее.
+\end{exm}
+
+\end{frame}
+
+\begin{frame}{Разрешимость}
+\begin{dfn}Язык --- множество строк\end{dfn}
+\begin{dfn}Язык $L$ разрешим, если существует машина Тьюринга, которая для любого слова $w$ переходит в допускающее состояние, если $w \in L$,
+и в отвергающее, если $w \notin L$.\end{dfn}
+\end{frame}
+
+\begin{frame}{Неразрешимость задачи останова}
+\begin{dfn}Рассмотрим все возможные описания машин Тьюринга. Составим упорядоченные пары: описание машины Тьюринга и входная строка.
+Из них выделим язык останавливающихся на данном входе машин Тьюринга.\end{dfn}
+\begin{thm}Язык всех останавливающихся машин Тьюринга неразрешим\end{thm}
+\begin{proof}От противного. Пусть $S(x,y)$ --- машина Тьюринга, определяющая, остановится ли машина $x$, примененная к строке $y$.\pause
+\begin{center}W(x) = if (S(x,x)) \{ while (true); return 0; \} else \{ return 1; \}\end{center}\pause
+Что вернёт $S(code(W),code(W))$?
+\end{proof}
+\end{frame}
+
+\begin{frame}{Кодируем состояние}
+\begin{enumerate}
+\item внешний алфавит: $n$ 0-местных функциональных символов $q_1, \dots, q_n$; $q_\varepsilon$ --- символ-заполнитель.
+\item список: $\varepsilon$ и $c(l,s)$; <<abc>> представим как $c(q_a,c(q_b,c(q_c,\varepsilon)))$.
+\item положение головки: <<$ab\underline{p}q$>> как $(c(q_b,c(q_a,\varepsilon)), c(q_p,c(q_q,\varepsilon)))$.
+\item внутренний алфавит: $k$ 0-местных функциональных символов $s_1, \dots, s_k$. Из них выделенные $s_s$ --- начальное и
+$s_f$ --- допускающее состояние.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Достижимые состояния}
+Предикатный символ $F_{x,y}(w_l,w_r,s)$: если у машины $x$ с начальной строкой $y$ состояние $s$ достижимо на строке $rev(w_l) @ w_r$. 
+\pause
+Будем накладывать условия: семейство формул $C_m$. \pause
+Очевидно, начальное состояние достижимо:
+$$C_0 := F_{x,y}(\varepsilon,y,s_s)$$
+\end{frame}
+
+
+\begin{frame}{Кодируем переходы}
+\begin{enumerate}
+\item Занумеруем переходы.\pause
+\item Закодируем переход $m$: $$\langle k, s \rangle \Rightarrow \langle k', s', \rightarrow \rangle, \text{ в случае } q_k \ne q_\varepsilon$$
+$C_m = \forall w_l.\forall w_r.F_{x,y}(w_l,c(q_k,w_r),s_s) \rightarrow F_{x,y}(c(q_{k'},w_l),w_r,s_{s'})$\\
+(здесь требуется, чтобы под головкой находился непустой символ $q_k$, потому мы обязательно требуем, чтобы лента была
+непуста)\pause
+
+\item Переход посложнее:
+$$\langle k, s \rangle \Rightarrow \langle k', s', \leftarrow \rangle, \text{ в случае } q_k \ne q_\varepsilon$$
+$C_m = \forall w_l.\forall w_r.\forall t.F_{x,y}(c(t,w_l),c(q_k,w_r),s_s) \rightarrow F_{x,y}(w_l,c(t,c(q_{k'},w_r)),s_{s'}) \with
+\forall w_l.\forall w_r.F_{x,y}(\varepsilon,c(q_k,w_r),s_s) \rightarrow F_{x,y}(\varepsilon,c(q_\varepsilon,c(q_{k'},w_r)),s_{s'})$\\
+\pause
+\item и т.п.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Итоговая формула}
+$$C = C_0 \with C_1 \with \dots \with C_n$$
+<<правильное начальное состояние и правильные переходы между состояниями>>\pause
+
+\begin{thm}
+Состояние $s$ со строкой $rev(w_l)@w_r$ достижимо тогда и только тогда, когда
+$C \vdash F_{x,y}(w_l,w_r,s)$\pause
+\end{thm}
+\begin{proof}
+$(\Leftarrow)$ Рассмотрим модель: предикат $F_{x,y}(w_l,w_r,s)$ положим истинным, если состояние достижимо. \pause
+Это --- модель для $C$ (по построению $C_m$). \pause
+Значит, доказуемость влечёт истинность (по корректности). \pause
+
+$(\Rightarrow)$ Индукция по длине лога исполнения.
+\end{proof}
+\end{frame}
+
+\begin{frame}{Неразрешимость исчисления предикатов: доказательство}
+\begin{thm}Язык всех доказуемых формул исчисления предикатов неразрешим\end{thm}
+Т.е. нет машины Тьюринга, которая бы по любой формуле $\alpha$ определяла, доказуема ли она.\pause
+\begin{proof} Пусть существует машина Тьюринга, разрешающая любую формулу. \pause%Тогда покажем, что задача останова разрешима.\pause
+На её основе тогда несложно построить некоторую машину Тьюринга, перестраивающую любую машину $S$ (с допускающим состоянием $s_f$ и входом $y$) 
+в её ограничения $C$ и разрешающую формулу ИП $C \rightarrow \exists w_l.\exists w_r.F_{S,y}(w_l,w_r,s_f)$. 
+Эта машина разрешит задачу останова.
+\end{proof}
+\end{frame}
+
+\begin{frame}
+\begin{center}{\LARGE Аксиоматика Пеано и формальная арифметика}\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Формализуем дальше: числа}
+
+{\itshape \hfill \begin{tabular}{r} <<Бог создал целые числа, всё остальное — дело рук человека.>>\\
+                                 Леопольд Кронекер, 1886 г.\end{tabular}}\pause
+\begin{enumerate}
+\item Рациональные ($\mathbb{Q}$).\pause
+
+      $Q = \mathbb{Z} \times \mathbb{N}$ --- множество всех простых дробей.\pause
+
+      $\langle p,q \rangle$ --- то же, что $\frac{p}{q}$ \pause
+
+      $\langle p_1,q_1 \rangle \equiv \langle p_2, q_2 \rangle$, если $p_1q_2 = p_2q_1$\pause
+
+\vspace{0.1cm}
+      $\mathbb{Q} = Q/_\equiv$
+
+\item Вещественные ($\mathbb{R}$). \pause $X = \{ A, B \}$, где $A,B \subseteq \mathbb{Q}$ --- дедекиндово сечение, если:\pause
+\begin{enumerate}
+\item $A\cup B = \mathbb{Q}$\pause
+\item Если $a \in A$, $x \in \mathbb{Q}$ и $x \le a$, то $x \in A$\pause
+\item Если $b \in B$, $x \in \mathbb{Q}$ и $b \le x$, то $x \in B$\pause
+\item $A$ не содержит наибольшего.\pause
+\end{enumerate}
+
+       $\mathbb{R}$ --- множество всех возможных дедекиндовых сечений. \pause
+
+$\sqrt 2 = \{\{ x\in\mathbb{Q}\ |\ x < 0 \vee x^2 < 2 \}, \{ x\in\mathbb{Q}\ |\ x > 0 \ \& \ x^2 > 2\}\}$
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Целые числа тоже попробуем определить}
+
+ $$\mathbb{Z}: \dots -3, -2, -1, 0, 1, 2, 3, \dots$$\pause\vspace{-0.5cm}
+\begin{itemize}
+\item     $Z = \{\langle x, y \rangle\ |\ x,y\in \mathbb{N}_0\}$ \pause
+\item Интуиция: $\langle x,y\rangle = x-y$\pause
+\item $$\begin{array}{rcl}
+      \langle a, b \rangle + \langle c, d \rangle & = & \langle a + c, b + d \rangle \\ \pause
+      \langle a, b \rangle - \langle c, d \rangle & = & \langle a + d, b + c \rangle 
+  \end{array}$$\pause
+\item     Пусть $\langle a, b \rangle \equiv \langle c,d\rangle$, если $a + d = b + c$. Тогда $\mathbb{Z} = Z/_\equiv$\pause
+\item      $0 = [\langle 0,0 \rangle],\; 1 = [\langle 1,0\rangle],\; -7 = [\langle 0,7 \rangle]$
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Натуральные числа: аксиоматика Пеано, 1889}\vspace{-0.5cm}
+ $$\mathbb{N}: 1, 2, \dots \mbox{ или } \mathbb{N}_0: 0, 1, 2, \dots$$\vspace{-1cm}\pause
+\begin{dfn}
+  $N$ (или, более точно, $\langle N, 0, (')\rangle$) \emph{соответствует} аксиоматике Пеано, 
+  если следующее определено/выполнено:\pause
+  \begin{enumerate}
+     \item Операция <<штрих>> $('): N \to N$, причём нет $a,b \in N$, что $a \ne b$, но $a' = b'$.\pause
+           
+           Если $x = y'$, то $x$ назовём следующим за $y$, а $y$ --- предшествующим $x$.\pause
+     \item Константа $0 \in N$: нет $x \in N$, что $x' = 0$.\pause
+     \item Индукция. Каково бы ни было свойство (<<предикат>>) $P: N \to V$, если:
+           \begin{enumerate}
+           \item $P(0)$
+           \item При любом $x\in N$ из $P(x)$ следует $P(x')$
+           \end{enumerate}
+           то при любом $x \in N$ выполнено $P(x)$.
+  \end{enumerate}
+\end{dfn}\pause
+Как построить? Например, в стиле алгебры Линденбаума:\pause
+\begin{enumerate}
+\item $N$ --- язык, порождённый грамматикой $\nu ::= \texttt{0}\ |\ \nu \texttt{<<'>>}$\pause
+\item $0$ --- это $\texttt{<<0>>}$, $x'$ --- это $x \doubleplus \texttt{<<'>>}$
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Примеры: что не соответствует аксиомам Пеано}
+\begin{enumerate}
+\item $\mathbb{Z}$, где $x' = x^2$\\\pause
+
+Функция <<штрих>> не инъективна: $-3^2 = 3^2 = 9$\pause
+
+\item Кольцо вычетов $\mathbb{Z}/{7\mathbb{Z}}$, где $x' = x+1$\\\pause
+
+$6' = 0$, что нарушает свойства $0$\pause
+
+\item $\mathbb{R^+}\cup\{0\}$, где $x' = x+1$\\\pause
+
+Пусть $P(x)$ означает <<$x \in \mathbb{Z}$>>:\pause \begin{enumerate}
+\item $P(0)$ выполнено: $0 \in \mathbb{Z}$.\pause
+\item Если $P(x)$, то есть $x \in \mathbb{Z}$, то и $x+1 \in \mathbb{Z}$ --- так
+что и $P(x')$ выполнено.\pause
+\end{enumerate}
+Однако $P(0.5)$ ложно.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Пример доказательства}
+\begin{thm}0 единственен: если $t$ таков, что при любом $y$ 
+выполнено $y' \ne t$, то $t = 0$.
+\end{thm}\pause
+\begin{proof}
+
+\begin{itemize}
+\item Определим $P(x)$ как <<либо $x = 0$, либо $x = y'$ для некоторого $y \in N$>>.\pause
+\begin{enumerate}
+\item $P(0)$ выполнено, так как $0 = 0$.\pause
+\item Если $P(x)$ выполнено, то возьмём $x$ в качестве $y$: тогда для $P(x')$
+будет выполнено $x' = y'$.\pause
+\end{enumerate}
+Значит, $P(x)$ для любого $x \in N$.\pause
+
+\item Рассмотрим $P(t)$: <<либо $t = 0$, либо $t = y'$ для некоторого $y \in N$>>.
+Но так как такого $y$ нет, то неизбежно $t = 0$.
+\end{itemize}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Обозначения и определения}
+\begin{dfn}
+$1 = 0'$, $2 = 0''$, $3 = 0'''$, $4 = 0''''$, $5 = 0'''''$, $6 = 0''''''$,
+$7 = 0'''''''$, $8 = 0''''''''$, $9 = 0'''''''''$
+\end{dfn}\pause
+\begin{dfn}\vspace{-0.3cm}
+$$a + b = \left\{ \begin{array}{ll} a, & \mbox{если } b = 0\\
+                                    (a + c)', & \mbox{если } b = c'
+                  \end{array}\right.$$
+\end{dfn}\pause\vspace{-0.3cm}
+Например, $$2 + 2 = 0'' + 0'' = \pause (0'' + 0')' = \pause ((0'' + 0)')' = \pause ((0'')')' = 0'''' = 4$$\pause\vspace{-0.3cm}
+\begin{dfn}\vspace{-0.3cm}
+$$a \cdot b = \left\{ \begin{array}{ll} 0, & \mbox{если } b = 0\\
+                                    a \cdot c + a, & \mbox{если } b = c'
+                  \end{array}\right.$$
+\end{dfn}
+%\pause
+%\begin{dfn}
+%$$a^b = \left\{ \begin{array}{ll} 1, & \mbox{если } b = 0\\
+%                                    a^c \cdot a, & \mbox{если } b = c'
+%                  \end{array}\right.$$
+%\end{dfn}
+\end{frame}
+
+\begin{frame}{Пример: коммутативность сложения (лемма 1)}
+
+\begin{multicols}{2}
+\begin{lmm}[1]
+$a + 0 = 0 + a$
+\end{lmm} \pause
+{\color{gray}
+$$a + b = \left\{ \begin{array}{ll} a, & \mbox{если } b = 0\\
+                                    (a + c)', & \mbox{если } b = c'
+                  \end{array}\right.$$} \end{multicols}\pause
+\vspace{-1.5cm}\begin{proof} Пусть $P(x)$ --- это $x + 0 = 0 + x$.
+\begin{enumerate}\pause
+\item Покажем $P(0)$. $0 + 0 = 0 + 0$ \pause
+\item Покажем, что если $P(x)$, то $P(x')$. Покажем $P(x')$, то есть $x' + 0 = \dots$ \pause
+
+\begin{center}
+  \begin{tabular}{lrl} %Равенство & обоснование \\\hline
+                      $\dots = x'$ & $a=x',b=0$: & $x' + 0 \Rightarrow x'$ \\\pause
+                      $\dots = (x)'$ & \\ \pause
+                      $\dots = (x + 0)'$ & $a=x,b=0$: &$(x + 0) \Leftarrow (x)$ \\ \pause
+                      $\dots = (0 + x)'$ & $P(x)$: &$(x + 0) \Rightarrow (0 + x)$ \\ \pause
+                      $\dots = 0 + x'$ & $a=0,b=x'$: &$0 + x' \Leftarrow (0 + x)'$
+   \end{tabular}
+\end{center}
+\end{enumerate}\pause
+Значит, $P(a)$ выполнено для любого $a \in N$.
+\end{proof}
+\end{frame}
+
+\begin{frame}{Пример: коммутативность сложения (завершение)}
+\begin{lmm}[2]
+$a + b' = a' + b$
+\end{lmm}\pause
+\begin{proof} $P(x)$ --- это $a + x' = a' + x$\pause
+\begin{enumerate}
+\item $a + 0' = (a + 0)' = (a)' = a' = a' + 0$\pause
+\item Покажем, что $P(x')$ следует из $P(x)$: $a + x'' = (a + x')' = (a' + x)' = a' + x'$
+\end{enumerate}
+\end{proof}\pause
+
+\begin{thm}
+$a + b = b + a$
+\end{thm}\pause
+\begin{proof}[Доказательство индукцией по $b$: $P(x)$ --- это $a + x = x + a$]
+\begin{enumerate}
+\item $a + 0 = 0 + a$ (лемма 1)\pause
+\item $a + x' = (a + x)' = (x + a)' = x + a' = x' + a$
+\end{enumerate}
+\end{proof}
+\end{frame}
+
+
+\end{document}

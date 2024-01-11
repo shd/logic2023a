@@ -1,0 +1,623 @@
+\documentclass[handout]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+\usepackage{xcolor}
+\usepackage{proof}
+\setbeamertemplate{navigation symbols}{}
+\usepackage{tikz}
+\usetikzlibrary{hobby,fit,backgrounds,calc,shapes.geometric,patterns}
+%\usetheme{Warsaw}
+\begin{document}
+
+\newtheorem{axiom}{Аксиома}
+\newtheorem{exmprus}{Пример}
+\newtheorem{defrus}{Определение}
+\newtheorem{lemmarus}{Лемма}
+\newtheorem{thmrus}{Теорема}
+
+\begin{frame}[fragile]{О равенствах}
+С целью уменьшения нагрузки на символ (=) договоримся об альтернативных символах:\vspace{0.3cm}
+
+\begin{tabular}{lp{0.8\textwidth}}
+символ & использование \\\hline
+$(=)$ 
+      & \vspace{-0.3cm}\begin{itemize}
+      \item равенство в предметных языках
+      \item равенство чисел, значений в метаязыке (при наличии традиции): $$\sum\limits_{n =1}^{\infty}\frac{1}{n^2} = \frac{\pi^2}{6}$$
+      \end{itemize}\\\hline
+$(:=)$ &  \vspace{-0.3cm}\begin{itemize} 
+          \item введение обозначений: {\itshape пусть $\Xi := \{ x_1, x_2, x_3 \}$}
+          \item указание значений для модели: $\llbracket A \rightarrow A \rrbracket^{A := \text{И}}$
+          \end{itemize}\\\hline
+$(\equiv)$ 
+         & \vspace{-0.3cm}\begin{itemize} \item Равенство строк после подстановки метапеременных: \itshape пусть дано доказательство $\delta_1, \dots, \delta_n$, причём $\delta_n \equiv \alpha\rightarrow\beta$ \end{itemize}
+\end{tabular}
+
+%Цель введения трёх разных символов: уменьшить нагрузку на знак $(=)$ для избежания 
+%путаницы в формальной арифметике и теории множеств.
+\end{frame}
+
+\begin{frame}
+\LARGE\begin{center}Интуиционистская логика\end{center}
+\end{frame}
+
+\begin{frame}{Доказательства чистого существования}
+
+\begin{thmrus}[Брауэра о неподвижной точке] 
+Любое непрерывное отображение $f$ шара в $\mathbb{R}^n$ на себя имеет неподвижную точку\end{thmrus}
+\begin{proof}Не существует непрерывного отображения шара на границу (без доказательства), однако:
+\begin{center}\tikz{
+    \draw[thick] (0,0) circle (2);
+    \clip (0,0) circle(2);
+    \draw (0.3,0.5) -- (-0.5,-1.4-1.9);
+    \node[right] at (0.3,0.5) {$X_1$};
+    \node[right] at (-0.1,-1.4) {$f(X_1)$};
+    \draw[thick,-stealth] (0.3,0.5) -- (-0.1,-1.4);
+}\end{center}
+\end{proof}
+
+\end{frame}
+
+\begin{frame}{Один из примеров подробно}
+\begin{thmrus}Существует пара иррациональных чисел $a$ и $b$,
+такая, что $a^b$ — рационально.
+\end{thmrus}\pause
+
+\begin{itemize}
+\item $2^5$, $3^3$, $7^{10}$, $\sqrt{2}^2$ — рациональны;
+\item $2^{\sqrt{2}}$, $e ^ \pi$ — иррациональны (как это доказать?);
+%\item задача выглядит довольно сложно.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Один из примеров подробно}
+\begin{thmrus}Существует пара иррациональных чисел $a$ и $b$,
+такая, что $a^b$ — рационально.
+\end{thmrus}
+
+\begin{proof}
+Рассмотрим $a = b = \sqrt{2}$ и рассмотрим $a^b$.
+Возможны два варианта:
+
+\begin{enumerate}
+\item $a^b = \sqrt{2}^{\sqrt{2}}$ — рационально;
+\item $a^b = \sqrt{2}^{\sqrt{2}}$ — иррационально; отлично, 
+тогда возьмём $a_1 = \sqrt{2}^{\sqrt{2}}$ и получим
+$$a_1^b = \left({\sqrt{2}^{\sqrt{2}}}\right)^{\sqrt{2}} = \sqrt{2}^2 = 2$$
+\end{enumerate}
+\end{proof}
+
+\end{frame}
+
+
+\begin{frame}{Интуиционизм}
+
+``Over de Grondslagen der Wiskunde'' (Брауэр, 1907 г.)
+
+Основные положения:
+\begin{enumerate}
+\item Математика не формальна.
+\item Математика независима от окружающего мира.
+\item Математика не зависит от логики — это логика зависит от математики.
+\end{enumerate}
+
+
+%\begin{center}
+%\includegraphics[width=3cm]{brower}
+%
+%Лёйтзен Брауер\end{center}
+
+%Критика доказательств чистого существования
+\end{frame}
+
+\begin{frame}{BHK-интерпретация логических связок}
+
+BHK — это сокращение трёх фамилий: Брауэр, Гейтинг, Колмогоров. \pause
+
+\vspace{1cm}
+
+Пусть $\alpha$, $\beta$ --- некоторые конструкции, тогда:\pause
+
+\begin{itemize}
+\item $\alpha\ \&\ \beta$ построено, если построены $\alpha$ и $\beta$ \pause
+\item $\alpha \vee \beta$ построено, если построено $\alpha$ или $\beta$,
+и мы знаем, что именно \pause
+\item $\alpha\rightarrow\beta$ построено, если есть способ перестроения
+$\alpha$ в $\beta$\pause
+\item $\bot$ — конструкция, не имеющая построения\pause
+\item $\neg\alpha$ построено, если построено $\alpha\rightarrow\bot$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Дизъюнкция}
+
+Конструкция $\alpha\vee\neg\alpha$ не имеет построения в общем случае.
+Что может быть построено: $\alpha$ или $\neg\alpha$?\pause
+
+\vspace{1cm}
+
+Возьмём за $\alpha$ нерешённую проблему, например, $P = NP$\pause
+\vspace{1cm}
+
+Авторам в данный момент не известно, выполнено $P = NP$ или же $P \ne NP$.
+\end{frame}
+
+\begin{frame}{Отличия импликации}
+
+Высказывание общезначимо в И.В. и не выполнено в BHK-интерпретации:
+$$(A \rightarrow B) \vee (B \rightarrow C) \vee (C \rightarrow A)$$\pause
+
+Давайте дадим следующий смысл пропозициональным переменным:
+\begin{itemize}
+\item $A$ --- 16.09.2023 в Санкт-Петербурге идёт дождь;
+\item $B$ --- 16.09.2023 в Санкт-Петербурге светит солнце;
+\item $C$ --- во 2 семестре староста группы 3239 получил <<отлично>> по матанализу.
+\end{itemize}\pause
+
+Импликацию можно понимать как <<формальную>> и как <<материальную>>.
+\begin{itemize}
+\item Материальная импликация $A\rightarrow B$ --- надо посмотреть в окно.\pause
+
+\item Формальная импликация $A\rightarrow B$ места не имеет (причинно-следственной связи нет).
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Формализация}
+Формализация интуиционистской логики возможна, но интуитивное понимание --- основное.
+
+\begin{defrus}Аксиоматика интуиционистского исчисления высказываний в гильбертовском стиле: 
+аксиоматика КИВ, в которой 10 схема аксиом
+
+\begin{center}\begin{tabular}{ll}
+(10) & $\neg \neg \alpha \rightarrow \alpha$
+\end{tabular}\end{center}
+
+заменена на 
+
+\begin{center}\begin{tabular}{ll}
+(10и) & $\alpha \rightarrow \neg\alpha \rightarrow \beta$
+\end{tabular}\end{center}
+\end{defrus}
+\end{frame}
+
+\begin{frame}{}
+\begin{center}\Large Немного об общей топологии.\end{center}
+\end{frame}
+
+
+\begin{frame}{Топологическое пространство}
+
+\begin{defrus}Топологическим пространством называется упорядоченная пара $\langle X, \Omega \rangle$,
+где $X$ --- некоторое множество, а $\Omega \subseteq \mathcal{P}(X)$, причём:
+\begin{enumerate}
+\item $\varnothing, X \in \Omega$
+\item если $A_1, \dots, A_n \in \Omega$, то $A_1 \cap A_2 \cap \dots \cap A_n \in \Omega$;
+\item если $\{A_\alpha\}$ --- семейство множеств из $\Omega$, то и $\bigcup_\alpha A_\alpha \in \Omega$.
+\end{enumerate}
+
+Множество $\Omega$ называется \emph{топологией}.
+Элементы $\Omega$ называются открытыми множествами.
+\end{defrus}
+
+%\begin{defrus}
+%Если $X \setminus A \in \Omega$, то $A$ --- замкнутое.
+%\end{defrus}
+
+\begin{defrus}$\mathcal{B}$ --- \emph{база} топологического пространства $\langle X, \Omega\rangle$ ($\mathcal{B} \subseteq \Omega$), 
+если всевозможные объединения множеств (в т.ч. пустые) из $\mathcal{B}$ дают $\Omega$.
+\end{defrus}
+\end{frame}
+
+\begin{frame}{Примеры топологических пространств}
+\begin{defrus}Евклидово пространство (евклидова топология) на $\mathbb{R}$: база топологии $\{(x,y)\ |\ x,y \in \mathbb{R}\}$.\end{defrus}
+\begin{defrus}Дискретная топология: $\langle X, \mathcal{P}(X) \rangle$ --- все множества открыты.\end{defrus}
+\begin{defrus}Топология стрелки: $\langle \mathbb{R}, \{(x,+\infty)\ |\ x\in\mathbb{R}\}\cup\{\varnothing,\mathbb{R}\}\rangle$ --- открыты все положительные лучи.\end{defrus}
+\end{frame}
+
+\begin{frame}{Метрические пространства}
+\begin{defrus}Метрикой на $X$ назовём множество, на котором определена функция расстояния $d: X^2 \rightarrow \mathbb{R}^+$, 
+удовлетворяющая следующим свойствам:
+\begin{enumerate}
+\item $d(x,y) = 0$ тогда и только тогда, когда $x = y$
+\item $d(x,y) = d(y,x)$
+\item $d(x,z) \le d(x,y) + d(y,z)$ (неравенство треугольника)
+\end{enumerate}
+\end{defrus}
+
+\begin{defrus}
+Открытым $\varepsilon$-шаром с центром в точке $x \in X$ назовём $O_\varepsilon(x) = \{ t \in X\ |\ d(x,t) < \varepsilon \}$.
+\end{defrus}
+
+\begin{defrus}
+Если $X$ --- некоторое множество и $d$ --- метрика на $X$, то будем говорить, что топологическое
+пространство, задаваемое базой $\mathcal{B} = \{ O_\varepsilon(x)\ |\ \varepsilon \in \mathbb{R}^+, x \in X \}$,
+порождено метрикой $d$.
+\end{defrus}
+\end{frame}
+
+\begin{frame}{Непрерывность}
+\begin{defrus}
+Функция $f: X \rightarrow Y$ непрерывна, если прообраз любого открытого множества открыт.
+\end{defrus}
+
+\begin{exmprus}
+Функция $f: \mathbb{N} \rightarrow \mathbb{R}$ всегда непрерывна (при дискретной топологии на $\mathbb{N}$), 
+поскольку любое множество в $\mathbb{N}$ открыто.
+\end{exmprus}
+\end{frame}
+
+\begin{frame}{Компактность}
+\begin{defrus}Будем говорить, что множество компактно, если из любого его открытого покрытия можно выбрать конечное
+подпокрытие
+\end{defrus}
+
+\begin{exmprus}
+Множество $\{0,1\}$ в дискретной топологии компактно.
+\end{exmprus}
+
+\begin{exmprus}
+Интервал $(0,1)$ в $\mathbb{R}$ не компактен --- например, рассмотрим покрытие $\{(\varepsilon,1)\ |\ \varepsilon\in(0,1)\}$ 
+\end{exmprus}
+\end{frame}
+
+\begin{frame}{Подпространства и связные множества}
+\begin{defrus}Пространство $\langle X_1, \Omega_1\rangle$ --- подпространство пространства $\langle X, \Omega\rangle$,
+если $X_1 \subseteq X$ и $\Omega_1 = \{ A\cap X_1 | A \in \Omega\}$.
+\end{defrus}
+\begin{exmprus} $[0,1]$ с евклидовой топологией на отрезке --- подпространство $\mathbb{R}$.
+$[0,0.5)$ открыто в $[0,1]$, так как $[0,0.5) = (-0.5,0.5) \cap [0,1]$.\end{exmprus}
+
+\begin{defrus}Пространство $\langle X, \Omega\rangle$ связно, если нет $A,B \in \Omega$, что $A\cup B = X$,
+$A \cap B = \varnothing$ и $A,B \ne \varnothing$.\end{defrus}
+
+\begin{exmprus}Пространство $(0,1]\cup[2,3)$ в $\mathbb{R}$ несвязно: возьмём $A=(0,1]$ и $B = [2,3)$.
+
+Дискретное топологическое пространство $\langle X, \mathcal{P}(X)\rangle$ несвязно при $|X| > 1$: пусть $a \in X$, 
+тогда $A = \{a\}$ и $B = X \setminus A$.
+\end{exmprus}
+\end{frame}
+
+\begin{frame}{Топология на деревьях}
+\begin{defrus}Пусть некоторый лес задан конечным множеством вершин $V$ и
+отношением $(\preceq)$, связывающим предков и потомков ($a \preceq b$, если $b$ --- потомок $a$). Тогда подмножество его вершин $X\subseteq V$ назовём открытым, 
+если из $a \in X$ и $a \preceq b$ следует, что $b \in X$.\end{defrus}
+
+\begin{exmprus}
+\begin{center}\tikz[every fit/.style={trapezium,draw,inner sep=-2pt}]{
+\node at (0,2.5)  (Title) {Открыты};
+\node at (1,2)   (A) {$W_1$};
+\node at (0,0.5) (B) {$W_2$};
+\node at (1,0.5) (C) {$W_3$};
+\node at (2,0.5) (D) {$W_4$};
+\node at (0,-1) (E) {$W_5$};
+\node at (2,-1) (F) {$W_6$};
+\draw[->] (A) to (B); \draw[->] (B) to (E);
+\draw[->] (A) to (C);
+\draw[->] (A) to (D); \draw[->] (D) to (F);
+  \begin{pgfonlayer}{background}
+  \draw[red,fill=red,opacity=0.2](B.north west) 
+     to[closed,curve through={
+       (B.south west) ..
+       (E.south west) .. (E.south east) .. ($(E.north east)!0.5!(C.south west)$) .. (C.south east)
+     }] (C.north east);
+  \draw[blue,fill=blue,opacity=0.2](D.north west) to 
+       [closed, curve through={ (D.south west) .. (F.south west) .. (F.south east) .. (D.south east) }
+       ] (D.north east);
+  \end{pgfonlayer}
+}
+\tikz[every fit/.style={trapezium,draw,inner sep=-2pt}]{
+\node at (0,2.8)  (Title) {Не открыты};
+\node at (1,2)   (A) {$W_1$};
+\node at (0,0.5) (B) {$W_2$};
+\node at (1,0.5) (C) {$W_3$};
+\node at (2,0.5) (D) {$W_4$};
+\node at (0,-1) (E) {$W_5$};
+\node at (2,-1) (F) {$W_6$};
+\draw[->] (A) to (B); \draw[->] (B) to (E);
+\draw[->] (A) to (C);
+\draw[->] (A) to (D); \draw[->] (D) to (F);
+  \begin{pgfonlayer}{background}
+  \draw[brown,pattern color=brown!50,pattern=north east lines](A.north west) to 
+       [closed, curve through={ (A.south west) .. (C.north west) .. (C.south west) .. (D.south east) }
+       ] (A.north east);
+  \draw[brown,pattern color=brown!50,pattern=north east lines](B.north west) to 
+       [closed, curve through={ (B.south west) }
+       ] (B.south east);
+  \end{pgfonlayer}
+}
+\end{center}
+\end{exmprus}
+\end{frame}
+
+\begin{frame}{Связность деревьев}
+
+\begin{lemmarus}Лес связен (является одним деревом) тогда и только тогда, когда соответствующее ему 
+топологическое пространство связно.\end{lemmarus}
+
+\begin{proof}\begin{enumerate}\item Лес связен: пусть не так и найдутся открытые непустые $A$,$B$, что 
+$A \cup B = V$ и $A \cap B = \varnothing$. Пусть $v \in V$ --- корень
+дерева и пусть $v \in A$ (для определённости). Тогда $A = \{ x \ |\ v \preceq x \}$ и $B = \varnothing$.
+\item Пусть лес топологически связен, но есть несколько разных корней $v_1, v_2, \dots, v_k$. 
+Возьмём $A_i = \{ x\ |\ v_i \preceq x \}$. Тогда все $A_i$ открыты, непусты, дизъюнктны и $V = \cup A_i$.
+\end{enumerate}
+\end{proof}
+\end{frame}
+
+\begin{frame}[fragile]{Пишем скобки или нет?}
+
+Вы как пишете: $\sin x$ или $\sin (x)$? \pause
+
+\begin{verbatim}
+int main () {
+    return sizeof 0;
+}
+\end{verbatim}
+\pause
+
+Соглашение о записи:
+$$\text{sizeof}\ \varnothing = \text{sizeof}(\varnothing) = 0$$
+
+но:
+   $$\text{sizeof}\{\varnothing\} = \text{sizeof}(\{\varnothing\}) = 1$$
+
+\end{frame}
+
+\begin{frame}{Минимальные и максимальные элементы}
+
+\begin{defrus}
+Множество нижних граней $X\subseteq\mathcal{U}$: $\mbox{\upshape lwb}_\mathcal{U} X = \{ y\in \mathcal{U}\ |\ y \preceq x\text{ при всех } x \in X\}$.
+Множество верхних граней $X\subseteq\mathcal{U}$: $\mbox{\upshape upb}_\mathcal{U} X = \{ y\in\mathcal{U}\ |\ x \preceq y \text{ при всех } x \in X\}$.
+\end{defrus}
+
+\begin{defrus}
+\begin{tabular}{ll}
+минимальный ($m \in X$): нет меньшего & при всех $y \in X$, $y \preceq m$ влечёт $y = m$ \\
+максимальный ($m \in X$): нет большего & при всех $y \in X$, $m \preceq y$ влечёт $y = m$ \\
+наименьший ($m \in X$): меньше всех & при всех $y \in X$ выполнено $m \preceq y$\\
+наибольший ($m \in X$): больше всех & при всех $y \in X$ выполнено $y \preceq m$\\
+инфимум: наибольшая нижняя грань & $\inf_\mathcal{U} X = \mbox{\upshape наиб}(\mbox{\upshape lwb}_\mathcal{U} X)$\\
+супремум: наименьшая верхняя грань & $\sup_\mathcal{U} X = \mbox{\upshape наим}(\mbox{\upshape upb}_\mathcal{U} X)$
+\end{tabular}
+\end{defrus}
+
+\begin{exmprus}\vspace{-0.5cm}
+\begin{center}\tikz{
+  \draw[-stealth, line width=1, color=gray] (-1,0) to (9,0);
+  \foreach \n [evaluate=\n as \rev using {int(ln(1/\n+1)*1000)}] in {1,...,100} { \draw[line width=0.7,color=black!\rev] ({2+3/\n},-0.1) to ({2+3/\n},0.1); }
+  \node (hdr) at (3.5,0.5) { $\left\{ \frac{1}{n}\ |\ n \in \mathbb{N}\right\}$ };
+  \draw[circle] (2,0);
+  \node[text height=3ex] (lwb) at (0.5,-0.3) {$\text{\upshape lwb}_\mathbb{R}$};
+  \node[text height=3ex] (lwb) at (7.5,-0.3) {$\text{\upshape upb}_\mathbb{R}$};
+  \foreach \x in {2,5} {
+    \node[draw,isosceles triangle,rotate=90,fill=black,scale=0.3] (s\x) at (\x,-0.4) {};
+  }
+  \node[text height=3ex] (bsup) at (5,-0.7) {наиб, max, sup};
+  \node[text height=3ex] (binf) at (2,-0.7) {inf};
+  \path[pattern=north east lines] (-0.5,-0.1) rectangle (2,0.1);
+  \path[pattern=north west lines] (5,-0.1) rectangle (8.5,0.1);
+}\end{center}
+\end{exmprus}
+\end{frame}
+
+\begin{frame}{Пример: делимость}
+На $\mathbb{N}$ положим $a \preceq b$, если $b\ \raisebox{-0.75pt}{\vdots}\ a$. 
+\begin{exmprus}Множество $\{2,3,6\}$\vspace{0.2cm}
+
+\begin{tabular}{lll}
+Минимальные: & 2,3 & $2\ \raisebox{-0.75pt}{\vdots}\ x$ влечёт $x = 1$ или $x = 2$, то же про 3\\
+Наименьший: & отсутствует & $2 \not\preceq 3$ и $3 \not\preceq 2$\\
+Инфимум: & 1 & $1 \preceq x$ при всех $x \in \mathbb{N}$
+\end{tabular}
+\end{exmprus}
+
+\tikz{
+  \draw[-stealth, line width=1, color=gray] (0,-0.5) to (7,-0.5);
+  \foreach \i in {1,2,3,6} { \draw[-] (\i,-0.6) to (\i,-0.4); }
+  \node[circle] (1) at (1,0) {$1$};
+  \node[circle] (2) at (2,0) {$2$};
+  \node[circle] (3) at (3,0) {$3$};
+  \node[circle] (6) at (6,0) {$6$};
+  \draw [dashed,rounded corners=4,gray,line width=0.5] (1.7,-0.3) rectangle (6.3,0.3);
+  \foreach \b/\e in {1/2, 1/3, 2/6, 3/6} {
+      \draw[stealth-, line width=1, color=black!50!green] (\b,-0.55) to [curve through={({(\b+\e)/2},{-0.55-(\e-\b)/5})}] (\e,-0.55);
+  }
+
+  \node[circle,inner sep=0.3] (1) at (10,-1.3) {$1$};
+  \node[circle,inner sep=0.3] (2) at (9.5,-0.5) {$2$};
+  \node[circle,inner sep=0.3] (3) at (10.5,-0.5) {$3$};
+  \node[circle,inner sep=0.3] (6) at (10,0.3) {$6$};
+  \draw [dashed,rounded corners=4,gray,line width=0.5] (9,-0.8) rectangle (11,0.6);
+  \foreach \b/\e in {1/2, 1/3, 2/6, 3/6} {
+      \draw[stealth-, line width=1, color=black!50!green] (\b) to (\e);
+  }
+}\pause
+\vspace{-0.3cm}
+\begin{exmprus}
+Рассмотрим $X=\{1;1.4;1.41;1.414;1.4142;\ldots\}$~--- множество десятичных приближений $\sqrt{2}$, ${\preceq}={\leqslant}$.
+Тогда $\operatorname{upb}_{\mathbb{Q}}X$ состоит из рациональных чисел, б\'{о}льших $\sqrt{2}$. При этом $\sqrt{2}\notin\operatorname{upb}_{\mathbb{Q}}X$, а значит $\sup_{\mathbb{Q}}X$ не определён.
+\end{exmprus}
+
+\end{frame}
+
+\begin{frame}{Пример: внутренность множества}
+\begin{defrus}[внутренность множества] Рассмотрим $\langle X, \Omega\rangle$ и возьмём $(\subseteq)$ как отношение частичного порядка на $\mathcal{P}(X)$.
+Тогда $A^\circ := \inf_\Omega (\{ A\})$. %То есть, $A^\circ = \text{\upshape наиб}_\Omega\{ Q \in \Omega\ |\ Q \subseteq A\}$.
+\end{defrus}
+
+\begin{thmrus}$A^\circ$ определена для любого $A$.\end{thmrus}
+\begin{proof}
+
+Пусть $V = \text{lwb}_\Omega\{ A \} = \{ Q \in \Omega\ |\ Q \subseteq A\}$. Тогда $\inf_\Omega \{A\} = \bigcup V$.
+
+Напомним, $\inf_\mathcal{U} T = \text{наиб}(\text{lwb}_\mathcal{U} T)$.
+
+\begin{enumerate}
+\item Покажем принадлежность: $\bigcup V \subseteq A$ и $\bigcup V \in \Omega$ как объединение открытых.
+\item Покажем, что все из $V$ меньше или равны: пусть $X \in V$, то есть $V = \{ X, \dots \}$, тогда $X \subseteq X \cup \dots$, тогда $X \subseteq \bigcup V$
+\end{enumerate}
+\end{proof}
+\end{frame}
+
+\begin{frame}{Решётка}
+\begin{defrus}Решёткой называется упорядоченная пара: $\langle X, (\preceq)\rangle$, 
+где $X$ --- некоторое множество, а $(\preceq)$ --- частичный порядок на $X$, такой, 
+что для любых $a,b \in X$ определены $a + b = \sup\{a,b\}$ и $a \cdot b = \inf\{a,b\}$.
+\end{defrus}
+
+То есть, $a + b$ --- наименьший элемент $c$, что $a \preceq c$ и $b \preceq c$.
+
+\begin{exmprus}
+$\langle\Omega, (\subseteq)\rangle$ --- решётка.
+$\langle\mathbb{N}\setminus\{1\}, (\raisebox{-0.75pt}{\vdots})\rangle$ --- не решётка.
+\end{exmprus}
+\end{frame}
+
+\begin{frame}{Псевдодополнение}
+Псевдодополнением $a \rightarrow b$ называется наибольший из $\{ x \ |\ a \cdot x \preceq b\}$.
+
+\begin{exmprus}\vspace{-0.3cm}
+\begin{center}\tikz{
+  \node[circle,inner sep=0.3] (A) at (1,-1.3) {$a$};
+  \node[fill=cyan!0.2,circle,inner sep=0.3] (B) at (0.5,-0.5) {$b$};
+  \node[circle,inner sep=0.3] (C) at (1.5,-0.5) {$c$};
+  \node[circle,inner sep=0.3] (D) at (1,0.3) {$d$};
+  \foreach \b/\e in {A/B, A/C, B/D, C/D} {
+      \draw[stealth-, line width=1, color=black!50!green] (\b) to (\e);
+  }
+
+  \node (txt) at (4,-0.5) { \begin{tabular}{l} $a \cdot b = a$ \\ $b \cdot b = b$ \\ $c \cdot b = a$ \\ $d \cdot b = b$ \end{tabular} };
+  \draw[fill=cyan,fill=cyan,opacity=0.2](C.north west) 
+     to[closed,curve through={
+       (A.south west) .. (A.south east)
+     }] (C.north east);
+}\end{center}
+
+Здесь $b \rightarrow c = \text{наиб}\{x\ |\ b \cdot x \preceq c\} = \text{наиб}\{ a, c \} = c$
+\end{exmprus}
+
+\begin{exmprus}[нет псевдодополнения: диамант и пентагон]\vspace{-0.3cm}
+\begin{center}\tikz{
+  \node[circle,inner sep=0.3] (A) at (1,-1.3) {$a$};
+  \node[circle,inner sep=0.3] (B) at (0,-0.5) {$b$};
+  \node[circle,inner sep=0.3] (C) at (1,-0.5) {$c$};
+  \node[circle,inner sep=0.3] (D) at (2,-0.5) {$d$};
+  \node[circle,inner sep=0.3] (E) at (1,0.3) {$e$};
+  \foreach \b/\e in {A/B, A/C, A/D, B/E, C/E, D/E} {
+      \draw[stealth-, line width=1, color=black!50!green] (\b) to (\e);
+  }
+  \draw[pattern=north west lines,opacity=0.5,pattern color=olive](C.north west) 
+     to[closed,curve through={
+       (A.south west) .. (A.south east) .. (D.south east)
+     }] (D.north east);
+  \node (BC) at (1,-1.8) {$b \rightarrow c = \text{наиб}\{ a, c, d \}$};
+
+  \node[circle,inner sep=0.3] (A1) at (9,-1.3) {$a$};
+  \node[circle,inner sep=0.3] (B1) at (8,-1) {$b$};
+  \node[circle,inner sep=0.3] (C1) at (8,0) {$c$};
+  \node[circle,inner sep=0.3] (D1) at (10,-0.5) {$d$};
+  \node[circle,inner sep=0.3] (E1) at (9,0.3) {$e$};
+  \foreach \b/\e in {A1/B1, B1/C1, C1/E1, A1/D1, D1/E1} {
+      \draw[stealth-, line width=1, color=black!50!green] (\b) to (\e);
+  }
+
+  \node (B1C1) at (9,-1.8) {$c \rightarrow b = \text{наиб}\{ a, b, d \}$};
+  \draw[pattern=north west lines,opacity=0.5,pattern color=olive](B1.north west) 
+     to[closed,curve through={
+       (A1.south east) .. (D1.south east) .. (D1.north east)
+     }] (B1.north east);
+}\end{center}
+\end{exmprus}
+\end{frame}
+
+\begin{frame}{Особые решётки}
+\begin{defrus}Дистрибутивной решёткой называется такая, что для любых $a,b,c$ выполнено
+$a \cdot (b + c) = a \cdot b + a \cdot c$.
+\end{defrus}
+
+\begin{defrus}Импликативная решётка --- такая, в которой для любых элементов есть псевдодополнение.\end{defrus}
+
+\begin{lemmarus}Любая импликативная решётка --- дистрибутивна.\end{lemmarus}
+\end{frame}
+
+\begin{frame}{Ноль и один}
+\begin{defrus}0 --- наименьший элемент решётки, а 1 --- наибольший элемент решётки\end{defrus}
+\begin{lemmarus}В любой импликативной решётке $\langle X, (\preceq)\rangle$ есть 1\end{lemmarus}
+\begin{proof} Рассмотрим $a \rightarrow a$, тогда $a \rightarrow a = \text{наиб}\{ c \ |\ a \cdot c \preceq a\} = 
+\text{наиб} X = 1$.
+\end{proof}
+\begin{defrus}Импликативная решётка с 0 --- псевдобулева алгебра (алгебра Гейтинга).
+В такой решётке определено $\sim a := a \rightarrow 0$ \end{defrus}
+\begin{defrus}Булева алгебра --- псевдобулева алгебра, в которой $a\ + \sim a = 1$ для всех $a$.\end{defrus}
+\end{frame}
+
+\begin{frame}{Булева алгебра является булевой алгеброй в смысле решёток}
+\begin{proof}
+Символы булевой алгебры: $(\with),(\vee),(\neg),\text{Л},\text{И}$.\\
+Символы решёток: $(+),(\cdot),(\rightarrow),(\sim),0,1$\\
+Упорядочивание: $\text{Л} \le \text{И}$.
+
+\begin{enumerate}
+\item $a \with b = \min(a,b)$, $a \vee b = \max(a,b)$ 
+(анализ таблицы истинности), отсюда $a \cdot b = a \with b$ и $a + b = a \vee b$.
+
+\item $a \rightarrow b = \neg a \vee b$, так как:
+$$a \rightarrow b = \text{наиб}\{ c | c \with a \le b\} = \left\{\begin{array}{ll}\neg a,& b = \text{Л}\\
+                                                 \text{И},& b = \text{И}\end{array}\right.$$
+
+\item $0 = \min\{\text{И},\text{Л}\} = \text{Л}$, $1 = \max\{\text{И},\text{Л}\} = \text{И}$, $\sim a = a \rightarrow 0 = \neg a \vee \text{Л} = \neg a$.
+Заметим, что $a\ + \sim a = a \vee \neg a = \text{И}$.
+\end{enumerate}
+Итого: булева алгебра --- импликативная решётка с 0 и с $a\ + \sim a = 1$.
+
+\end{proof}
+\end{frame}
+
+\begin{frame}{Множества и топологии как решётки}
+\begin{lemmarus}
+$\langle \mathcal{P}(X), (\subseteq) \rangle$ --- булева алгебра.
+\end{lemmarus}
+
+\begin{proof}
+$a \rightarrow b = \text{наиб}\{ c \subseteq X\ |\ a \cap c \subseteq b\}$. Т.е. наибольшее, не содержащее точек из $a \setminus b$.
+Т.е. $X \setminus (a \setminus b)$. То есть $(X \setminus a) \cup b$.
+
+$a\ +\sim a = a \cup (X \setminus a) \cup \varnothing = X$
+\end{proof}
+
+\begin{lemmarus}
+$\langle \Omega, (\subseteq) \rangle$ --- псевдобулева алгебра.
+\end{lemmarus}
+
+\begin{proof}
+$a \rightarrow b = \text{наиб}\{ c \in \Omega\ |\ a \cap c \subseteq b\}$. 
+Т.е. наибольшее открытое, не содержащее точек из $a \setminus b$.
+То есть, $(X \setminus (a \setminus b))^\circ$. То есть, $((X \setminus a) \cup b)^\circ$.
+\end{proof}
+
+\end{frame}
+
+\begin{frame}{Решётки и исчисление высказываний}
+\begin{defrus}Пусть некоторое исчисление высказываний оценивается значениями из некоторой решётки.
+Назовём оценку согласованной с исчислением, если 
+$\llbracket\alpha\with\beta\rrbracket = \llbracket\alpha\rrbracket\cdot\llbracket\beta\rrbracket$,
+$\llbracket\alpha\vee\beta\rrbracket = \llbracket\alpha\rrbracket+\llbracket\beta\rrbracket$,
+$\llbracket\alpha\rightarrow\beta\rrbracket = \llbracket\alpha\rrbracket\rightarrow\llbracket\beta\rrbracket$,
+$\llbracket\neg\alpha\rrbracket =\ \sim\llbracket\alpha\rrbracket$,
+$\llbracket A \with\neg A\rrbracket = 0$, $\llbracket A\rightarrow A \rrbracket = 1$.
+\end{defrus}
+
+\begin{thmrus}Любая псевдобулева алгебра, являющаяся согласованной оценкой интуиционистского исчисления высказываний,
+является его корректной моделью: если $\vdash\alpha$, то $\llbracket\alpha\rrbracket = 1$.
+\end{thmrus}
+
+\begin{thmrus}Любая булева алгебра, являющаяся согласованной оценкой классического исчисления высказываний, 
+является его корректной моделью: если $\vdash\alpha$, то $\llbracket\alpha\rrbracket = 1$
+\end{thmrus}
+
+\end{frame}
+
+\end{document}
