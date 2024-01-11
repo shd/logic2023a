@@ -6,7 +6,7 @@
 + [Теоретические домашние задания](https://github.com/shd/logic2023a/blob/master/hw-theory.pdf)
 + [Краткая инструкция по утилите make](https://github.com/shd/logic2018/blob/master/make.pdf)
 
-## Лекция 1
+## [Лекция 1](https://www.youtube.com/watch?v=8NJ64KKvisI&list=PLodJGUI8A2yEaRRBBBczZ7794QEvTPbFX&index=1)
 ### Что такое логика и математическая логика. Исчисление высказываний
 + История вопроса. Логика.
 + Парадоксы теории множеств, необходимость формализации математики, программа Гильберта.
@@ -14,8 +14,7 @@
 + Теория моделей, оценка высказываний
 + Теория доказательств, доказательства, выводимость
 ### Где почитать
-+ Н.К. Верещагин, А. Шень. Лекции по математической логике и теории алгоритмов. Языки и исчисления.
-https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf
++ [Н.К. Верещагин, А. Шень. Лекции по математической логике и теории алгоритмов. Языки и исчисления.](https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf)
 + Конспекты 2011 и 2018 года по логике.
 + Хрестоматия по истории математики. Арифметика и алгебра. Теория чисел. Геометрия. 
 Пособие для студентов физ.-мат. фак. пед. ин-тов. Под ред. А.П. Юшкевича. - М.: Просвещение, 1976. - 318 с.
@@ -23,17 +22,16 @@ https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf
 где исследуется, являются ли объект, принципы и выводы современного анализа более отчетливо 
 задуманы или более явно выведены, чем религиозные мистерии и точки веры» --- М.: Мысль, 1978
 
-## Лекция 2
+## [Лекция 2](https://www.youtube.com/watch?v=pAyo2h35CJQ&list=PLodJGUI8A2yEaRRBBBczZ7794QEvTPbFX&index=2)
 ### Теоремы об исчислении высказываний
 + Теорема о корректности исчисления высказываний
 + Теорема о дедукции
 + Теорема о полноте исчисления высказываний
 ### Где почитать
-+ Н.К. Верещагин, А. Шень. Лекции по математической логике и теории алгоритмов. Языки и исчисления.
-https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf
++ [Н.К. Верещагин, А. Шень. Лекции по математической логике и теории алгоритмов. Языки и исчисления.](https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf)
 + Конспекты 2011 и 2018 года по логике.
 
-## Лекция 3
+## [Лекция 3](https://www.youtube.com/watch?v=FyCdh4V3_uE&list=PLodJGUI8A2yEaRRBBBczZ7794QEvTPbFX&index=3)
 ### Интуиционистское исчисление высказываний
 + Введение в интуиционистское исчисление высказываний: история
 + BHK-интерпретация связок
@@ -43,12 +41,10 @@ https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf
 + Алгебра Гейтинга как модель ИИВ
 ### Где почитать
 + О. Я. Виро, О. А. Иванов, Н. Ю. Нецветаев, В. М. Харламов. Элементарная топология. --- М.: Издательство МЦНМО, 2010
-+ В.Е.Плиско, В.Х.Хаханян, Интуиционистская логика, Мех-Мат МГУ 2009
-http://logic.math.msu.ru/wp-content/uploads/plisko/intlog.pdf
-+ Morten Heine B. Sørensen, Pawel Urzyczyn: Lections on the Curry-Howard Isomorphism
-https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf
++ [В.Е.Плиско, В.Х.Хаханян, Интуиционистская логика, Мех-Мат МГУ 2009](http://logic.math.msu.ru/wp-content/uploads/plisko/intlog.pdf)
++ [Morten Heine B. Sørensen, Pawel Urzyczyn: Lections on the Curry-Howard Isomorphism](https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf)
 
-## Лекция 4
+## [Лекция 4](https://www.youtube.com/watch?v=-Ewc0h1pf0A&list=PLodJGUI8A2yEaRRBBBczZ7794QEvTPbFX&index=4)
 ### Теоремы об интуиционистском исчислении высказываний
 + Алгебра Линденбаума
 + Теорема о полноте ИИВ в алгебрах Гейтинга
@@ -56,12 +52,10 @@ https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf
 + Теорема о дизъюнктивности ИИВ
 + Теорема о разрешимости ИИВ
 ### Где почитать
-+ В.Е.Плиско, В.Х.Хаханян, Интуиционистская логика, Мех-Мат МГУ 2009
-http://logic.math.msu.ru/wp-content/uploads/plisko/intlog.pdf
-+ Morten Heine B. Sørensen, Pawel Urzyczyn: Lections on the Curry-Howard Isomorphism
-https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf
++ [В.Е.Плиско, В.Х.Хаханян, Интуиционистская логика, Мех-Мат МГУ 2009](http://logic.math.msu.ru/wp-content/uploads/plisko/intlog.pdf)
++ [Morten Heine B. Sørensen, Pawel Urzyczyn: Lections on the Curry-Howard Isomorphism](https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf)
 
-## Лекция 5
+## [Лекция 5](https://www.youtube.com/watch?v=LFTYq3ur6kE&list=PLodJGUI8A2yEaRRBBBczZ7794QEvTPbFX&index=5)
 ### Подробнее про алгебру Линденбаума
 + Доказательства корректности определения алгебры Линденбаума
 ### Исчисление предикатов
@@ -70,10 +64,9 @@ https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf
 + Теорема о дедукции
 + Теорема о корректности
 ### Где почитать
-+ Н.К. Верещагин, А. Шень. Лекции по математической логике и теории алгоритмов. Языки и исчисления.
-https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf
++ [Н.К. Верещагин, А. Шень. Лекции по математической логике и теории алгоритмов. Языки и исчисления.](https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf)
 
-## Лекция 6
+## [Лекция 6](https://www.youtube.com/watch?v=7ju4xCtFQ0k&list=PLodJGUI8A2yEaRRBBBczZ7794QEvTPbFX&index=6)
 ### Теорема о полноте исчисления предикатов
 + Непротиворечивые множества формул
 + Модели для непротиворечивых множеств формул
@@ -82,15 +75,14 @@ https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf
 + Непротиворечивость исчисления предикатов
 ### Где почитать
 + П.Дж. Коэн, Теория множеств и континуум-гипотеза --- М.: Изд-во <<Мир>>, 1969.
-+ Н.К. Верещагин, А. Шень. Лекции по математической логике и теории алгоритмов. Языки и исчисления.
-https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf
++ [Н.К. Верещагин, А. Шень. Лекции по математической логике и теории алгоритмов. Языки и исчисления.](https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf)
 
-## Лекция 7
+## [Лекция 7](https://www.youtube.com/watch?v=fCdlIRIfHkc&list=PLodJGUI8A2yEaRRBBBczZ7794QEvTPbFX&index=7)
 ### Неразрешимость исчисления предикатов, аксиоматика Пеано
 + Неразрешимость исчисления предикатов
 + Аксиоматика Пеано
 
-## Лекция 8
+## [Лекция 8](https://www.youtube.com/watch?v=fCdlIRIfHkc&list=PLodJGUI8A2yEaRRBBBczZ7794QEvTPbFX&index=7)
 ### Формальная арифметика, рекурсивные функции и представимость функций в формальной арифметике
 + Теории первого порядка
 + Формальная арифметика
@@ -101,14 +93,12 @@ https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf
 + Все рекурсивные функции представимы
 + Гёделева нумерация, все представимые функции рекурсивны
 ### Где почитать
-+ Morten Heine B. Sørensen, Pawel Urzyczyn: Lections on the Curry-Howard Isomorphism
-https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf
-+ Н.К. Верещагин, А. Шень. Лекции по математической логике и теории алгоритмов. Языки и исчисления.
-https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf
++ [Morten Heine B. Sørensen, Pawel Urzyczyn: Lections on the Curry-Howard Isomorphism](https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf)
++ [Н.К. Верещагин, А. Шень. Лекции по математической логике и теории алгоритмов. Языки и исчисления.](https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf)
 + П.Дж. Коэн, Теория множеств и континуум-гипотеза --- М.: Изд-во <<Мир>>, 1969.
 + Э. Мендельсон, Введение в математическую логику --- М.: Изд-во <<Наука>>, 1971.
 
-## Лекция 9
+## [Лекция 9](https://www.youtube.com/watch?v=CHsn6sT9kS4&list=PLodJGUI8A2yEaRRBBBczZ7794QEvTPbFX&index=9)
 ### Общие свойства формальной арифметики, теоремы Гёделя о неполноте, теорема Тарского
 + Обзор общих свойств формальной арифметики (корректность, непротиворечивость, полнота, разрешимость).
 + Классическая модель формальной арифметики, её корректность.
@@ -124,7 +114,7 @@ https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf
 + П.Дж. Коэн, Теория множеств и континуум-гипотеза --- М.: Изд-во <<Мир>>, 1969.
 + Гилберт Д., Бернайс П., Основания математики --- М.: Изд-во <<Наука>>, 1982.
 
-## Лекция 10
+## [Лекция 10](https://www.youtube.com/watch?v=KO6sjAVV2l8&list=PLodJGUI8A2yEaRRBBBczZ7794QEvTPbFX&index=9)
 ### Лямбда-исчисление
 + Бестиповое лямбда-исчисление
 + Натуральный вывод
@@ -132,10 +122,9 @@ https://www.mccme.ru/free-books/shen/shen-logic-part2-2.pdf
 + Просто-типизированное лямбда исчисление, изоморфизм Карри-Ховарда
 + Обзор различных теорий, основанных на лямбда-исчислении и их приложений в математике и программировании.
 ### Где почитать
-+ Morten Heine B. Sørensen, Pawel Urzyczyn: Lections on the Curry-Howard Isomorphism
-https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf
++ [Morten Heine B. Sørensen, Pawel Urzyczyn: Lections on the Curry-Howard Isomorphism](https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf)
 
-## Лекция 11
+## [Лекция 11](https://www.youtube.com/watch?v=cp07x_uuF2I&list=PLodJGUI8A2yEaRRBBBczZ7794QEvTPbFX&index=13)
 ### Теория множеств
 + История возникновения теории
 + Аксиомы теории множеств
@@ -145,7 +134,7 @@ https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf
 + Конспекты 2011 и 2018 года по логике.
 + Френкель А.А., Бар-Хиллел И. Основания теории множеств. --- УРСС, 2010
 
-## Лекция 12
+## [Лекция 12](https://www.youtube.com/watch?v=_Vb8eacaouw&list=PLodJGUI8A2yEaRRBBBczZ7794QEvTPbFX&index=10)
 ### Алгебраические типы, мощность множеств
 + Дизъюнктное объединение множеств.
 + Алгебраические типы
@@ -156,10 +145,9 @@ https://disi.unitn.it/~bernardi/RSISE11/Papers/curry-howard.pdf
 ### Где почитать
 + Френкель А.А., Бар-Хиллел И. Основания теории множеств. --- УРСС, 2010
 + П.Дж. Коэн, Теория множеств и континуум-гипотеза --- М.: Изд-во <<Мир>>, 1969.
-+ Chris Taylor, The Algebra of Algebraic Data Types,
-https://www.youtube.com/watch?v=YScIPA8RbVE
++ [Chris Taylor, The Algebra of Algebraic Data Types](https://www.youtube.com/watch?v=YScIPA8RbVE)
 
-## Лекция 13
+## [Лекция 13](https://www.youtube.com/watch?v=4Gc0LbqvqpU&list=PLodJGUI8A2yEaRRBBBczZ7794QEvTPbFX&index=12)
 ### Теорема Лёвенгейма-Сколема, аксиома выбора
 + Теорема Лёвенгейма-Сколема
 + Парадокс Сколема
@@ -174,7 +162,7 @@ https://www.youtube.com/watch?v=YScIPA8RbVE
 + Конспекты 2011 и 2018 года по логике.
 + Френкель А.А., Бар-Хиллел И. Основания теории множеств. --- УРСС, 2010
 
-## Лекция 14
+## [Лекция 14](https://www.youtube.com/watch?v=uyGtS3fC3kk&list=PLodJGUI8A2yEaRRBBBczZ7794QEvTPbFX&index=11)
 ### Трансфинитная индукция. Доказательство непротиворечивости формальной арифметики
 + Математическая и трансфинитная индукция, различные формулировки.
 + Система S-бесконечность
@@ -184,3 +172,13 @@ https://www.youtube.com/watch?v=YScIPA8RbVE
 + П.Дж. Коэн, Теория множеств и континуум-гипотеза --- М.: Изд-во <<Мир>>, 1969.
 + Френкель А.А., Бар-Хиллел И. Основания теории множеств. --- УРСС, 2010
 + Э. Мендельсон, Введение в математическую логику --- М.: Изд-во <<Наука>>, 1971.
+
+## [Лекция 15](https://www.youtube.com/watch?v=zXxrKcQtQ5g&list=PLodJGUI8A2yEaRRBBBczZ7794QEvTPbFX&index=14)
+### Метод резолюций
++ Сколемизация
++ Эрбранов универсум
++ Теорема Гёделя о компактности исчисления предикатов
++ Унификация
++ Метод резолюций
+### Где почитать
++ Ч. Чень, Р. Ли, Математическая логика и автоматическое доказательство теорем --- М.: Изд-во <<Наука>>, 1983.
