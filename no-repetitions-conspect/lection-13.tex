@@ -1,4 +1,4 @@
-\documentclass[aspectratio=169]{beamer}
+\documentclass[handout]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[english,russian]{babel}
 \usepackage{cancel}
@@ -118,7 +118,7 @@ $y' \in D \setminus D_k$ отличается --- добавим $y'$ к $D_{k+1
 \end{enumerate}
 \end{enumerate}\pause
 
-Всего добавили не больше $|T| \cdot |T| = |T|$. \pause $|\cup D_i| \le |T| \cdot |\aleph_0| = \max (|T|, |\aleph_0|)$
+Всего добавили не больше $|T| \cdot |D_k|$. \pause $|\cup D_i| \le |T| \cdot |D_k| \cdot |\aleph_0| = \max (|T|, |\aleph_0|)$
 \end{frame}
 
 \begin{frame}{$\mathcal{M}'$ --- элементарная подмодель}
@@ -145,7 +145,7 @@ $\llbracket \varphi \rrbracket_\mathcal{M'} = \llbracket \varphi \rrbracket_\mat
 
 \begin{frame}{<<Парадокс>> Сколема}
 \begin{enumerate}
-\item Как известно, $|\mathbb{R}| = |\mathcal{P}(\mathbb{N})| > |\mathbb{N}| = \aleph_0$. \pause Однако ZFC --- теория со счётным
+\item Как известно, $|\mathbb{R}| = |\mathcal{P}(\mathbb{N})| > |\mathbb{N}| = \aleph_0$. \pause Однако, ZFC --- теория со счётным
 количеством формул. \pause
 Значит, существует счётная модель ZFC, то есть $|\mathbb{R}| = \aleph_0$. \pause В чём ошибка? \pause
 \item У равенств разный смысл, первое --- в предметном языке, второе --- в метаязыке. 
@@ -363,7 +363,7 @@ $\{ \delta \in \mathbb{R}\ |\ \forall x.|x - x_0| < \delta \rightarrow |f(x) - y
 \begin{proof}Рассмотрим $\mathcal{B} = \{0,1\}$, $A_0 = \{ x \in \mathcal{B} | x = 0 \vee P \}$ и 
 $A_1 = \{ x \in \mathcal{B} | x = 1 \vee P\}$.
 $\{A_0,A_1\}$ --- непустое семейство непустых множеств, и по акс. выбора существует
-$f: \{A_0,A_1\} \rightarrow \cup A_i$, что $f(A_i) \in A_i$. (Если $P$, то $A_0 = A_1$ и \cup $\{A_0,A_1\} = \{\mathcal{B}\}$).
+$f: \{A_0,A_1\} \rightarrow \cup A_i$, что $f(A_i) \in A_i$. (Если $P$, то $A_0 = A_1$ и $\{A_0,A_1\} = \{\mathcal{B}\}$).
 
 \vspace{0.3cm}
 \begin{tabular}{ll}
@@ -409,11 +409,11 @@ v \cup \{x_{n+1}\} \in \times (X_{1,n}\cup\{X_{n+1}\})$
 %$$(\exists x_1. x_1 \in X_1)\with\dots\with(\exists x_n.x_n \in X_n)\rightarrow\exists f.f(X_1) \in X_1 \with \dots \with f(X_n) \in X_n$$
 
 \begin{axm}[счётного выбора]
-Для счётного семейства непустых множеств существует функция, каждому из которых сопоставляющая один из своих элементов.
+Для счётного семейства непустых множеств существует функция, каждому из которых сопоставляющая один из своих элементов
 \end{axm}
 
 \begin{axm}[зависимого выбора]
-Если $\forall x \in E.\exists y \in E. x R y$, то существует последовательность $x_n: \forall n.x_n R x_{n+1}$.
+если $\forall x \in E.\exists y \in E. x R y$, то существует последовательность $x_n: \forall n.x_n R x_{n+1}$
 \end{axm}
 \end{frame}
 

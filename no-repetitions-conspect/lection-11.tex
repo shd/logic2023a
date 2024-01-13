@@ -1,4 +1,4 @@
-\documentclass[aspectratio=169]{beamer}
+\documentclass[handout]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[english,russian]{babel}
 \usepackage{cancel}
@@ -159,18 +159,12 @@ $\{\varnothing,\{\varnothing\},\{\varnothing,\{\varnothing\}\}\}$, \dots\pause
 \end{frame}
 \begin{frame}{Предельные ординалы, $\omega$}
 \begin{dfn}$\omega$ --- наименьший предельный ординал.\end{dfn}\pause
-\begin{thm}$\omega$ существует и $\omega = \{ x \in N\ |\ x\text{ --- конечный ординал}\}$\end{thm}\pause
-\begin{proof}
-\begin{enumerate}
-    \item Покажем, что $\omega$ --- ординал.  \pause
-    \item Покажем, что $\omega$ --- предельный. Докажем от противного: пусть $\theta$ --- ординал, и $\theta' = \omega$. Тогда $\theta \in \omega$ (так как $\theta < \theta'$ и $\theta' = \omega$). Но тогда $\theta$ --- конечный, $\theta'$ --- тоже конечный и $\theta' \in \omega$ (по определению $\omega$). \pause
-    \item Покажем, что $\omega$ --- наименьший предельный. Пусть это не так. Тогда, есть $\eta \in \omega$, такой, что $\eta$ --- предельный. Но такое невозможно, ибо по определению $\omega$ состоит из конечных (то есть, не предельных). \end{enumerate} \end{proof}
-\end{frame}
-
-\begin{frame}{Предельные ординалы, $\omega$}
+\begin{thm}$\omega$ существует.\end{thm}\pause
+\begin{proof}Пусть $\omega = \{ x \in N\ |\ x\text{ конечен}\}$. 
+Пусть $\theta$ таков, что $\theta \in \omega$. Тогда $\theta$ конечен. \pause
+Пусть $\theta$ таков, что $\theta' = \omega$. Тогда $\theta \in \omega$.\end{proof}
 \begin{exm}$\omega'$ --- тоже ординал.\end{exm}
 \end{frame}
-
 
 \begin{frame}{Операции над ординалами}
 \begin{dfn}$\sup x$ --- наименьший ординал, содержащий $x$: $x \subseteq \sup x$.\end{dfn} \pause
@@ -206,7 +200,6 @@ $f: S \rightarrow X$, причём $a \prec b$ тогда и только тог
 \pause
 $1 + \omega = \omega$. \pause
 \item Добавить элемент после бесконечности $(+\infty)$. \pause $\omega + 1 \ne \omega$ \pause
-\includegraphics[scale=0.9]{lection-10-ghc}
 \end{itemize}\end{exm} 
 \end{frame}
 

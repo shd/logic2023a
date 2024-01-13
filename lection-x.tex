@@ -1,0 +1,195 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{cancel}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{tikz}
+\usepackage{multicol}
+\usetikzlibrary{patterns}
+\usepackage{chronosys}
+\usepackage{proof}
+\usepackage{multirow}
+\usepackage{comment}
+\setbeamertemplate{navigation symbols}{}
+%\usetheme{Warsaw}
+
+\newtheorem{thm}{Теорема}[section]
+\newtheorem{dfn}{Определение}[section]
+\newtheorem{lmm}{Лемма}[section]
+\newtheorem{exm}{Пример}[section]
+\newtheorem{snote}{Пояснение}[section]
+
+\newcommand{\divisible}%
+{\mathrel{\lower.2ex%
+\vbox{\baselineskip=0.7ex\lineskiplimit=0pt%
+\kern6pt \hbox{.}\hbox{.}\hbox{.}}%
+}}
+
+\begin{document}
+
+\newcommand\doubleplus{+\kern-1.3ex+\kern0.8ex}
+\newcommand\mdoubleplus{\ensuremath{\mathbin{+\mkern-10mu+}}}
+
+\begin{frame}{}
+\begin{center}\Large О лабах\end{center}
+\end{frame}
+
+\begin{frame}{C. Нормализация метаязыка}
+Доказательство на метаязыке:
+$$\begin{array}{l}\Gamma_1 \vdash \alpha_1\\\Gamma_2 \vdash \alpha_2\\\dots\\\Gamma_n \vdash \alpha_n\end{array}$$
+Требуется перестроить его в доказательство в гильбертовском стиле:
+$$\begin{array}{l}\Gamma_n\vdash\alpha_n\\\alpha'_1\\\dots\\\alpha'_k\\\alpha_n\end{array}$$
+\end{frame}
+
+\begin{frame}{Общая идея перестроения}
+Возможные типы переходов:
+\begin{enumerate}
+\item Аксиома $\Gamma \vdash \alpha$ --- формула $\alpha$ корректен в итоговом доказательстве без изменений.
+\item Modus Ponens $$\begin{array}{l}\Gamma \vdash \alpha_1\\\Gamma\vdash\alpha_1\rightarrow\alpha_2\\\Gamma\vdash\alpha_2\end{array}$$
+Переход остаётся корректен также без изменений, главное --- следить за совпадением списка $\Gamma$ (с учётом возможных перестановок).
+\item Дедукция $$\begin{array}{l}
+    \Gamma,\gamma_1,\gamma_2\vdash\alpha_1\rightarrow\alpha_2\rightarrow\beta\\
+    \Gamma,\gamma_2,\alpha_2\vdash\gamma_1\rightarrow\alpha_1\rightarrow\beta
+\end{array}$$
+Данный переход представляет главный интерес.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Посмотрим внимательней}
+Вспомним теорему о дедукции с конструктивным доказательством: 
+\begin{center}$\Gamma,\alpha\vdash\beta$ эквивалентно
+$\Gamma\vdash\alpha\rightarrow\beta$\end{center}
+Делается это путём перестроения всего вывода (помните, гипотезы изменяются,
+потому теорема затронет формулы вывода и при переносе $\alpha$ влево).
+
+\begin{exm}[$\Gamma,\gamma_1,\gamma_2\vdash\alpha_1\rightarrow\alpha_2\rightarrow\beta\Rightarrow\Gamma,\gamma_2,\alpha_2\vdash\gamma_1\rightarrow\alpha_1\rightarrow\beta$]
+Пусть дан вывод $\mathcal{B}_1$, показывающий $\Gamma,\gamma_1,\gamma_2\vdash\alpha_1\rightarrow\alpha_2\rightarrow\beta$.
+\begin{enumerate}
+\item По $\mathcal{B}_1$ построим $\mathcal{B}_2: \Gamma,\gamma_1,\gamma_2,\alpha_1\vdash\alpha_2\rightarrow\beta$
+\item По $\mathcal{B}_2$ построим $\mathcal{B}_3: \Gamma,\gamma_1,\gamma_2,\alpha_1,\alpha_2\vdash\beta$
+\item По $\mathcal{B}_3$ построим $\mathcal{B}_4: \Gamma,\gamma_1,\gamma_2,\alpha_2\vdash\alpha_1\rightarrow\beta$
+\item По $\mathcal{B}_4$ построим $\mathcal{B}_5: \Gamma,\gamma_2,\alpha_2\vdash\gamma_1\rightarrow\alpha_1\rightarrow\beta$
+\end{enumerate}
+\end{exm}
+
+Если не думать об оптимизации, то каждый шаг предпологает построение копии всего вывода с изменениями.
+\end{frame}
+
+\begin{frame}{Идеи об ускорении вывода}
+\begin{itemize}
+\item Хранить доказательство в виде дерева.
+\item Применение дедукционного перехода может быть сделано как особый узел в дереве доказательства.
+\item При перестроении преобразовывать дерево лениво:
+\begin{itemize}
+\item идти вверх по дереву, от итоговой формулы;
+\item игнорировать неиспользуемые узлы;
+\item суммировать преобразования при возможности (нейтрализовать встречные дедукции --- аккуратно! преобразования не коммутируют;
+накапливать последовательные и т.п.).
+\end{itemize}
+\item Не требуется идеальное решение --- достаточно прохождения тестов жюри.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{E. Свобода для подстановки}
+Задача хорошо решается через последовательное применение унификации несколько раз.
+
+Выражение в алгебраических термах: $$\theta ::= f_k(\theta_1,\dots,\theta_n)\ |\ x_i$$
+В нашем случае $f_k$ --- это и логические и предметные символы. Переменные --- предметные переменные.
+
+Например, если $(\forall x.\varphi) \rightarrow \psi$ есть 11 аксиома, то
+$$\pi = \mathcal{U}\big[\varphi,\psi\big]$$ существует и либо тривиально, либо содержит единственную замену --- для
+переменной $x$. 
+\end{frame}
+
+\begin{frame}{Эквивалентные преобразования системы уравнений}
+\begin{thm}
+Пусть $\mathcal{E} = \{ \sigma_1=\tau_1, \sigma_2=\tau_2, \dots, \sigma_k=\tau_k \}$ --- система 
+уравнений в алгебраических термах. Тогда каждое из следующих преобразований оставляет множество
+решений системы неизменным:
+\begin{enumerate}
+\item убрать уравнение вида $\sigma_t=\sigma_t$ из системы;
+\item заменить уравнение вида $f(\theta_1, \dots, \theta_j) = f(\theta'_1, \dots, \theta'_j)$ на
+семейство уравнений $\theta_1=\theta'_1; \dots; \theta_j=\theta'_j$;
+\item сделать подстановку при наличии уравнения вида $x = f(\theta_1, \dots, \theta_j)$: заменить
+все остальные вхождения $x$ в систему на $f(\theta_1, \dots, \theta_j)$;
+\item поменять выражения в уравнении местами: $\sigma_t=x_j$ на $x_j=\sigma_t$.
+\end{enumerate}
+\end{thm}
+\end{frame}
+
+\begin{frame}{Решение системы уравнений}
+\begin{thm}
+Преобразования системы уравнений (при исключении преобразований, ведущих к повторению системы) 
+за конечное время приведут:
+\begin{enumerate}
+\item либо к системе вида $x_i = \sigma_i$, причём каждая из переменных $x_i$
+входит в систему ровно один раз;
+\item либо к несовместной системе: такой, в которую входит уравнение вида $$x_i = \dots x_i \dots$$
+Здесь переменная $x_i$ нетривиально входит справа от знака равенства.
+\item также, несовместная система получится, если в ней появится уравнение вида $$f(\theta_1,\dots,\theta_k) = g(\eta_1,\dots,\eta_l)$$
+%Понятно, что нет никакой подстановки, превращающей один функциональный символ в другой.
+\end{enumerate}
+\end{thm}
+
+После применения преобразований по системе можно будет построить требуемую подстановку.
+\end{frame}
+
+\begin{frame}{Оптимизации}
+В принципе, не обязательно делать унификацию как указано выше. Но нужно трезво понимать, что вы делаете --- иначе 
+отладка будет сложна :)
+\end{frame}
+
+\begin{frame}{O. Ординальный калькулятор}
+В задаче будем применять определение сложения, умножения и умножения через $\underline{sup}(X) = \bigcup X$.
+За переосмысление решения для определения операций с лекции --- доп. баллы.
+\begin{dfn}Канторовой нормальной формой назовём выражение вида
+$$\omega^{\beta_1}\cdot a_1 + \omega^{\beta_2}\cdot a_2 + \dots + \omega^{\beta_n} \cdot a_n$$
+причём $\beta_1 > \beta_2 > \dots > \beta_n \ge 0$ и $a_i \in \mathbb{N}, a_i > 0$.
+\end{dfn}
+
+\begin{thm}Для любого ординала $\alpha < \varepsilon_0$ существует единственная КНФ, равная ему.\end{thm}
+\end{frame}
+
+\begin{frame}{Некоторые свойства операций}
+\begin{thm}Для операций над ординалами выполнены следующие свойства:
+\begin{enumerate}
+\item $\alpha\cdot(\zeta_1+\zeta_2) = \alpha\cdot\zeta_1 + \alpha\cdot\zeta_2$ (левая дистрибутивность)
+\item $\alpha\cdot 0 = 0$
+\item $\alpha^{\beta_1}\cdot\alpha^{\beta_2} = \alpha^{\beta_1+\beta_2}$
+\item $(\alpha^\beta)^\gamma = \alpha^{\beta\cdot\gamma}$
+\item $\alpha^0 = 1$
+\end{enumerate}
+\end{thm}
+\begin{proof}Трансфинитная индукция по структуре\end{proof}
+\end{frame}
+
+\begin{frame}{Сложение КНФ}
+Заметим, что $$\omega^{\beta_1}\cdot a_1 + \omega^{\beta_2}\cdot a_2 = \left\{\begin{array}{ll}
+\omega^{\beta_1}\cdot a_1 + \omega^{\beta_2}\cdot a_2, & \beta_1 > \beta_2\\
+\omega^{\beta_1}\cdot (a_1 + a_2), & \beta_1 = \beta_2\\
+\omega^{\beta_2}\cdot a_2, & \beta_1 < \beta_2\end{array}\right.$$
+Имея это свойство, можно вычислить сложение двух КНФ так, чтобы результатом также была некоторая КНФ.
+\end{frame}
+
+\begin{frame}{Умножение КНФ}
+Заметим, что при $\xi > 0$ 
+$$(\omega^{\beta_1}\cdot a_1 + \dots + \omega^{\beta_n}\cdot a_n) \cdot \omega^{\xi} = \omega^{\beta_1 + \xi}$$
+И также, если $x\in\mathbb{N}, x > 0$, то
+$$(\omega^{\beta_1}\cdot a_1 + \omega^{\beta_2}\cdot a_2 + \dots + \omega^{\beta_n}\cdot a_n) \cdot x = \omega^{\beta_1}\cdot (a_1 \cdot x) + \omega^{\beta_2}\cdot a_2\dots + \omega^{\beta_n}\cdot a_n$$
+\end{frame}
+
+\begin{frame}{Возведение в степень}
+Если $\gamma$ --- предельный, и $\beta_1 > 0$, то
+$$(\omega^{\beta_1}\cdot a_1+\omega^{\beta_2}\cdot a_2+\dots+\omega^{\beta_n}\cdot a_n)^\gamma = (\omega^{\beta_1})^\gamma$$
+\end{frame}
+
+\begin{frame}{Идея решения задачи}
+С помощью определённых операций сложения, умножения и возведения в степень для канторовых нормальных форм 
+возможно перевести любое ординальное выражение, использующее только $\omega$, числа и операции сложения,
+умножения и возведения в степень, в КНФ, после чего эти КНФ сравнить.
+\end{frame}
+\end{document}
