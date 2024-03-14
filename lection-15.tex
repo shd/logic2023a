@@ -104,7 +104,7 @@ $$\beta := \forall x_1.\exists x_2.\forall x_3.\exists x_4\dots \forall x_{n-1}.
 Получим: $$\gamma := \forall x_1.\forall x_3\dots\forall x_{n-1}.\varphi[x_2:=e_2(x_1), x_4:=e_4(x_1,x_3), \dots, x_n := e_n(x_1,x_3,\dots,x_{n-1})]$$
 
 
-\item ДНФ ($c$ конъюнктов, в каждом $d(c)$ дизъюнктов):
+\item КНФ ($c$ конъюнктов, в каждом $d(c)$ дизъюнктов):
 $$\delta := \forall x_1.\forall x_3\dots\forall x_{n-1}.\bigwedge_c\left(\bigvee_{i = \overline{1,d(c)}} (\neg)P_i(\theta_i)\right)$$
 
 \item $\vdash\alpha$ эквивалентно $\models\alpha$ и эквивалентно выполнимости $\delta$ при всех $D$ 
